@@ -1,0 +1,14 @@
+{
+  "common": {
+    "welcome": "Welcome to Your Vue.js App",
+    "copyright": "Copyright © {year} IP Law Firm"
+  },
+  "home_view": {
+    "title": "Home Page",
+    "description": "This is a Vue.js project configured with Vite and i18n."
+  },
+  "about_view": {
+    "title": "About Us",
+    "description": "This page creates an introduction about our application."
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "common": {
+        "welcome": "Chào mừng đến với ứng dụng Vue.js của bạn",
+        "copyright": "Bản quyền thuộc về IP Law Firm © {year}"
+    },
+    "home_view": {
+        "title": "Trang chủ",
+        "description": "Đây là dự án Vue.js cấu hình với Vite và i18n."
+    },
+    "about_view": {
+        "title": "Giới thiệu",
+        "description": "Trang này giới thiệu về ứng dụng của chúng tôi."
+    }
+}
