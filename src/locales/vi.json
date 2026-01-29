@@ -1,14 +1,117 @@
 {
     "common": {
         "welcome": "Chào mừng đến với ứng dụng Vue.js của bạn",
-        "copyright": "Bản quyền thuộc về IP Law Firm © {year}"
+        "copyright": "Bản quyền thuộc về IP Law Firm © {year}",
+        "home": "Trang chủ",
+        "services": "Dịch vụ",
+        "blog": "Tin tức",
+        "latest_news": "Kho nội dung mới nhất",
+        "view_all": "Xem tất cả"
     },
     "home_view": {
-        "title": "Trang chủ",
-        "description": "Đây là dự án Vue.js cấu hình với Vite và i18n."
+        "hero": {
+            "title": "Bảo vệ Tài sản Trí tuệ của Bạn",
+            "subtitle": "Đồng hành cùng doanh nghiệp kiến tạo và bảo vệ giá trị thương hiệu bền vững.",
+            "cta": "Đăng ký tư vấn ngay"
+        },
+        "intro": {
+            "title": "Tại sao chọn chúng tôi?",
+            "content": "Với đội ngũ luật sư chuyên gia hàng đầu, chúng tôi cam kết mang lại giải pháp pháp lý toàn diện, nhanh chóng và hiệu quả nhất cho doanh nghiệp của bạn."
+        },
+        "services": {
+            "title": "Dịch vụ Nổi bật",
+            "patent": {
+                "title": "Đăng ký Sáng chế",
+                "desc": "Bảo hộ độc quyền giải pháp kỹ thuật, quy trình công nghệ mới."
+            },
+            "trademark": {
+                "title": "Đăng ký Nhãn hiệu",
+                "desc": "Xây dựng nhận diện thương hiệu và ngăn chặn hành vi xâm phạm."
+            },
+            "copyright": {
+                "title": "Bản quyền Tác giả",
+                "desc": "Bảo vệ tác phẩm văn học, nghệ thuật và phần mềm máy tính."
+            }
+        },
+        "partners": {
+            "title": "Đối tác tin cậy"
+        }
+    },
+    "services": {
+        "patent_detail": "Chúng tôi cung cấp dịch vụ tra cứu, đánh giá khả năng bảo hộ và đại diện nộp đơn đăng ký Sáng chế/Giải pháp hữu ích tại Việt Nam và quốc tế.",
+        "trademark_detail": "Dịch vụ tư vấn chiến lược thương hiệu, tra cứu khả năng bảo hộ và thực hiện thủ tục đăng ký nhãn hiệu độc quyền.",
+        "copyright_detail": "Tư vấn và thực hiện thủ tục đăng ký quyền tác giả cho các tác phẩm văn học, nghệ thuật, khoa học và phần mềm máy tính."
+    },
+    "services_view": {
+        "workflow": {
+            "title": "Quy trình chuẩn mực",
+            "subtitle": "Cam kết minh bạch và hiệu quả trong từng bước thực hiện",
+            "step1_title": "Tư vấn & Thẩm định",
+            "step1_desc": "Đánh giá hồ sơ và khả năng thành công.",
+            "step2_title": "Xây dựng giải pháp",
+            "step2_desc": "Đề xuất phương án tối ưu chi phí & thời gian.",
+            "step3_title": "Triển khai pháp lý",
+            "step3_desc": "Soạn thảo, nộp đơn và làm việc với cơ quan chức năng.",
+            "step4_title": "Bàn giao kết quả",
+            "step4_desc": "Nhận văn bằng và tư vấn bảo vệ sau cấp phép."
+        }
+    },
+    "service_detail": {
+        "overview": "Tổng quan",
+        "target": "Đối tượng phù hợp",
+        "process": "Quy trình thực hiện",
+        "documents": "Hồ sơ cần chuẩn bị",
+        "pricing": "Chi phí dịch vụ",
+        "faq": "Câu hỏi thường gặp",
+        "time_badge": "⏱ {time}",
+        "pricing_ref": "Mức phí tham khảo",
+        "toc": "Mục lục nội dung",
+        "cta_title": "Đăng ký tư vấn",
+        "cta_desc": "Để lại thông tin, luật sư sẽ liên hệ lại sau 15 phút.",
+        "form_name": "Họ và tên *",
+        "form_phone": "Số điện thoại *",
+        "form_submit": "Gửi yêu cầu ngay",
+        "or_call": "Hoặc gọi trực tiếp:",
+        "not_found": "Dịch vụ không tồn tại",
+        "back_list": "Quay lại danh sách dịch vụ",
+        "quick_consult": "Cần tư vấn nhanh?",
+        "call_hotline": "Gọi ngay hotline:"
     },
     "about_view": {
         "title": "Giới thiệu",
-        "description": "Trang này giới thiệu về ứng dụng của chúng tôi."
+        "intro_p1": "Giữa dòng chảy thương trường đầy biến động, pháp lý không chỉ là những trang giấy hay điều luật khô khan. Đối với chúng tôi, đó là \"chiếc khiên\" vững chắc nhất bảo vệ công sức sáng tạo và tâm huyết của mỗi doanh nhân.",
+        "intro_p2": "Suốt hơn một thập kỷ qua, PatVN tự hào được ví như \"Người vệ sĩ thầm lặng\", luôn đứng sau sự thành công của hàng ngàn thương hiệu Việt, đảm bảo sự an toàn tuyệt đối để khách hàng vững tâm vươn ra biển lớn.",
+        "mission_title": "Người vệ sĩ pháp lý",
+        "mission_desc": "Hơn cả dịch vụ pháp lý, chúng tôi mang đến sự an tâm tuyệt đối. Nhiệm vụ của chúng tôi là tiên liệu mọi rủi ro, xử lý mọi khủng hoảng và bảo vệ quyền lợi hợp pháp của khách hàng như bảo vệ chính sinh mệnh của mình.",
+        "vision_title": "Nâng tầm Trí tuệ Việt",
+        "vision_desc": "Khát vọng của chúng tôi là đưa tài sản trí tuệ của doanh nghiệp Việt Nam vươn tầm di sản. Chúng tôi không chỉ làm luật, chúng tôi kiến tạo nền tảng để thương hiệu Việt tự tin khẳng định vị thế trên trường quốc tế.",
+        "values_title": "Giá trị cốt lõi",
+        "val_trust": "Tin cậy",
+        "val_trust_desc": "Chữ Tín là sinh mệnh. Chúng tôi cam kết bảo mật tuyệt đối và trung thực trong mọi tư vấn.",
+        "val_understand": "Thấu hiểu",
+        "val_understand_desc": "Mỗi doanh nghiệp là một câu chuyện. Chúng tôi lắng nghe để đưa ra giải pháp \"may đo\" phù hợp nhất.",
+        "val_distinct": "Khác biệt",
+        "val_distinct_desc": "Không đi theo lối mòn. Chúng tôi tìm kiếm giải pháp pháp lý sáng tạo và tối ưu nhất.",
+        "val_pro": "Chuyên nghiệp",
+        "val_pro_desc": "Chuẩn mực trong quy trình, tận tâm trong thái độ và chính xác trong từng văn bản."
+    },
+    "contact_view": {
+        "title": "Liên hệ",
+        "subtitle": "Kết nối ngay để nhận tư vấn pháp lý miễn phí",
+        "address": "Địa chỉ",
+        "email": "Email",
+        "hotline": "Hotline",
+        "form": {
+            "name": "Họ và tên",
+            "email": "Email",
+            "subject": "Tiêu đề",
+            "message": "Nội dung",
+            "submit": "Gửi liên hệ"
+        }
+    },
+    "blog_view": {
+        "title": "Kho nội dung pháp lý",
+        "subtitle": "Cập nhật tin tức và kiến thức mới nhất",
+        "read_more": "Đọc tiếp"
     }
 }

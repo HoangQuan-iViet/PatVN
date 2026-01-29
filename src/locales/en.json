@@ -1,14 +1,72 @@
 {
   "common": {
     "welcome": "Welcome to Your Vue.js App",
-    "copyright": "Copyright © {year} IP Law Firm"
+    "copyright": "Copyright © {year} IP Law Firm",
+    "home": "Home",
+    "services": "Services",
+    "blog": "Blog",
+    "latest_news": "Latest News",
+    "view_all": "View All"
   },
   "home_view": {
-    "title": "Home Page",
-    "description": "This is a Vue.js project configured with Vite and i18n."
+    "hero": {
+      "title": "Protect Your Intellectual Property",
+      "subtitle": "Partnering with businesses to create and protect sustainable brand value.",
+      "cta": "Get Consultation"
+    },
+    "intro": {
+      "title": "Why Choose Us?",
+      "content": "With a team of leading expert lawyers, we commit to providing the most comprehensive, fast, and effective legal solutions for your business."
+    },
+    "services": {
+      "title": "Featured Services",
+      "patent": {
+        "title": "Patent Registration",
+        "desc": "Exclusive protection for technical solutions and new technological processes."
+      },
+      "trademark": {
+        "title": "Trademark Registration",
+        "desc": "Build brand identity and prevent infringement."
+      },
+      "copyright": {
+        "title": "Copyright",
+        "desc": "Protect literary, artistic works, and computer software."
+      }
+    },
+    "partners": {
+      "title": "Trusted Partners"
+    }
+  },
+  "services": {
+    "patent_detail": "We provide services for searching, assessing patentability, and representing clients in filing Patent/Utility Solution applications in Vietnam and internationally.",
+    "trademark_detail": "Consulting services on brand strategy, searching for registrability, and carrying out procedures for exclusive trademark registration.",
+    "copyright_detail": "Consultancy and implementation of copyright registration procedures for literary, artistic, scientific works, and computer software."
   },
   "about_view": {
     "title": "About Us",
-    "description": "This page creates an introduction about our application."
+    "description": "This page creates an introduction about our application.",
+    "vision": "Vision",
+    "mission": "Mission",
+    "values": "Core Values",
+    "team": "Our Team"
+  },
+  "contact_view": {
+    "title": "Contact Us",
+    "subtitle": "Connect now for free legal consultation",
+    "address": "Address",
+    "email": "Email",
+    "hotline": "Hotline",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message"
+    }
+  },
+  "blog_view": {
+    "title": "Legal Resources",
+    "subtitle": "Latest news and insights updates",
+    "read_more": "Read more"
   }
 }
