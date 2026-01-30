@@ -91,7 +91,7 @@ watch(() => route.params.slug, () => {
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
         
-        <h2>Nội dung chi tiết</h2>
+        <h2>{{ t('post_detail.content_title') }}</h2>
         <p>
             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -106,7 +106,7 @@ watch(() => route.params.slug, () => {
             "Đây là một trích dẫn quan trọng liên quan đến vấn đề pháp lý được đề cập trong bài viết này."
         </blockquote>
         
-        <h3>Kết luận</h3>
+        <h3>{{ t('post_detail.conclusion') }}</h3>
         <p>
             Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos 
             qui ratione voluptatem sequi nesciunt.
@@ -116,7 +116,7 @@ watch(() => route.params.slug, () => {
     <!-- Related Posts -->
     <section class="bg-gray-50 py-16 border-t border-gray-200">
         <div class="container mx-auto px-4 max-w-5xl">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8 border-l-4 border-primary pl-4">Bài viết liên quan</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-8 border-l-4 border-primary pl-4">{{ t('post_detail.related_posts') }}</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div v-for="related in relatedPosts" :key="related.id" class="bg-white rounded-lg shadow p-6 flex gap-4 hover:shadow-md transition">

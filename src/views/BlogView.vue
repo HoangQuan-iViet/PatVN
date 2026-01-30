@@ -13,17 +13,18 @@ const visibleCount = ref(4) // Start with 4 posts (excluding featured)
 
 const categories = [
     { id: 'all', labelKey: 'blog_view.filter_all' },
-    { id: 'Pháp luật', labelKey: 'Sở hữu trí tuệ' }, 
-    { id: 'Hướng dẫn', labelKey: 'Hướng dẫn' },
-    { id: 'Case Study', labelKey: 'Case Study' },
-    { id: 'Thông báo', labelKey: 'Thông báo' },
-    { id: 'Doanh nghiệp', labelKey: 'Doanh nghiệp' }
+    { id: 'Pháp luật', labelKey: 'blog_view.categories.legal' }, 
+    { id: 'Sở hữu trí tuệ', labelKey: 'blog_view.categories.ip' }, 
+    { id: 'Hướng dẫn', labelKey: 'blog_view.categories.guide' },
+    { id: 'Case Study', labelKey: 'blog_view.categories.case_study' },
+    { id: 'Thông báo', labelKey: 'blog_view.categories.news' },
+    { id: 'Doanh nghiệp', labelKey: 'blog_view.categories.corporate' }
 ]
 
 const downloads = [
-    { title: "Mẫu đơn đăng ký nhãn hiệu 2024", size: "DOCX - 2.5MB" },
-    { title: "Hướng dẫn tra cứu sáng chế", size: "PDF - 1.2MB" },
-    { title: "Biểu mức phí nhà nước", size: "PDF - 800KB" }
+    { titleKey: "blog_view.downloads.form_tm", size: "DOCX - 2.5MB" },
+    { titleKey: "blog_view.downloads.guide_patent", size: "PDF - 1.2MB" },
+    { titleKey: "blog_view.downloads.fee_schedule", size: "PDF - 800KB" }
 ]
 
 // --- Computed Logic ---
@@ -180,7 +181,7 @@ const formatDate = (dateString) => {
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
             </div>
             <div class="relative z-10 container mx-auto px-4 text-center">
-                <span class="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Our Journal</span>
+                <span class="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4 block">{{ t('blog_view.subtitle_label') }}</span>
                 <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 font-serif">
                     {{ t('blog_view.title') }}
                 </h1>
@@ -202,7 +203,7 @@ const formatDate = (dateString) => {
                             :class="activeCategory === cat.id 
                                 ? 'bg-neutral-brown text-white border-neutral-brown' 
                                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
-                            {{ cat.id === 'all' ? t(cat.labelKey) : cat.labelKey }}
+                            {{ t(cat.labelKey) }}
                         </button>
                     </div>
 
@@ -363,7 +364,7 @@ const formatDate = (dateString) => {
                                     PDF
                                 </div>
                                 <div class="flex-grow">
-                                    <h4 class="text-sm font-bold text-gray-700 group-hover:text-primary transition line-clamp-1">{{ doc.title }}</h4>
+                                    <h4 class="text-sm font-bold text-gray-700 group-hover:text-primary transition line-clamp-1">{{ t(doc.titleKey) }}</h4>
                                     <span class="text-[10px] text-gray-400 uppercase">{{ doc.size }}</span>
                                 </div>
                                 <ArrowDownTrayIcon class="w-4 h-4 text-gray-400 group-hover:text-primary"/>

@@ -67,9 +67,9 @@ const resetForm = () => {
                             {{ t('contact_view.address') }}
                         </h3>
                         <p class="text-gray-500 leading-relaxed font-light">
-                            Keangnam Landmark 72<br>
-                            Phạm Hùng, Nam Từ Liêm<br>
-                            Hà Nội, Việt Nam
+                            {{ t('contact_view.address_line1') }}<br>
+                            {{ t('contact_view.address_line2') }}<br>
+                            {{ t('contact_view.address_line3') }}
                         </p>
                     </div>
 
@@ -101,16 +101,16 @@ const resetForm = () => {
                     </h3>
                      <ul class="space-y-2 text-sm text-gray-500 font-mono">
                         <li class="flex justify-between">
-                            <span>Mon - Fri</span>
+                            <span>{{ t('contact_view.days.weekdays') }}</span>
                             <span class="text-dark">8:00 - 17:30</span>
                         </li>
                         <li class="flex justify-between">
-                            <span>Saturday</span>
+                            <span>{{ t('contact_view.days.saturday') }}</span>
                             <span class="text-dark">8:00 - 12:00</span>
                         </li>
                          <li class="flex justify-between text-red-400">
-                            <span>Sunday</span>
-                            <span>Closed</span>
+                            <span>{{ t('contact_view.days.sunday') }}</span>
+                            <span>{{ t('contact_view.days.closed') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -131,7 +131,7 @@ const resetForm = () => {
 
                 <!-- Form Inputs -->
                 <div v-else>
-                    <h2 class="text-4xl font-serif text-dark mb-12">Gửi tin nhắn</h2>
+                    <h2 class="text-4xl font-serif text-dark mb-12">{{ t('contact_view.form_title') }}</h2>
                     
                     <form @submit.prevent="handleSubmit" class="space-y-12">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -186,7 +186,7 @@ const resetForm = () => {
         <div class="w-full lg:w-1/2 h-80 lg:h-full relative overflow-hidden">
              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
                  class="w-full h-full object-cover grayscale-[50%]" 
-                 alt="IP Law Firm Building">
+                 :alt="t('contact_view.map_alt')">
              <div class="absolute inset-0 bg-black/10"></div>
         </div>
 

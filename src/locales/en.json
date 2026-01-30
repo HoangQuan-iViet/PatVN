@@ -7,7 +7,10 @@
     "services": "Services",
     "blog": "Blog",
     "latest_news": "Latest News",
-    "view_all": "View All"
+    "view_all": "View All",
+    "details": "Details",
+    "view_details": "View Details",
+    "search": "Search..."
   },
   "home_view": {
     "hero": {
@@ -17,7 +20,10 @@
     },
     "intro": {
       "title": "Why Choose Us?",
-      "content": "With a team of leading expert lawyers, we commit to providing the most comprehensive, fast, and effective legal solutions for your business."
+      "content": "With a team of leading expert lawyers, we commit to providing the most comprehensive, fast, and effective legal solutions for your business.",
+      "label": "About Us",
+      "headline": "Creating legal standards with absolute dedication.",
+      "desc": "With over 15 years of experience in Intellectual Property Law and Corporate Consulting, we are not just lawyers, but strategic partners helping your business overcome all legal barriers."
     },
     "services": {
       "title": "Featured Services",
@@ -32,10 +38,24 @@
       "copyright": {
         "title": "Copyright",
         "desc": "Protect literary, artistic works, and computer software."
-      }
+      },
+      "label": "Our Services",
+      "headline": "Comprehensive Legal Solutions"
+    },
+    "stats": {
+      "clients": "500+ Clients",
+      "clients_desc": "Trusted and partnered.",
+      "success_rate": "98% Success Rate",
+      "success_desc": "In dispute cases."
     },
     "partners": {
       "title": "Trusted Partners"
+    },
+    "why_us": {
+      "title": "Why Choose Us?"
+    },
+    "vision": {
+      "label": "Vision & Mission"
     }
   },
   "services": {
@@ -43,13 +63,76 @@
     "trademark_detail": "Consulting services on brand strategy, searching for registrability, and carrying out procedures for exclusive trademark registration.",
     "copyright_detail": "Consultancy and implementation of copyright registration procedures for literary, artistic, scientific works, and computer software."
   },
+  "services_view": {
+    "categories": {
+      "all": "All",
+      "ip": "Intellectual Property",
+      "corporate": "Corporate",
+      "dispute": "Litigation",
+      "license": "Licensing"
+    },
+    "workflow": {
+      "title": "Standard Workflow",
+      "subtitle": "Commitment to transparency and efficiency in every step",
+      "step1_title": "Consultation & Appraisal",
+      "step1_desc": "Evaluate documents and success probability.",
+      "step2_title": "Solution Building",
+      "step2_desc": "Propose valid options optimizing cost & time.",
+      "step3_title": "Legal Implementation",
+      "step3_desc": "Drafting, filing and working with authorities.",
+      "step4_title": "Result Handover",
+      "step4_desc": "Receive certificate and post-licensing protection advice."
+    },
+    "empty_title": "No services found",
+    "empty_desc": "Please try another keyword or category.",
+    "clear_filter": "Clear Filter",
+    "search_placeholder": "Search services...",
+    "cta": {
+      "title": "Need In-depth Legal Consultation?",
+      "desc": "Contact our team of lawyers now to receive the optimal solution for your business issues.",
+      "btn": "Free Consultation"
+    }
+  },
+  "service_detail": {
+    "overview": "Overview",
+    "target": "Target Audience",
+    "process": "Implementation Process",
+    "documents": "Required Documents",
+    "pricing": "Service Fees",
+    "faq": "FAQ",
+    "time_badge": "⏱ {time}",
+    "pricing_ref": "Reference Fee",
+    "toc": "Table of Contents",
+    "cta_title": "Sign Up for Consultation",
+    "cta_desc": "Leave your information, a lawyer will contact you in 15 minutes.",
+    "form_name": "Full Name *",
+    "form_phone": "Phone Number *",
+    "form_submit": "Send Request Now",
+    "or_call": "Or call directly:",
+    "not_found": "Service not found",
+    "back_list": "Back to services list",
+    "quick_consult": "Need quick advice?",
+    "call_hotline": "Call hotline:",
+    "privacy_note": "* Information is kept strictly confidential"
+  },
   "about_view": {
-    "title": "About Us",
-    "description": "This page creates an introduction about our application.",
-    "vision": "Vision",
-    "mission": "Mission",
-    "values": "Core Values",
-    "team": "Our Team"
+    "hero_title": "Company Profile",
+    "story_headline": "A Note from PATVN",
+    "story_dropcap": "D",
+    "story_p1": "ear Valued Clients & Partners,\n\nPATVN was born not just to consult on law, but to accompany big dreams. We believe that every idea, every creation of yours is an invaluable asset that needs to be cherished and protected.\n\nIn this journey, your trust is the greatest motivation for us to constantly improve. Thank you for choosing PATVN as the guardian for your intellect.",
+    "quote": "\"Law is a tool to create prosperity, not a barrier.\"",
+    "mission_title": "Why do we exist?",
+    "mission_desc": "In a flat world, where ideas can be copied in seconds, PATVN stands here to ensure that your creativity is unique. We don't just process files, we tell stories of integrity and the aspiration for justice. Our mission is to create a solid legal fence, so that from there, your business can freely reach out to the big sea without the fear of infringement.",
+    "values_title": "Core Values",
+    "val_trust": "Trust",
+    "val_trust_desc": "More than a promise, it is honor. We protect your business secrets like the apple of our eye.",
+    "val_understand": "Understanding",
+    "val_understand_desc": "We do not apply a rigid formula. We listen to the heartbeat of your business to design the most suitable solution.",
+    "val_distinct": "Distinctive",
+    "val_distinct_desc": "Creative within the legal framework. We find the smartest ways to optimize benefits for clients.",
+    "val_pro": "Professional",
+    "val_pro_desc": "Perfection comes from the smallest things. From service attitude to every semicolon in legal documents.",
+    "signature": "PATVN Team"
   },
   "contact_view": {
     "title": "Contact Us",
@@ -62,12 +145,74 @@
       "email": "Email",
       "subject": "Subject",
       "message": "Message",
-      "submit": "Send Message"
-    }
+      "submit": "Send Message",
+      "submitting": "Sending..."
+    },
+    "form_title": "Send Message",
+    "working_hours": "Working Hours",
+    "working_weekdays": "Mon - Fri: 8:00 - 17:30",
+    "working_saturday": "Sat: 8:00 - 12:00",
+    "working_sunday": "Sunday: Closed",
+    "quick_consult": "Legal Support 24/7",
+    "success_title": "Sent Successfully!",
+    "success_desc": "We have received your message and will respond shortly.",
+    "success_btn": "Send Another Message",
+    "address_line1": "Keangnam Landmark 72",
+    "address_line2": "Pham Hung, Nam Tu Liem",
+    "address_line3": "Hanoi, Vietnam",
+    "days": {
+      "weekdays": "Mon - Fri",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "closed": "Closed"
+    },
+    "map_alt": "IP Law Firm Building"
   },
   "blog_view": {
     "title": "Legal Resources",
     "subtitle": "Latest news and insights updates",
-    "read_more": "Read more"
+    "subtitle_label": "Our Journal",
+    "search_label": "Search articles...",
+    "filter_all": "All",
+    "read_more": "Read more",
+    "sidebar_popular": "Popular Posts",
+    "sidebar_cats": "Categories",
+    "resources_title": "Forms & Documents",
+    "resources_desc": "Download registration forms and standard legal guides.",
+    "newsletter_title": "Legal Newsletter",
+    "newsletter_desc": "Subscribe to receive weekly legal updates.",
+    "download_now": "Download Now",
+    "label_new": "NEWEST",
+    "label_important": "IMPORTANT",
+    "label_match": "BEST MATCH",
+    "label_match_desc": "Top results for keyword: ",
+    "most_relevant": "MOST RELEVANT",
+    "featured": "FEATURED",
+    "latest": "LATEST",
+    "result_for_search": "Search results for: \"{query}\"",
+    "result_for_category": "Top results for category: \"{category}\"",
+    "load_more": "Load more",
+    "no_result": "No results found",
+    "empty_title": "No matching results found",
+    "empty_desc": "Try searching with different keywords or go back to all articles.",
+    "clear_filter": "Clear Filter",
+    "categories": {
+      "legal": "Legal",
+      "ip": "Intellectual Property",
+      "guide": "Guide",
+      "case_study": "Case Study",
+      "news": "News",
+      "corporate": "Corporate"
+    },
+    "downloads": {
+      "form_tm": "Trademark Registration Form 2024",
+      "guide_patent": "Patent Search Guide",
+      "fee_schedule": "State Fee Schedule"
+    }
+  },
+  "post_detail": {
+    "content_title": "Detailed Content",
+    "conclusion": "Conclusion",
+    "related_posts": "Related Posts"
   }
 }

@@ -9,13 +9,13 @@ const { t } = useI18n()
 const activeCategory = ref('all')
 const searchQuery = ref('')
 
-const categories = [
-  { id: 'all', label: 'Tất cả' },
-  { id: 'ip', label: 'Sở hữu trí tuệ' },
-  { id: 'corporate', label: 'Doanh nghiệp' },
-  { id: 'dispute', label: 'Tranh tụng' },
-  { id: 'license', label: 'Giấy phép' }
-]
+const categories = computed(() => [
+  { id: 'all', label: t('services_view.categories.all') },
+  { id: 'ip', label: t('services_view.categories.ip') },
+  { id: 'corporate', label: t('services_view.categories.corporate') },
+  { id: 'dispute', label: t('services_view.categories.dispute') },
+  { id: 'license', label: t('services_view.categories.license') }
+])
 
 // Workflow Data
 const workflowSteps = [
@@ -92,13 +92,13 @@ const getDesc = (service) => {
         </div>
         <div class="relative z-10 container mx-auto px-4 text-center">
              <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 font-serif">
-                {{ t('common.services', 'Dịch vụ Pháp lý') }}
+                {{ t('common.services') }}
              </h1>
              <!-- Breadcrumb -->
              <nav class="flex justify-center items-center gap-2 text-sm text-gray-300">
-                <router-link to="/" class="hover:text-white transition">Home</router-link>
+                <router-link to="/" class="hover:text-white transition">{{ t('common.home') }}</router-link>
                 <span>/</span>
-                <span class="text-primary font-bold">Services</span>
+                <span class="text-primary font-bold">{{ t('common.services') }}</span>
              </nav>
         </div>
     </div>
@@ -122,7 +122,7 @@ const getDesc = (service) => {
                 <!-- Search Input -->
                 <div class="relative w-full md:w-80">
                     <input v-model="searchQuery" type="text" 
-                        :placeholder="t('common.search', 'Tìm kiếm dịch vụ...')"
+                        :placeholder="t('services_view.search_placeholder')"
                         class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -161,7 +161,7 @@ const getDesc = (service) => {
                             {{ getDesc(service) }}
                         </p>
                         <div class="flex items-center text-sm font-bold text-gray-400 group-hover:text-secondary transition mt-auto">
-                            {{ t('common.view_details', 'Xem chi tiết') }}
+                            {{ t('common.view_details') }}
                             <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
                         </div>
                     </div>
@@ -172,10 +172,10 @@ const getDesc = (service) => {
         <!-- Empty State -->
         <div v-if="filteredServices.length === 0" class="text-center py-20">
             <div class="text-6xl mb-4">🔍</div>
-            <h3 class="text-xl font-bold text-gray-700 mb-2">Không tìm thấy dịch vụ</h3>
-            <p class="text-gray-500">Vui lòng thử từ khóa khác hoặc danh mục khác.</p>
+            <h3 class="text-xl font-bold text-gray-700 mb-2">{{ t('services_view.empty_title') }}</h3>
+            <p class="text-gray-500">{{ t('services_view.empty_desc') }}</p>
             <button @click="() => { activeCategory = 'all'; searchQuery = '' }" class="mt-6 text-primary font-bold hover:underline">
-                Xóa bộ lọc
+                {{ t('services_view.clear_filter') }}
             </button>
         </div>
     </div>
@@ -222,12 +222,12 @@ const getDesc = (service) => {
     <!-- 5. CTA Section -->
     <section class="py-20 bg-white text-center">
         <div class="container mx-auto px-4">
-             <h2 class="text-3xl font-bold text-dark mb-6">Bạn cần tư vấn pháp lý chuyên sâu?</h2>
+             <h2 class="text-3xl font-bold text-dark mb-6">{{ t('services_view.cta.title') }}</h2>
              <p class="text-gray-500 mb-8 max-w-2xl mx-auto">
-                 Liên hệ ngay với đội ngũ luật sư của chúng tôi để nhận được giải pháp tối ưu nhất cho vấn đề của doanh nghiệp bạn.
+                 {{ t('services_view.cta.desc') }}
              </p>
              <router-link to="/contact" class="inline-block bg-secondary text-white px-10 py-4 rounded-full font-bold hover:bg-neutral-brown transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                 Liên hệ tư vấn miễn phí
+                 {{ t('services_view.cta.btn') }}
              </router-link>
         </div>
     </section>

@@ -65,9 +65,9 @@ const uspItems = [
              
              <!-- Content -->
              <div class="relative z-10 p-12 lg:p-24 text-white">
-                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">Về chúng tôi</h2>
+                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{{ t('home_view.intro.label') }}</h2>
                 <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight">
-                    Kiến tạo chuẩn mực pháp lý <br>với sự tận tâm tuyệt đối.
+                    {{ t('home_view.intro.headline') }}
                 </h3>
                 <div class="h-1 w-20 bg-white/30 mb-10"></div>
                 
@@ -76,7 +76,7 @@ const uspItems = [
                         {{ t('home_view.intro.content') }}
                     </p>
                     <p>
-                        Với hơn 15 năm hoạt động trong lĩnh vực Luật Sở hữu trí tuệ và Tư vấn Doanh nghiệp, chúng tôi không chỉ là luật sư, mà là đối tác chiến lược giúp doanh nghiệp bạn vượt qua mọi rào cản pháp lý. Chúng tôi tin rằng, sự minh bạch và chính trực là nền tảng của mọi mối quan hệ bền vững.
+                        {{ t('home_view.intro.desc') }}
                     </p>
                 </div>
 
@@ -88,8 +88,8 @@ const uspItems = [
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white mb-1">500+ Khách hàng</h4>
-                            <p class="text-sm text-gray-400">Tin tưởng và đồng hành.</p>
+                            <h4 class="font-bold text-white mb-1">{{ t('home_view.stats.clients') }}</h4>
+                            <p class="text-sm text-gray-400">{{ t('home_view.stats.clients_desc') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
@@ -99,8 +99,8 @@ const uspItems = [
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white mb-1">98% Tỷ lệ thắng</h4>
-                            <p class="text-sm text-gray-400">Trong các vụ tranh chấp.</p>
+                            <h4 class="font-bold text-white mb-1">{{ t('home_view.stats.success_rate') }}</h4>
+                            <p class="text-sm text-gray-400">{{ t('home_view.stats.success_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -119,8 +119,8 @@ const uspItems = [
     <section class="py-32 bg-gray-50" v-animate-on-scroll>
       <div class="container mx-auto px-4">
         <div class="text-center mb-20">
-            <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4">Dịch vụ của chúng tôi</h2>
-            <h3 class="text-4xl lg:text-5xl font-bold text-dark mb-6">Giải pháp pháp lý toàn diện</h3>
+            <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4">{{ t('home_view.services.label') }}</h2>
+            <h3 class="text-4xl lg:text-5xl font-bold text-dark mb-6">{{ t('home_view.services.headline') }}</h3>
             <div class="w-24 h-1 bg-primary mx-auto"></div>
         </div>
         
@@ -146,7 +146,7 @@ const uspItems = [
                     </p>
                     
                     <span class="text-sm font-bold text-dark uppercase tracking-wider group-hover:text-secondary transition flex items-center justify-center gap-2 mt-auto">
-                        Chi tiết <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                        {{ t('common.details') }} <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                     </span>
                 </div>
             </router-link>
@@ -262,7 +262,7 @@ const uspItems = [
                         {{ t('about_view.mission') }}
                     </p>
                     <div class="w-32 h-[2px] bg-white/50 mx-auto mb-8"></div>
-                    <p class="uppercase tracking-[0.3em] text-sm font-bold opacity-90">Tầm nhìn & Sứ mệnh</p>
+                    <p class="uppercase tracking-[0.3em] text-sm font-bold opacity-90">{{ t('home_view.vision.label') }}</p>
                  </div>
             </div>
         </div>

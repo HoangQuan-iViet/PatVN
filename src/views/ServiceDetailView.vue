@@ -39,9 +39,9 @@ const scrollToSection = (id) => {
              </h1>
              <!-- Breadcrumb -->
              <nav class="flex justify-center items-center gap-2 text-sm text-gray-300 font-medium">
-                <router-link to="/" class="hover:text-white transition">Home</router-link>
+                <router-link to="/" class="hover:text-white transition">{{ t('common.home') }}</router-link>
                 <span>/</span>
-                <router-link to="/services" class="hover:text-white transition">Services</router-link>
+                <router-link to="/services" class="hover:text-white transition">{{ t('common.services') }}</router-link>
                 <span>/</span>
                 <span class="text-primary truncate max-w-[200px]">{{ t(service.titleKey, service.fallbackTitle) }}</span>
              </nav>
@@ -196,7 +196,7 @@ const scrollToSection = (id) => {
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                     </svg>
                                 </button>
-                                <p class="text-white/40 text-xs text-center mt-2">* Thông tin được bảo mật tuyệt đối</p>
+                                <p class="text-white/40 text-xs text-center mt-2">{{ t('service_detail.privacy_note') }}</p>
                             </form>
                         </div>
                     </div>

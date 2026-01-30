@@ -64,7 +64,7 @@ const values = [
                          <div class="text-right">
                              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png" 
                                   class="h-12 w-auto grayscale opacity-60 ml-auto" alt="Signature">
-                             <p class="text-sm mt-2 text-gray-500 font-bold uppercase tracking-widest">PATVN Team</p>
+                             <p class="text-sm mt-2 text-gray-500 font-bold uppercase tracking-widest">{{ t('about_view.signature') }}</p>
                          </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ const values = [
                             {{ t(item.title) }}
                         </h3>
                         
-                        <p class="text-gray-500 leading-relaxed group-hover:text-dark transition-colors text-sm text-justify">
+                        <p class="text-gray-500 leading-relaxed group-hover:text-dark transition-colors text-sm text-left">
                             {{ t(item.desc) }}
                         </p>
 
