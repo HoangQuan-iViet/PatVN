@@ -307,12 +307,23 @@ const formatDate = (dateString) => {
                         </div>
                     </div>
                     
-                    <!-- EMPTY STATE -->
-                    <div v-else-if="!displayFeaturePost" class="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-                         <div class="text-6xl mb-4">🔍</div>
-                         <h3 class="text-xl font-bold text-gray-500">{{ t('blog_view.no_result') }}</h3>
-                         <button @click="() => { activeCategory = 'all'; searchQuery = '' }" class="mt-4 text-primary font-bold hover:underline">
-                             {{ t('blog_view.filter_all') }}
+                    <!-- NEW MAGAZINE STYLE: EMPTY STATE -->
+                    <div v-else class="text-center py-24 bg-white rounded-2xl border border-dashed border-gray-200 shadow-sm">
+                         <div class="inline-block rounded-full bg-gray-50 p-6 mb-6">
+                             <MagnifyingGlassIcon class="w-16 h-16 text-gray-300" />
+                         </div>
+                         <h3 class="text-2xl font-serif font-bold text-neutral-900 mb-2">
+                             {{ t('blog_view.empty_title') }}
+                         </h3>
+                         <p class="text-gray-500 font-sans max-w-md mx-auto mb-6">
+                             {{ t('blog_view.empty_subtitle') }}
+                         </p>
+                         <button @click="() => { activeCategory = 'all'; searchQuery = '' }" 
+                             class="inline-flex items-center gap-2 text-primary font-bold hover:underline transition-all">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                             </svg>
+                             {{ t('blog_view.clear_filter') }}
                          </button>
                     </div>
                 </main>

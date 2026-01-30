@@ -36,7 +36,8 @@ const routes = [
     {
         path: '/blog/:slug',
         name: 'post-detail',
-        component: () => import('../views/PostDetailView.vue')
+        component: () => import('../views/PostDetailView.vue'),
+        meta: { headerTheme: 'dark' }
     }
 ]
 

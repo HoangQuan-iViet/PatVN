@@ -1,8 +1,13 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 const { t, locale } = useI18n()
+const route = useRoute()
+
+const props = defineProps(['isTransparent'])
+
 const isScrolled = ref(false)
 const isLangOpen = ref(false)
 
@@ -31,8 +36,13 @@ const closeDropdown = (e) => {
   }
 }
 
+// Check if current route requires dark header (solid white bg + dark text)
+const forceDarkHeader = computed(() => {
+  return route.meta.headerTheme === 'dark'
+})
+
 const textColorClass = computed(() => {
-  return isScrolled.value ? 'text-gray-800' : 'text-white'
+  return isScrolled.value || forceDarkHeader.value ? 'text-gray-800' : 'text-white'
 })
 
 onMounted(() => {
@@ -49,7 +59,7 @@ onUnmounted(() => {
 <template>
   <header :class="[
     'fixed top-0 left-0 w-full z-50 transition-all duration-300',
-    isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+    (isScrolled || forceDarkHeader) ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
   ]">
     <div class="container mx-auto px-4 flex justify-between items-center">
       <!-- Logo -->

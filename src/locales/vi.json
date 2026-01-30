@@ -133,6 +133,9 @@
         "result_for_search": "Kết quả tìm kiếm cho: \"{query}\"",
         "result_for_category": "Kết quả hàng đầu cho danh mục: \"{category}\"",
         "load_more": "Xem thêm bài viết",
-        "no_result": "Không tìm thấy kết quả nào"
+        "no_result": "Không tìm thấy kết quả nào",
+        "empty_title": "Không tìm thấy kết quả phù hợp",
+        "empty_subtitle": "Hãy thử tìm với từ khóa khác hoặc quay lại danh sách tất cả bài viết.",
+        "clear_filter": "Xóa bộ lọc"
     }
 }
