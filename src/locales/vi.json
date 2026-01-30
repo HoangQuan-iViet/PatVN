@@ -107,8 +107,17 @@
             "email": "Email",
             "subject": "Tiêu đề",
             "message": "Nội dung",
-            "submit": "Gửi liên hệ"
-        }
+            "submit": "Gửi liên hệ",
+            "submitting": "Đang gửi..."
+        },
+        "working_hours": "Giờ làm việc",
+        "working_weekdays": "Thứ 2 - Thứ 6: 8:00 - 17:30",
+        "working_saturday": "Thứ 7: 8:00 - 12:00",
+        "working_sunday": "Chủ nhật: Nghỉ",
+        "quick_consult": "Hỗ trợ pháp lý 24/7",
+        "success_title": "Gửi thành công!",
+        "success_desc": "Chúng tôi đã nhận được tin nhắn của bạn và sẽ phản hồi sớm nhất.",
+        "success_btn": "Gửi tin nhắn khác"
     },
     "blog_view": {
         "title": "Kho Tri thức Pháp lý",

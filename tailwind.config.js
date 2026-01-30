@@ -6,9 +6,19 @@ export default {
     ],
     theme: {
         extend: {
+            borderRadius: {
+                DEFAULT: '0px',
+                'sm': '2px',
+                'md': '0px',
+                'lg': '0px',
+                'xl': '0px',
+                '2xl': '0px',
+                '3xl': '0px',
+                'full': '9999px', // Keep full for avatars/circles
+            },
             fontFamily: {
                 sans: ['"Be Vietnam Pro"', 'sans-serif'],
-                serif: ['"Be Vietnam Pro"', 'sans-serif'], // Override serif to avoid font errors
+                serif: ['"Playfair Display"', 'serif'],
             },
             colors: {
                 primary: '#C5A059',      // Gold
@@ -16,6 +26,9 @@ export default {
                 'neutral-brown': '#4A3B32', // Earth Brown
                 dark: '#1A1A1A',         // Black text
                 light: '#FFFFFF',        // White bg
+                paper: '#F9F9F7',        // Magazine Paper
+                ink: '#1a1a1a',          // Printing Ink
+                'border-light': '#e5e5e5' // Hairline
             }
         },
     },
