@@ -111,8 +111,28 @@
         }
     },
     "blog_view": {
-        "title": "Kho nội dung pháp lý",
-        "subtitle": "Cập nhật tin tức và kiến thức mới nhất",
-        "read_more": "Đọc tiếp"
+        "title": "Kho Tri thức Pháp lý",
+        "subtitle": "Cập nhật những thay đổi mới nhất về Luật Sở hữu trí tuệ",
+        "search_label": "Tìm kiếm bài viết...",
+        "filter_all": "Tất cả",
+        "read_more": "Đọc tiếp",
+        "sidebar_popular": "Bài viết xem nhiều",
+        "sidebar_cats": "Chuyên mục",
+        "resources_title": "Biểu mẫu & Tài liệu",
+        "resources_desc": "Tải xuống các mẫu đơn đăng ký, hướng dẫn pháp lý chuẩn.",
+        "newsletter_title": "Bản tin Pháp lý",
+        "newsletter_desc": "Đăng ký nhận email thông báo văn bản luật mới hàng tuần.",
+        "download_now": "Tải ngay",
+        "label_new": "MỚI NHẤT",
+        "label_important": "QUAN TRỌNG",
+        "label_match": "PHÙ HỢP NHẤT",
+        "label_match_desc": "Kết quả hàng đầu cho từ khóa: ",
+        "most_relevant": "PHÙ HỢP NHẤT",
+        "featured": "QUAN TRỌNG",
+        "latest": "MỚI NHẤT",
+        "result_for_search": "Kết quả tìm kiếm cho: \"{query}\"",
+        "result_for_category": "Kết quả hàng đầu cho danh mục: \"{category}\"",
+        "load_more": "Xem thêm bài viết",
+        "no_result": "Không tìm thấy kết quả nào"
     }
 }
