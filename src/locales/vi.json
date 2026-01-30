@@ -12,18 +12,26 @@
         "view_details": "Xem chi tiết",
         "search": "Tìm kiếm..."
     },
-    "home_view": {
+    "home": {
         "hero": {
-            "title": "Bảo vệ Tài sản Trí tuệ của Bạn",
-            "subtitle": "Đồng hành cùng doanh nghiệp kiến tạo và bảo vệ giá trị thương hiệu bền vững.",
+            "title": "Trung thực - Hiệu quả",
+            "subtitle": "ĐỒNG HÀNH TIN CẬY CÙNG DOANH NGHIỆP",
             "cta": "Đăng ký tư vấn ngay"
         },
         "intro": {
             "title": "Tại sao chọn chúng tôi?",
             "content": "Với đội ngũ luật sư chuyên gia hàng đầu, chúng tôi cam kết mang lại giải pháp pháp lý toàn diện, nhanh chóng và hiệu quả nhất cho doanh nghiệp của bạn.",
             "label": "Về chúng tôi",
-            "headline": "Kiến tạo chuẩn mực pháp lý với sự tận tâm tuyệt đối.",
-            "desc": "Với hơn 15 năm hoạt động trong lĩnh vực Luật Sở hữu trí tuệ và Tư vấn Doanh nghiệp, chúng tôi không chỉ là luật sư, mà là đối tác chiến lược giúp doanh nghiệp bạn vượt qua mọi rào cản pháp lý."
+            "headline": "Kiến tạo chuẩn mực pháp lý",
+            "desc": "Với hơn 15 năm hoạt động trong lĩnh vực Luật Sở hữu trí tuệ và Tư vấn Doanh nghiệp, chúng tôi không chỉ là luật sư, mà là đối tác chiến lược giúp doanh nghiệp bạn vượt qua mọi rào cản pháp lý.",
+            "usp1_title": "Chuyên môn sâu rộng",
+            "usp1_desc": "Chúng tôi sở hữu đội ngũ luật sư với hơn 20 năm kinh nghiệm xử lý các vụ kiện phức tạp, mang lại lợi thế chiến lược cho khách hàng.",
+            "usp2_title": "Quy trình tối ưu",
+            "usp2_desc": "Áp dụng công nghệ pháp lý tiên tiến giúp rút ngắn 40% thời gian xử lý hồ sơ, đảm bảo khách hàng luôn đi trước đối thủ một bước.",
+            "usp3_title": "Chi phí minh bạch",
+            "usp3_desc": "Cam kết không phát sinh chi phí ẩn. Mọi khoản phí đều được thông báo rõ ràng trước khi ký hợp đồng dịch vụ.",
+            "usp4_title": "Hỗ trợ toàn cầu",
+            "usp4_desc": "Mạng lưới đối tác tại hơn 50 quốc gia, hỗ trợ doanh nghiệp mở rộng thị trường và bảo vệ quyền lợi quốc tế."
         },
         "services": {
             "title": "Dịch vụ Nổi bật",
@@ -56,6 +64,14 @@
         },
         "vision": {
             "label": "Tầm nhìn & Sứ mệnh"
+        },
+        "attorney": {
+            "label": "Người sáng lập",
+            "name": "Luật sư Nguyễn Văn A",
+            "quote": "Công lý không chỉ là đích đến, đó là một hành trình."
+        },
+        "trust": {
+            "author": "Founder & CEO"
         }
     },
     "services": {
@@ -123,6 +139,7 @@
         "quote": "\"Pháp luật là công cụ để kiến tạo sự thịnh vượng, không phải là rào cản.\"",
         "mission_title": "Tại sao chúng tôi tồn tại?",
         "mission_desc": "Trong một thế giới phẳng, nơi ý tưởng có thể bị sao chép chỉ trong vài giây, PATVN đứng đây để đảm bảo rằng sự sáng tạo của bạn là độc bản. Chúng tôi không chỉ xử lý hồ sơ, chúng tôi kể câu chuyện về sự chính trực và khát vọng công bằng. Sứ mệnh của chúng tôi là kiến tạo một hàng rào pháp lý vững chắc, để từ đó, doanh nghiệp của bạn có thể tự do vươn mình ra biển lớn mà không còn nỗi lo bị xâm phạm.",
+        "mission": "Chúng tôi cam kết bảo vệ tài sản trí tuệ của bạn như bảo vệ chính tài sản của mình.",
         "values_title": "Giá trị cốt lõi",
         "val_trust": "Tin cậy",
         "val_trust_desc": "Hơn cả một lời hứa, đó là danh dự. Chúng tôi bảo vệ bí mật kinh doanh của bạn như chính con ngươi của mắt mình.",

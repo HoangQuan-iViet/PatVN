@@ -12,10 +12,10 @@
     "view_details": "View Details",
     "search": "Search..."
   },
-  "home_view": {
+  "home": {
     "hero": {
-      "title": "Protect Your Intellectual Property",
-      "subtitle": "Partnering with businesses to create and protect sustainable brand value.",
+      "title": "Honesty - Efficiency",
+      "subtitle": "TRUSTED COMPANION FOR BUSINESSES",
       "cta": "Get Consultation"
     },
     "intro": {
@@ -23,7 +23,15 @@
       "content": "With a team of leading expert lawyers, we commit to providing the most comprehensive, fast, and effective legal solutions for your business.",
       "label": "About Us",
       "headline": "Creating legal standards with absolute dedication.",
-      "desc": "With over 15 years of experience in Intellectual Property Law and Corporate Consulting, we are not just lawyers, but strategic partners helping your business overcome all legal barriers."
+      "desc": "With over 15 years of experience in Intellectual Property Law and Corporate Consulting, we are not just lawyers, but strategic partners helping your business overcome all legal barriers.",
+      "usp1_title": "Deep Expertise",
+      "usp1_desc": "We own a team of lawyers with over 20 years of experience handling complex lawsuits, bringing strategic advantages to clients.",
+      "usp2_title": "Optimized Process",
+      "usp2_desc": "Applying advanced legal technology helps shorten file processing time by 40%, ensuring clients are always one step ahead of competitors.",
+      "usp3_title": "Transparent Costs",
+      "usp3_desc": "No hidden fees committed. All fees are clearly notified before signing the service contract.",
+      "usp4_title": "Global Support",
+      "usp4_desc": "Network of partners in over 50 countries, helping businesses expand markets and protect international rights."
     },
     "services": {
       "title": "Featured Services",
@@ -56,6 +64,14 @@
     },
     "vision": {
       "label": "Vision & Mission"
+    },
+    "attorney": {
+      "label": "Founder",
+      "name": "Lawyer Nguyen Van A",
+      "quote": "Justice is not just a destination, it is a journey."
+    },
+    "trust": {
+      "author": "Founder & CEO"
     }
   },
   "services": {
@@ -123,6 +139,7 @@
     "quote": "\"Law is a tool to create prosperity, not a barrier.\"",
     "mission_title": "Why do we exist?",
     "mission_desc": "In a flat world, where ideas can be copied in seconds, PATVN stands here to ensure that your creativity is unique. We don't just process files, we tell stories of integrity and the aspiration for justice. Our mission is to create a solid legal fence, so that from there, your business can freely reach out to the big sea without the fear of infringement.",
+    "mission": "We are committed to protecting your intellectual property as if it were our own.",
     "values_title": "Core Values",
     "val_trust": "Trust",
     "val_trust_desc": "More than a promise, it is honor. We protect your business secrets like the apple of our eye.",

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { services } from '../data/services'
 import { posts } from '../data/posts'
 
+
 const { t } = useI18n()
 
 const partners = [1, 2, 3, 4, 5, 6] 
@@ -10,17 +11,23 @@ const partners = [1, 2, 3, 4, 5, 6]
 const uspItems = [
     { 
         iconPath: 'M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A47.654 47.654 0 0112 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z', 
-        title: 'home_view.intro.usp1_title', 
-        fallbackTitle: 'Chuyên môn sâu rộng',
-        desc: 'home_view.intro.usp1_desc',
-        fallbackDesc: 'Chúng tôi sở hữu đội ngũ luật sư với hơn 20 năm kinh nghiệm xử lý các vụ kiện phức tạp, mang lại lợi thế chiến lược cho khách hàng.'
+        title: 'home.intro.usp1_title', 
+        desc: 'home.intro.usp1_desc',
     },
     { 
         iconPath: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z', 
-        title: 'home_view.intro.usp2_title', 
-        fallbackTitle: 'Quy trình tối ưu',
-        desc: 'home_view.intro.usp2_desc',
-        fallbackDesc: 'Áp dụng công nghệ pháp lý tiên tiến giúp rút ngắn 40% thời gian xử lý hồ sơ, đảm bảo khách hàng luôn đi trước đối thủ một bước.'
+        title: 'home.intro.usp2_title', 
+        desc: 'home.intro.usp2_desc',
+    },
+    { 
+        iconPath: 'M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 
+        title: 'home.intro.usp3_title', 
+        desc: 'home.intro.usp3_desc',
+    },
+    { 
+        iconPath: 'M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418', 
+        title: 'home.intro.usp4_title', 
+        desc: 'home.intro.usp4_desc',
     }
 ]
 </script>
@@ -34,73 +41,74 @@ const uspItems = [
             <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80"></div>
         </div>
         <div class="container mx-auto px-4 relative z-10 pt-20">
-            <h1 class="text-5xl md:text-7xl font-bold text-primary mb-8 leading-tight drop-shadow-2xl">
-            {{ t('home_view.hero.title') }}
+            <h1 class="text-5xl md:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-2xl">
+            {{ t('home.hero.title') }}
             </h1>
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 max-w-4xl mx-auto font-light drop-shadow-md tracking-wide leading-relaxed">
-            {{ t('home_view.hero.subtitle') }}
+            <p class="text-sm md:text-base text-white/80 mb-12 max-w-4xl mx-auto font-sans uppercase tracking-widest drop-shadow-md leading-relaxed">
+            {{ t('home.hero.subtitle') }}
             </p>
-            <router-link to="/contact" class="bg-secondary text-white px-12 py-5 rounded-full font-bold hover:bg-red-800 transition duration-300 uppercase tracking-widest border-2 border-secondary shadow-2xl hover:scale-105 transform">
-            {{ t('home_view.hero.cta') }}
+            <router-link to="/contact" class="bg-secondary text-white px-12 py-5 font-bold hover:bg-neutral-brown transition duration-300 uppercase tracking-widest border border-secondary shadow-2xl hover:scale-105 transform rounded-none">
+            {{ t('home.hero.cta') }}
             </router-link>
         </div>
     </section>
 
     <!-- 2. Intro Section (Overlay Style: 1/3 Image - 2/3 Content Overlay) -->
-    <section class="" v-animate-on-scroll>
-      <div class="grid grid-cols-1 lg:grid-cols-3 min-h-[700px]">
-        <!-- Col 1: High Quality Portrait/Office - CHANGED to Law Books Vertical -->
-        <div class="relative h-96 lg:h-auto overflow-hidden">
-             <img src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1000&auto=format&fit=crop" 
-                 class="w-full h-full object-cover" alt="Legal Books">
+    <section class="min-h-screen flex items-center" v-animate-on-scroll>
+      <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
+        <!-- Col 1: High Quality Portrait/Office - Law Books Vertical -->
+        <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
+             <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2000&auto=format&fit=crop" 
+                 class="w-full h-full object-cover" alt="Architecture">
         </div>
         
-        <!-- Col 2 & 3: Overlay Content -->
-        <div class="lg:col-span-2 relative flex items-center">
-             <!-- Background Image + Overlay -->
-             <div class="absolute inset-0 z-0">
-                  <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Background">
-                  <div class="absolute inset-0 bg-neutral-brown/95 mix-blend-multiply"></div>
+        <!-- Col 2 & 3: Content with Textured Watermark -->
+        <div class="lg:col-span-3 relative flex items-center h-full overflow-hidden isolate">
+             <!-- Textured BG -->
+             <div class="absolute inset-0 -z-20">
+                 <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover opacity-20" alt="Texture">
              </div>
+             <!-- White Overlay -->
+             <div class="absolute inset-0 bg-white/50 -z-10"></div>
              
              <!-- Content -->
-             <div class="relative z-10 p-12 lg:p-24 text-white">
-                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{{ t('home_view.intro.label') }}</h2>
-                <h3 class="text-4xl lg:text-5xl font-bold mb-8 leading-tight">
-                    {{ t('home_view.intro.headline') }}
+             <div class="relative z-10 p-12 lg:p-24 text-dark w-full">
+                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{{ t('home.intro.label') }}</h2>
+                <h3 class="text-4xl lg:text-5xl font-bold font-serif mb-8 leading-tight text-dark">
+                    {{ t('home.intro.headline') }}
                 </h3>
-                <div class="h-1 w-20 bg-white/30 mb-10"></div>
+                <div class="h-1 w-20 bg-primary mb-10"></div>
                 
-                <div class="space-y-6 text-gray-200 text-lg leading-relaxed text-justify">
+                <div class="space-y-6 text-gray-600 text-lg leading-relaxed text-left font-serif">
                     <p>
-                        {{ t('home_view.intro.content') }}
+                        {{ t('home.intro.content') }}
                     </p>
                     <p>
-                        {{ t('home_view.intro.desc') }}
+                        {{ t('home.intro.desc') }}
                     </p>
                 </div>
 
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex items-start gap-4">
-                        <div class="p-2 bg-white/10 rounded-full">
+                        <div class="p-2 bg-white/50 rounded-none border border-neutral-200">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white mb-1">{{ t('home_view.stats.clients') }}</h4>
-                            <p class="text-sm text-gray-400">{{ t('home_view.stats.clients_desc') }}</p>
+                            <h4 class="font-bold font-serif text-dark mb-1">{{ t('home.stats.clients') }}</h4>
+                            <p class="text-sm text-gray-500 font-sans">{{ t('home.stats.clients_desc') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
-                        <div class="p-2 bg-white/10 rounded-full">
+                        <div class="p-2 bg-white/50 rounded-none border border-neutral-200">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white mb-1">{{ t('home_view.stats.success_rate') }}</h4>
-                            <p class="text-sm text-gray-400">{{ t('home_view.stats.success_desc') }}</p>
+                            <h4 class="font-bold font-serif text-dark mb-1">{{ t('home.stats.success_rate') }}</h4>
+                            <p class="text-sm text-gray-500 font-sans">{{ t('home.stats.success_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -118,16 +126,22 @@ const uspItems = [
     <!-- 3. Services (Full Width) -->
     <section class="py-32 bg-gray-50" v-animate-on-scroll>
       <div class="container mx-auto px-4">
-        <div class="text-center mb-20">
-            <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4">{{ t('home_view.services.label') }}</h2>
-            <h3 class="text-4xl lg:text-5xl font-bold text-dark mb-6">{{ t('home_view.services.headline') }}</h3>
-            <div class="w-24 h-1 bg-primary mx-auto"></div>
+        <!-- Header similar to Content Hub -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+            <div>
+                 <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('home.services.label') }}</h2>
+                 <h3 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('home.services.headline') }}</h3>
+                 <div class="w-24 h-1 bg-primary"></div>
+            </div>
+            <router-link to="/services" class="hidden md:inline-block text-gray-500 hover:text-primary transition font-medium text-lg">
+                {{ t('common.view_all') }} &rarr;
+            </router-link>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <router-link v-for="service in services" :key="service.id" 
+            <router-link v-for="service in services.slice(0, 3)" :key="service.id" 
                 :to="`/services/${service.slug}`"
-                class="group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 relative overflow-hidden text-center">
+                class="group flex flex-col bg-white rounded-none shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 relative overflow-hidden text-center">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-10"></div>
                 
                 <!-- Image Thumbnail -->
@@ -138,10 +152,10 @@ const uspItems = [
                 
                 <!-- Content -->
                 <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-2xl font-bold text-dark mb-4 group-hover:text-primary transition">
+                    <h3 class="text-2xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition">
                         {{ t(service.titleKey, service.fallbackTitle) }}
                     </h3>
-                    <p class="text-gray-500 line-clamp-4 leading-relaxed mb-8">
+                    <p class="text-gray-500 line-clamp-4 leading-relaxed mb-8 text-left font-serif">
                         {{ t(service.descKey, service.fallbackDesc) }}
                     </p>
                     
@@ -151,48 +165,37 @@ const uspItems = [
                 </div>
             </router-link>
         </div>
+
+        <div class="text-center mt-12 md:hidden">
+             <router-link to="/services" class="text-primary font-bold text-lg">
+                {{ t('common.view_all') }} &rarr;
+            </router-link>
+        </div>
       </div>
     </section>
 
-    <!-- 4. Why Us (Overlay Style: 1/2 Overlay Left - 1/2 Image Right) -->
-    <section class="" v-animate-on-scroll>
-      <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[800px]">
-        <!-- Col 1: Overlay Content -->
-         <div class="relative flex items-center order-2 lg:order-1">
-             <!-- BG + Overlay -->
-             <div class="absolute inset-0 z-0">
-                  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover grayscale" alt="Why Us BG">
-                  <div class="absolute inset-0 bg-gray-900/95 mix-blend-multiply"></div>
-             </div>
-
-             <div class="relative z-10 p-12 lg:p-32 w-full">
-                <h2 class="text-4xl lg:text-5xl font-bold text-white mb-12 leading-tight">
-                    {{ t('home_view.why_us.title', 'Tại sao chọn chúng tôi?') }}
-                </h2>
-                
-                <div class="space-y-12">
-                    <div v-for="(item, index) in uspItems" :key="index" class="group">
-                        <div class="flex items-start gap-6">
-                            <div class="shrink-0 w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-primary">
-                                    <path stroke-linecap="round" stroke-linejoin="round" :d="item.iconPath" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary transition">{{ t(item.title, item.fallbackTitle) }}</h3>
-                                <p class="text-gray-400 leading-relaxed text-justify">{{ t(item.desc, item.fallbackDesc) }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-             </div>
+    <!-- 4. Why Us (The 4 Pillars Layout) -->
+    <section class="py-24 bg-neutral-50" v-animate-on-scroll>
+      <div class="container mx-auto px-4">
+         <div class="text-center max-w-2xl mx-auto">
+             <h2 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6">{{ t('home.why_us.title') }}</h2>
+             <div class="w-24 h-1 bg-primary mx-auto"></div>
          </div>
 
-        <!-- Col 2: Image -->
-        <div class="h-96 lg:h-auto overflow-hidden order-1 lg:order-2">
-             <img src="https://images.unsplash.com/photo-1577415124269-fc1140a69e91?q=80&w=2070&auto=format&fit=crop" 
-                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" alt="Meeting Detail">
-        </div>
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
+            <div v-for="(item, index) in uspItems" :key="index" class="relative group">
+                <!-- Big Number BG -->
+                <div class="absolute -top-10 -left-6 text-8xl font-serif text-primary/10 -z-10 select-none group-hover:text-primary/20 transition-colors">
+                    0{{ index + 1 }}
+                </div>
+                
+                <div class="relative z-10 pt-4">
+                    <h3 class="text-xl font-bold font-serif text-gray-900 mb-4">{{ t(item.title) }}</h3>
+                    <div class="w-12 border-t border-primary/50 my-6"></div>
+                    <p class="font-sans text-gray-600 leading-relaxed">{{ t(item.desc) }}</p>
+                </div>
+            </div>
+         </div>
       </div>
     </section>
 
@@ -201,7 +204,7 @@ const uspItems = [
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div>
-                    <h2 class="text-4xl font-bold text-dark mb-4">{{ t('common.latest_news') }}</h2>
+                    <h2 class="text-4xl font-bold font-serif text-dark mb-4">{{ t('common.latest_news') }}</h2>
                     <div class="w-20 h-1 bg-primary"></div>
                 </div>
                 <router-link to="/blog" class="hidden md:inline-block text-gray-500 hover:text-primary transition font-medium text-lg">
@@ -211,18 +214,18 @@ const uspItems = [
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div v-for="post in posts.slice(0, 3)" :key="post.id" 
-                     class="group cursor-pointer bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
-                    <div class="h-60 overflow-hidden rounded-xl mb-6 relative">
+                     class="group cursor-pointer bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div class="h-60 overflow-hidden mb-6 relative">
                         <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        <div class="absolute top-4 left-4 bg-white/95 backdrop-blur px-4 py-1 text-xs font-bold uppercase tracking-wider text-secondary rounded shadow-sm">
+                        <div class="absolute top-4 left-4 bg-white/95 backdrop-blur px-4 py-1 text-xs font-bold uppercase tracking-wider text-secondary shadow-sm">
                             {{ post.category }}
                         </div>
                     </div>
-                    <div class="px-2">
-                        <h3 class="text-xl font-bold text-dark mb-4 group-hover:text-primary transition line-clamp-2 leading-snug">
+                    <div class="px-6 pb-6">
+                        <h3 class="text-xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition line-clamp-2 leading-snug">
                             <router-link :to="`/blog/${post.slug}`">{{ post.title }}</router-link>
                         </h3>
-                        <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed text-justify">{{ post.excerpt }}</p>
+                        <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed text-left font-serif">{{ post.excerpt }}</p>
                         <router-link :to="`/blog/${post.slug}`" class="text-sm font-bold text-secondary hover:text-primary transition flex items-center gap-1 uppercase tracking-wide">
                             {{ t('blog_view.read_more') }}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
@@ -241,28 +244,35 @@ const uspItems = [
         </div>
     </section>
 
-    <!-- 6. Trust/Vision (Overlay Style: 1/3 Image Left - 2/3 Overlay Right) -->
-    <section class="" v-animate-on-scroll>
-        <div class="grid grid-cols-1 lg:grid-cols-3 min-h-[600px]">
-            <!-- Col 1: Leader Image - CHANGED to Classical Architecture Vertical -->
-            <div class="relative h-96 lg:h-auto overflow-hidden">
-                 <img src="https://images.unsplash.com/photo-1453928582365-b6ad33cbcf64?q=80&w=1000&auto=format&fit=crop" 
-                     class="w-full h-full object-cover" alt="Architecture Columns">
+    <!-- 6. Trust/Vision (Split Layout 2:3) -->
+    <section class="min-h-screen flex items-center bg-white" v-animate-on-scroll>
+        <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
+            <!-- Left (2 parts): Portrait Image -->
+            <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
+                 <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000&auto=format&fit=crop" 
+                     class="w-full h-full object-cover grayscale" 
+                     alt="Signing">
             </div>
-            <!-- Col 2 & 3: Gold Overlay -->
-            <div class="lg:col-span-2 relative flex items-center">
-                 <div class="absolute inset-0 z-0">
-                     <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover grayscale" alt="Office BG">
-                     <div class="absolute inset-0 bg-primary/95 mix-blend-multiply"></div>
-                 </div>
-                 
-                 <div class="relative z-10 p-12 lg:p-32 text-center text-white w-full">
-                    <div class="text-7xl text-white/40 mb-8 font-serif">❝</div>
-                    <p class="text-3xl md:text-5xl font-bold italic leading-tight mb-12">
+
+            <!-- Right (3 parts): Content -->
+            <div class="lg:col-span-3 flex items-center justify-center p-12 lg:p-32 bg-neutral-50">
+                 <div class="max-w-3xl">
+                    <div class="text-7xl text-primary/20 mb-8 font-serif">❝</div>
+                    <blockquote class="text-3xl md:text-5xl font-bold font-serif italic text-dark leading-tight mb-12">
                         {{ t('about_view.mission') }}
-                    </p>
-                    <div class="w-32 h-[2px] bg-white/50 mx-auto mb-8"></div>
-                    <p class="uppercase tracking-[0.3em] text-sm font-bold opacity-90">{{ t('home_view.vision.label') }}</p>
+                    </blockquote>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-[1px] bg-primary"></div>
+                        <div>
+                            <h4 class="text-lg font-bold uppercase tracking-widest text-primary">
+                                {{ t('home.attorney.name') }}
+                            </h4>
+                            <p class="text-sm text-gray-400 font-serif italic mt-1">
+                                {{ t('home.trust.author') }}
+                            </p>
+                        </div>
+                    </div>
                  </div>
             </div>
         </div>
@@ -272,7 +282,7 @@ const uspItems = [
     <section class="py-32 bg-white" v-animate-on-scroll>
       <div class="container mx-auto px-4">
         <h2 class="text-center text-gray-300 mb-16 uppercase tracking-[0.3em] text-xs font-bold">
-            {{ t('home_view.partners.title') }}
+            {{ t('home.partners.title') }}
         </h2>
         <div class="flex flex-wrap justify-center gap-16 md:gap-24 items-center">
             <div v-for="i in partners" :key="i" 
