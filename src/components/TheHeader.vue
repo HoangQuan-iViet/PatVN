@@ -68,7 +68,7 @@ onUnmounted(() => {
           <router-link to="/about" 
             :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
-            {{ t('about_view.title') }}
+            {{ t('common.about') }}
           </router-link>
           <router-link to="/services" 
             :class="['font-medium transition-colors hover:text-primary', textColorClass]" 

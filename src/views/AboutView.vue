@@ -4,171 +4,134 @@ import { ShieldCheckIcon, ChatBubbleLeftRightIcon, LightBulbIcon, BriefcaseIcon 
 
 const { t } = useI18n()
 
-const bgPattern = "bg-orange-50/30 bg-[url('data:image/svg+xml,%3Csvg width=\\'20\\' height=\\'20\\' viewBox=\\'0 0 20 20\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cg fill=\\'%239C92AC\\' fill-opacity=\\'0.05\\' fill-rule=\\'evenodd\\'%3E%3Ccircle cx=\\'3\\' cy=\\'3\\' r=\\'3\\'/%3E%3Ccircle cx=\\'13\\' cy=\\'13\\' r=\\'3\\'/%3E%3C/g%3E%3C/svg%3E')]"
+// Images for Magazine Feel - High quality, architectural/business
+const quoteBg = "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop" // Suit texture or dark office
 
 const values = [
-    {
-        icon: ShieldCheckIcon,
-        titleKey: 'about_view.val_trust',
-        descKey: 'about_view.val_trust_desc'
-    },
-    {
-        icon: ChatBubbleLeftRightIcon,
-        titleKey: 'about_view.val_understand',
-        descKey: 'about_view.val_understand_desc'
-    },
-    {
-        icon: LightBulbIcon,
-        titleKey: 'about_view.val_distinct',
-        descKey: 'about_view.val_distinct_desc'
-    },
-    {
-        icon: BriefcaseIcon,
-        titleKey: 'about_view.val_pro',
-        descKey: 'about_view.val_pro_desc'
-    }
+    { icon: ShieldCheckIcon, title: 'about_view.val_trust', desc: 'about_view.val_trust_desc' },
+    { icon: ChatBubbleLeftRightIcon, title: 'about_view.val_understand', desc: 'about_view.val_understand_desc' },
+    { icon: LightBulbIcon, title: 'about_view.val_distinct', desc: 'about_view.val_distinct_desc' },
+    { icon: BriefcaseIcon, title: 'about_view.val_pro', desc: 'about_view.val_pro_desc' }
 ]
 </script>
 
 <template>
-  <div class="font-serif text-dark leading-relaxed">
-    
-    <!-- 1. Page Hero Banner -->
-    <section class="h-[60vh] relative flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop" 
-                class="w-full h-full object-cover grayscale opacity-80" alt="Office Still Life">
-             <div class="absolute inset-0 bg-black/40"></div>
-        </div>
-        <div class="relative z-10 text-center text-white p-4" v-animate-on-scroll>
-             <h1 class="text-5xl md:text-7xl font-bold tracking-widest uppercase border-b-2 border-primary/50 pb-4 inline-block shadow-black drop-shadow-lg">
-                {{ t('about_view.title') }}
-             </h1>
-        </div>
-    </section>
-
-    <!-- 2. Intro (Origin Story) -->
-    <section :class="['py-24 md:py-32 px-6', bgPattern]">
-        <div class="container mx-auto max-w-3xl text-center" v-animate-on-scroll>
-            <div class="mb-8">
-                <span class="block text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4">Khởi nguồn</span>
-                <h2 class="text-4xl font-serif font-bold text-gray-900">Câu chuyện của chúng tôi</h2>
+    <div class="bg-white min-h-screen text-dark font-sans selection:bg-primary selection:text-white">
+        
+        <!-- 1. HERO SECTION: Building Image & Minimalist Label -->
+        <section class="relative h-[80vh] w-full overflow-hidden">
+            <!-- Background Image: Modern Building / Skyscraper -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+                     alt="Corporate Building" 
+                     class="w-full h-full object-cover object-center brightness-[0.85]">
             </div>
             
-            <div class="text-xl text-gray-700 space-y-8 font-serif leading-loose text-justify md:text-center">
-                <p>
-                    {{ t('about_view.intro_p1') }}
-                </p>
-                <div class="w-16 h-[1px] bg-primary mx-auto opacity-50"></div>
-                <p class="italic text-gray-600">
-                    "{{ t('about_view.intro_p2') }}"
-                </p>
+            <!-- Content: Bottom Left, Minimalist -->
+            <div class="absolute bottom-12 left-0 z-10 container mx-auto px-6">
+                <div class="border-l-4 border-primary pl-6">
+                    <h1 class="text-4xl md:text-5xl font-serif text-white tracking-wide shadow-black drop-shadow-md">
+                        {{ t('about_view.hero_title') }}
+                    </h1>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 3. Mission Banner (Text Left) -->
-    <section class="h-[400px] relative overflow-hidden flex items-center">
-         <div class="absolute inset-0 z-0">
-             <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=2070&auto=format&fit=crop" 
-                  class="w-full h-full object-cover object-right" alt="Mission Context">
-             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-         </div>
-         <div class="relative z-10 container mx-auto px-6" v-animate-on-scroll>
-             <h2 class="text-5xl md:text-6xl font-bold text-white tracking-wider uppercase drop-shadow-md">
-                 {{ t('about_view.mission') }}
-             </h2>
-         </div>
-    </section>
-
-    <!-- 4. Mission Content -->
-    <section :class="['py-24 px-6', bgPattern]">
-         <div class="container mx-auto max-w-4xl" v-animate-on-scroll>
-             <div class="flex flex-col gap-8 text-center md:text-left">
-                <div>
-                     <span class="block text-primary text-xs font-bold tracking-[0.3em] uppercase mb-3">Người vệ sĩ tận tâm</span>
-                     <h3 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
-                         {{ t('about_view.mission_title') }}
-                     </h3>
+        <!-- 2. STORY SECTION: Letter from PATVN -->
+        <section class="py-24 bg-white container mx-auto px-6">
+            <div class="max-w-4xl mx-auto relative">
+                <!-- Watermark/Decoration -->
+                <div class="absolute -top-10 -left-10 text-9xl text-gray-100 font-serif leading-none select-none -z-0">
+                    &rdquo;
                 </div>
-                <div class="w-24 h-1 bg-primary mb-2 mx-auto md:mx-0"></div>
-                <p class="text-lg md:text-xl text-gray-600 font-serif leading-loose text-justify">
-                    {{ t('about_view.mission_desc') }}
-                </p>
-             </div>
-         </div>
-    </section>
-    
-    <!-- 5. Vision Banner (Text Right) -->
-    <section class="h-[400px] relative overflow-hidden flex items-center justify-end">
-         <div class="absolute inset-0 z-0">
-             <img src="https://images.unsplash.com/photo-1508253136709-0268bcd7f884?q=80&w=2070&auto=format&fit=crop" 
-                  class="w-full h-full object-cover object-left" alt="Vision Context">
-             <div class="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent"></div>
-         </div>
-         <div class="relative z-10 container mx-auto px-6 text-right" v-animate-on-scroll>
-             <h2 class="text-5xl md:text-6xl font-bold text-white tracking-wider uppercase drop-shadow-md">
-                 {{ t('about_view.vision') }}
-             </h2>
-         </div>
-    </section>
 
-    <!-- 6. Vision Content -->
-    <section :class="['py-24 px-6', bgPattern]">
-         <div class="container mx-auto max-w-4xl" v-animate-on-scroll>
-             <div class="flex flex-col gap-8 text-center md:text-right">
-                <div>
-                     <span class="block text-primary text-xs font-bold tracking-[0.3em] uppercase mb-3 text-right">Di sản tương lai</span>
-                     <h3 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
-                         {{ t('about_view.vision_title') }}
-                     </h3>
-                </div>
-                <div class="w-24 h-1 bg-primary mb-2 mx-auto md:ml-auto md:mr-0"></div>
-                <p class="text-lg md:text-xl text-gray-600 font-serif leading-loose text-justify md:text-right">
-                    {{ t('about_view.vision_desc') }}
-                </p>
-             </div>
-         </div>
-    </section>
-
-    <!-- 7. Core Values Banner (Text Center) -->
-    <section class="h-[400px] relative overflow-hidden flex items-center justify-center">
-         <div class="absolute inset-0 z-0">
-             <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-                  class="w-full h-full object-cover grayscale" alt="Structure">
-             <div class="absolute inset-0 bg-neutral-900/60"></div>
-         </div>
-         <div class="relative z-10 container mx-auto px-6 text-center" v-animate-on-scroll>
-             <h2 class="text-5xl md:text-6xl font-bold text-white tracking-wider uppercase drop-shadow-md">
-                 {{ t('about_view.values_title') }}
-             </h2>
-         </div>
-    </section>
-
-    <!-- 8. Core Values Grid (Icons) -->
-    <section :class="['py-24 px-6', bgPattern]">
-        <div class="container mx-auto max-w-5xl" v-animate-on-scroll>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-                
-                <div v-for="(val, idx) in values" :key="idx" 
-                     class="group flex flex-col items-start p-8 rounded-xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100">
+                <div class="relative z-10 text-center md:text-left">
+                    <span class="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-6 block border-b border-gray-200 pb-4 inline-block">
+                        {{ t('about_view.story_headline') }}
+                    </span>
                     
-                    <div class="mb-6 p-4 bg-primary/10 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                        <component :is="val.icon" class="w-10 h-10" />
+                    <div class="prose prose-lg text-neutral-brown text-justify mx-auto md:mx-0">
+                        <p class="leading-loose text-xl whitespace-pre-line font-serif">
+                            <span class="float-left text-6xl font-bold text-primary mr-3 mt-[-5px] font-serif">
+                                {{ t('about_view.story_dropcap') }}
+                            </span>
+                            {{ t('about_view.story_p1') }}
+                        </p>
                     </div>
-                    
-                    <h3 class="text-2xl font-serif font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors">
-                        {{ t(val.titleKey) }}
-                    </h3>
-                    
-                    <p class="text-gray-600 font-serif leading-relaxed text-lg">
-                        {{ t(val.descKey) }}
+
+                    <!-- Signature -->
+                    <div class="mt-12 flex flex-col md:flex-row items-center md:items-start md:justify-end gap-4">
+                         <div class="text-right">
+                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png" 
+                                  class="h-12 w-auto grayscale opacity-60 ml-auto" alt="Signature">
+                             <p class="text-sm mt-2 text-gray-500 font-bold uppercase tracking-widest">PATVN Team</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. QUOTE SECTION: High Contrast (Kept as requested) -->
+        <section class="relative py-32 bg-fixed bg-cover bg-center" :style="{ backgroundImage: `url(${quoteBg})` }">
+            <div class="absolute inset-0 bg-secondary/90 mix-blend-multiply"></div>
+            <div class="relative container mx-auto px-6 text-center z-10">
+                <blockquote class="text-3xl md:text-4xl font-serif text-white leading-relaxed italic opacity-95 max-w-4xl mx-auto">
+                    {{ t('about_view.quote') }}
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- 4. VALUES & MISSION: Storytelling Content -->
+        <section class="py-24 bg-neutral-50 px-6">
+            <div class="container mx-auto">
+                
+                <!-- Expanded Mission Narrative -->
+                <div class="mb-20 max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-8 font-serif">
+                        {{ t('about_view.mission_title') }}
+                    </h2>
+                    <p class="text-neutral-brown text-lg leading-loose font-serif text-justify md:text-center">
+                        {{ t('about_view.mission_desc') }}
                     </p>
                 </div>
 
-            </div>
-        </div>
-    </section>
+                <div class="w-full h-[1px] bg-gray-200 mb-20"></div>
 
-  </div>
+                <!-- Bento Grid / Magazine Layout (Preserved layout, updated text content via i18n) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div v-for="(item, index) in values" :key="index"
+                         class="group relative bg-white p-10 shadow-sm hover:shadow-2xl transition-all duration-500 ease-in-out border-t-4 border-transparent hover:border-primary">
+                        
+                        <div class="mb-6 text-primary opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300">
+                            <component :is="item.icon" class="w-12 h-12" />
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-dark mb-4 group-hover:text-primary transition-colors font-serif">
+                            {{ t(item.title) }}
+                        </h3>
+                        
+                        <p class="text-gray-500 leading-relaxed group-hover:text-dark transition-colors text-sm text-justify">
+                            {{ t(item.desc) }}
+                        </p>
+
+                        <!-- Number watermark -->
+                        <span class="absolute top-4 right-4 text-6xl font-black text-gray-100 -z-0 group-hover:text-primary/10 transition-colors font-sans">
+                            0{{ index + 1 }}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. TEAM SECTION REMOVED -->
+
+    </div>
 </template>
+
+<style scoped>
+/* Scoped styles only for very specific effects not easily doable with Tailwind */
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+}
+</style>
