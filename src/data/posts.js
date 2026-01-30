@@ -20,16 +20,6 @@ export const posts = [
         isPinned: false
     },
     {
-        id: 3,
-        slug: 'tranh-chap-ban-quyen-phan-mem',
-        title: 'Xử lý tranh chấp bản quyền phần mềm: Case study thực tế',
-        excerpt: 'Phân tích vụ việc tranh chấp mã nguồn giữa công ty công nghệ A và cựu nhân viên. Bài học kinh nghiệm cho Startup.',
-        date: '2024-02-28',
-        category: 'Case Study',
-        image: 'https://images.unsplash.com/photo-1589216532380-b466a70e9564?q=80&w=2000&auto=format&fit=crop',
-        isPinned: true
-    },
-    {
         id: 4,
         slug: 'thong-bao-nghi-le',
         title: 'Thông báo lịch nghỉ lễ Giỗ tổ Hùng Vương 2024',

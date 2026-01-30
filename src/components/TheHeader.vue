@@ -64,7 +64,7 @@ onUnmounted(() => {
     <div class="container mx-auto px-4 flex justify-between items-center">
       <!-- Logo -->
       <router-link to="/" :class="['text-xl font-bold transition-colors hover:text-primary', textColorClass]">
-        IP Law Firm
+        PATVN
       </router-link>
 
       <!-- Navigation & Language Switcher -->

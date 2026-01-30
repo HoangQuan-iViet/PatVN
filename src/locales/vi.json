@@ -1,7 +1,7 @@
 {
     "common": {
         "welcome": "Chào mừng đến với ứng dụng Vue.js của bạn",
-        "copyright": "Bản quyền thuộc về IP Law Firm © {year}",
+        "copyright": "Bản quyền thuộc về PATVN © {year}",
         "home": "Trang chủ",
         "about": "Giới thiệu",
         "services": "Dịch vụ",
@@ -67,7 +67,7 @@
         },
         "attorney": {
             "label": "Người sáng lập",
-            "name": "Luật sư Nguyễn Văn A",
+            "name": "Luật sư Hoàng Yến",
             "quote": "Công lý không chỉ là đích đến, đó là một hành trình."
         },
         "trust": {
@@ -183,7 +183,7 @@
             "sunday": "Chủ nhật",
             "closed": "Nghỉ"
         },
-        "map_alt": "Tòa nhà IP Law Firm"
+        "map_alt": "Tòa nhà PATVN"
     },
     "blog_view": {
         "title": "Kho Tri thức Pháp lý",
