@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { services } from '../data/services'
 import { posts } from '../data/posts'
+import partnersBanner from '../assets/partners_banner.png'
 
 
 const { t } = useI18n()
@@ -278,18 +279,16 @@ const uspItems = [
         </div>
     </section>
 
-    <!-- 7. Partners (White Background & Gray Logos) -->
-    <section class="py-32 bg-white" v-animate-on-scroll>
-      <div class="container mx-auto px-4">
-        <h2 class="text-center text-gray-300 mb-16 uppercase tracking-[0.3em] text-xs font-bold">
+    <!-- 7. Partners (Full Width Banner) -->
+    <section class="pt-24 pb-0 bg-neutral-50" v-animate-on-scroll>
+      <div class="container mx-auto px-4 mb-12">
+        <h2 class="text-center text-dark font-serif text-3xl lg:text-4xl font-bold mb-4">
             {{ t('home.partners.title') }}
         </h2>
-        <div class="flex flex-wrap justify-center gap-16 md:gap-24 items-center">
-            <div v-for="i in partners" :key="i" 
-                 class="group w-32 h-12 flex items-center justify-center text-gray-300 font-bold cursor-pointer hover:text-primary transition duration-500">
-                <span class="text-xl tracking-widest">LOGO {{ i }}</span>
-            </div>
-        </div>
+        <div class="w-24 h-1 bg-primary mx-auto"></div>
+      </div>
+      <div class="w-full px-4 lg:px-0">
+        <img :src="partnersBanner" alt="Partners" class="w-full h-auto object-contain">
       </div>
     </section>
 
