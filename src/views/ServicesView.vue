@@ -104,7 +104,7 @@ const getDesc = (service) => {
     </div>
 
     <!-- 2. Filter & Search Bar -->
-    <div class="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+    <div class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300 py-4">
         <div class="container mx-auto px-4 py-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <!-- Filter Tabs -->
