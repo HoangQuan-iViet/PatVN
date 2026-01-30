@@ -78,8 +78,8 @@ const resetForm = () => {
                              <EnvelopeIcon class="w-6 h-6 text-primary" />
                             {{ t('contact_view.email') }}
                         </h3>
-                        <a href="mailto:contact@iplawfirm.vn" class="text-gray-500 hover:text-black transition border-b border-transparent hover:border-black inline-block pb-0.5">
-                            contact@iplawfirm.vn
+                        <a href="mailto:sangchevanhanhieu.patvn@gmail.com" class="text-gray-500 hover:text-black transition border-b border-transparent hover:border-black inline-block pb-0.5">
+                            sangchevanhanhieu.patvn@gmail.com
                         </a>
                     </div>
 
@@ -88,7 +88,7 @@ const resetForm = () => {
                              <PhoneIcon class="w-6 h-6 text-primary" />
                              {{ t('contact_view.hotline') }}
                         </h3>
-                        <p class="text-3xl font-serif text-dark">1900 1234</p>
+                        <p class="text-3xl font-serif text-dark">02437621788</p>
                         <p class="text-sm text-gray-400 mt-2">{{ t('contact_view.quick_consult') }}</p>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ const resetForm = () => {
 
         <!-- Right: Map -->
         <div class="w-full lg:w-1/2 h-80 lg:h-full grayscale hover:grayscale-0 transition-all duration-700 ease-in-out">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096814183571!2d105.7800937149326!3d21.02881188599828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4cd0c66f71%3A0x658d31156937128e!2sKeangnam%20Landmark%20Tower%2072!5e0!3m2!1sen!2s!4v1647856637375!5m2!1sen!2s" 
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0969459558376!2d105.82499957489095!3d21.02877848062789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab7f6f8a2e23%3A0x9c9fdb0a1a97e0c1!2s38%20P.%20Kim%20M%C3%A3%2C%20Kim%20M%C3%A3%2C%20Ba%20%C4%90%C3%ACnh%2C%20H%C3%A0%20N%E1%BB%99i%2C%20Vietnam!5e0!3m2!1sen!2s!4v1706633175000!5m2!1sen!2s" 
                 class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>

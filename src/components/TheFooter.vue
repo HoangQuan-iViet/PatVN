@@ -63,7 +63,9 @@ const currentYear = new Date().getFullYear()
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
-              <span>Hanoi, Vietnam</span>
+              <a href="https://maps.google.com/?q=38+P.+Kim+Ma,+Kim+Ma,+Ba+Dinh,+Hanoi,+Vietnam" target="_blank" rel="noopener" class="hover:text-white transition">
+                38 P. Kim Mã, Kim Mã, Ba Đình, Hà Nội
+              </a>
             </li>
           </ul>
 
