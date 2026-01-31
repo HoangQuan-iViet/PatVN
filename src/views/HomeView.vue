@@ -36,7 +36,7 @@ const uspItems = [
 <template>
   <div class="font-sans">
     <!-- 1. Hero Section (Fullscreen) -->
-    <section class="relative h-screen flex items-center justify-center text-center text-white bg-neutral-900 overflow-hidden" v-animate-on-scroll>
+    <section class="relative h-screen flex items-center justify-center text-center text-white bg-neutral-900 overflow-hidden">
         <div class="absolute inset-0 z-0 opacity-40">
             <img src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Court Architecture">
             <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80"></div>
@@ -55,7 +55,7 @@ const uspItems = [
     </section>
 
     <!-- 2. Intro Section (Overlay Style: 1/3 Image - 2/3 Content Overlay) -->
-    <section class="min-h-screen flex items-center" v-animate-on-scroll>
+    <section class="min-h-screen flex items-center">
       <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
         <!-- Col 1: High Quality Portrait/Office - Law Books Vertical -->
         <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
@@ -125,7 +125,7 @@ const uspItems = [
     </section>
 
     <!-- 3. Services (Full Width) -->
-    <section class="py-32 bg-gray-50" v-animate-on-scroll>
+    <section class="py-32 bg-gray-50">
       <div class="container mx-auto px-4">
         <!-- Header similar to Content Hub -->
         <div class="flex flex-col md:flex-row justify-between items-end mb-16">
@@ -176,7 +176,7 @@ const uspItems = [
     </section>
 
     <!-- 4. Why Us (The 4 Pillars Layout) -->
-    <section class="py-24 bg-neutral-50" v-animate-on-scroll>
+    <section class="py-24 bg-neutral-50">
       <div class="container mx-auto px-4">
          <div class="text-center max-w-2xl mx-auto">
              <h2 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6">{{ t('home.why_us.title') }}</h2>
@@ -201,7 +201,7 @@ const uspItems = [
     </section>
 
     <!-- 5. Content Hub (Full Width) -->
-    <section class="py-32 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]" v-animate-on-scroll>
+    <section class="py-32 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div>
@@ -246,7 +246,7 @@ const uspItems = [
     </section>
 
     <!-- 6. Trust/Vision (Split Layout 2:3) -->
-    <section class="min-h-screen flex items-center bg-white" v-animate-on-scroll>
+    <section class="min-h-screen flex items-center bg-white">
         <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
             <!-- Left (2 parts): Portrait Image -->
             <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
@@ -280,7 +280,7 @@ const uspItems = [
     </section>
 
     <!-- 7. Partners (Full Width Banner) -->
-    <section class="pt-24 pb-0 bg-neutral-50" v-animate-on-scroll>
+    <section class="pt-24 pb-0 bg-neutral-50">
       <div class="container mx-auto px-4 mb-12">
         <h2 class="text-center text-dark font-serif text-3xl lg:text-4xl font-bold mb-4">
             {{ t('home.partners.title') }}
