@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        // Lazy Loading: Chỉ tải code của trang Home khi người dùng vào đúng route này
-        component: () => import('../views/HomeView.vue')
+        // Eager Loading: Tải cùng lúc với Header/Footer
+        component: HomeView
     },
     // Sau này thêm trang About, Contact thì thêm vào dưới đây
     {
