@@ -1,10 +1,15 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { posts } from '../data/posts'
 import { MagnifyingGlassIcon, ArrowDownTrayIcon, ArrowLongRightIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
+
+// --- Sticky Toolbar Auto-Hide ---
+const toolbarRef = ref(null)
+const { isHidden } = useStickyToolbar(toolbarRef)
 
 // --- State ---
 const searchQuery = ref('')
@@ -192,7 +197,10 @@ const formatDate = (dateString) => {
         </div>
 
         <!-- 2. STICKY FILTER BAR (Sticky beneath Header/Hero) -->
-        <div class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300 py-4">
+        <div ref="toolbarRef" 
+            class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
+            :class="isHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+            style="transition: transform 0.3s ease, opacity 0.3s ease">
             <div class="container mx-auto px-4">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                     <!-- Categories -->

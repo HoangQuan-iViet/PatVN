@@ -1,9 +1,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { services } from '../data/services'
 
 const { t } = useI18n()
+
+// --- Sticky Toolbar Auto-Hide ---
+const toolbarRef = ref(null)
+const { isHidden } = useStickyToolbar(toolbarRef)
 
 // Filters
 const activeCategory = ref('all')
@@ -104,26 +109,29 @@ const getDesc = (service) => {
     </div>
 
     <!-- 2. Filter & Search Bar -->
-    <div class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300 py-4">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+    <div ref="toolbarRef"
+        class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
+        :class="isHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+        style="transition: transform 0.3s ease, opacity 0.3s ease">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <!-- Filter Tabs -->
                 <div class="flex flex-wrap gap-2 justify-center">
                     <button v-for="cat in categories" :key="cat.id"
                         @click="activeCategory = cat.id"
-                        class="px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                        class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
                         :class="activeCategory === cat.id 
                             ? 'bg-neutral-brown text-white border-neutral-brown' 
-                            : 'bg-white text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
+                            : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
                         {{ cat.label }}
                     </button>
                 </div>
                 
                 <!-- Search Input -->
-                <div class="relative w-full md:w-80">
+                <div class="relative w-full md:w-72">
                     <input v-model="searchQuery" type="text" 
                         :placeholder="t('services_view.search_placeholder')"
-                        class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-sm">
+                        class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-sm bg-white/50 focus:bg-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
