@@ -59,7 +59,7 @@ onUnmounted(() => {
 <template>
   <header :class="[
     'fixed top-0 left-0 w-full z-50 transition-all duration-300',
-    (isScrolled || forceDarkHeader) ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+    (isScrolled || forceDarkHeader) ? 'bg-white shadow-md py-3' : 'bg-transparent py-3'
   ]">
     <div class="container mx-auto px-4 flex justify-between items-center">
       <!-- Logo -->
