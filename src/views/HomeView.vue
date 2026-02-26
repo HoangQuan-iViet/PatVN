@@ -48,10 +48,7 @@ const uspItems = [
                 
                 <!-- Left: Main Headline & CTA -->
                 <div class="lg:col-span-7 text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-6">
-                        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                        <span class="text-xs font-bold text-white uppercase tracking-wider">{{ t('home.hero.subtitle') }}</span>
-                    </div>
+
                     
                     <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-lg">
                         {{ t('home.hero.title') }}
@@ -131,28 +128,29 @@ const uspItems = [
             </router-link>
         </div>
         
-        <!-- Minimalist Grid (4 Items) -->
+        <!-- Grid with images (4 Items) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <router-link v-for="service in services.slice(0, 4)" :key="service.id" 
                 :to="`/services/${service.slug}`"
-                class="group flex flex-col justify-between bg-white p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 min-h-[220px]">
+                class="group flex flex-col bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden">
                 
-                <div>
-                    <!-- Icon placeholder (can be dynamic if added to data) -->
-                    <div class="w-12 h-12 rounded-full bg-gray-50 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-                    </div>
+                <div class="h-48 overflow-hidden relative shrink-0">
+                    <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-primary/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+
+                <div class="p-6 flex flex-col flex-grow">
                     <h3 class="text-xl font-bold font-serif text-dark mb-3 group-hover:text-primary transition leading-tight">
                         {{ t(service.titleKey, service.fallbackTitle) }}
                     </h3>
-                    <p class="text-gray-500 line-clamp-2 text-sm">
+                    <p class="text-gray-500 line-clamp-2 text-sm mb-6">
                         {{ t(service.descKey, service.fallbackDesc) }}
                     </p>
-                </div>
-                
-                <div class="mt-6 flex justify-end">
-                    <div class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                    
+                    <div class="mt-auto flex justify-end">
+                        <div class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </div>
                     </div>
                 </div>
             </router-link>
