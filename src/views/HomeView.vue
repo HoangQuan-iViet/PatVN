@@ -167,34 +167,40 @@ const uspItems = [
     </section>
 
 
-    <!-- 5. Content Hub (Full Width) -->
-    <section class="py-32 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
+    <!-- 4. Content Hub (Blog) -->
+    <section class="py-24 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
                 <div>
-                    <h2 class="text-4xl font-bold font-serif text-dark mb-4">{{ t('common.latest_news') }}</h2>
+                    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('common.latest_news') }}</h2>
+                    <h3 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('blog_view.title') }}</h3>
                     <div class="w-20 h-1 bg-primary"></div>
                 </div>
-                <router-link to="/blog" class="hidden md:inline-block text-gray-500 hover:text-primary transition font-medium text-lg">
-                    {{ t('common.view_all') }} &rarr;
+                <router-link to="/blog" class="hidden md:inline-flex items-center gap-2 text-gray-500 hover:text-primary transition font-bold text-lg group">
+                    {{ t('common.view_all') }}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    </svg>
                 </router-link>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div v-for="post in posts.slice(0, 3)" :key="post.id" 
-                     class="group cursor-pointer bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
-                    <div class="h-60 overflow-hidden mb-6 relative">
+            <!-- Compact Blog Array (Max 2 items) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                <div v-for="post in posts.slice(0, 2)" :key="post.id" 
+                     class="group cursor-pointer flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden min-h-[200px]">
+                    <!-- Image -->
+                    <div class="sm:w-2/5 h-48 sm:h-auto overflow-hidden relative shrink-0">
                         <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        <div class="absolute top-4 left-4 bg-white/95 backdrop-blur px-4 py-1 text-xs font-bold uppercase tracking-wider text-secondary shadow-sm">
+                    </div>
+                    <!-- Content -->
+                    <div class="p-6 sm:p-8 flex flex-col justify-center w-full">
+                        <div class="text-xs font-bold uppercase tracking-wider text-secondary mb-3">
                             {{ post.category }}
                         </div>
-                    </div>
-                    <div class="px-6 pb-6">
                         <h3 class="text-xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition line-clamp-2 leading-snug">
                             <router-link :to="`/blog/${post.slug}`">{{ post.title }}</router-link>
                         </h3>
-                        <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed text-left font-serif">{{ post.excerpt }}</p>
-                        <router-link :to="`/blog/${post.slug}`" class="text-sm font-bold text-secondary hover:text-primary transition flex items-center gap-1 uppercase tracking-wide">
+                        <router-link :to="`/blog/${post.slug}`" class="mt-auto text-sm font-bold text-dark hover:text-primary transition flex items-center gap-2 uppercase tracking-wide">
                             {{ t('blog_view.read_more') }}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
@@ -212,17 +218,15 @@ const uspItems = [
         </div>
     </section>
 
-
-
-    <!-- 7. Partners (Full Width Banner) -->
-    <section class="pt-24 pb-0 bg-neutral-50">
+    <!-- 5. Partners (Full Width Banner) -->
+    <section class="pt-24 pb-0 bg-neutral-50 border-t border-gray-200">
       <div class="container mx-auto px-4 mb-12">
         <h2 class="text-center text-dark font-serif text-3xl lg:text-4xl font-bold mb-4">
             {{ t('home.partners.title') }}
         </h2>
         <div class="w-24 h-1 bg-primary mx-auto"></div>
       </div>
-      <div class="w-full px-4 lg:px-0">
+      <div class="w-full px-4 lg:px-0 opacity-80 hover:opacity-100 transition duration-300">
         <img :src="partnersBanner" alt="Partners" class="w-full h-auto object-contain">
       </div>
     </section>
