@@ -35,134 +35,125 @@ const uspItems = [
 
 <template>
   <div class="font-sans">
-    <!-- 1. Hero Section (Fullscreen) -->
-    <section class="relative h-screen flex items-center justify-center text-center text-white bg-neutral-900 overflow-hidden">
-        <div class="absolute inset-0 z-0 opacity-40">
-            <img src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Court Architecture">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80"></div>
-        </div>
-        <div class="container mx-auto px-4 relative z-10 pt-20">
-            <h1 class="text-5xl md:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-2xl">
-            {{ t('home.hero.title') }}
-            </h1>
-            <p class="text-sm md:text-base text-white/80 mb-12 max-w-4xl mx-auto font-sans uppercase tracking-widest drop-shadow-md leading-relaxed">
-            {{ t('home.hero.subtitle') }}
-            </p>
-            <router-link to="/contact" class="bg-secondary text-white px-12 py-5 font-bold hover:bg-neutral-brown transition duration-300 uppercase tracking-widest border border-secondary shadow-2xl hover:scale-105 transform rounded-none">
-            {{ t('home.hero.cta') }}
-            </router-link>
-        </div>
-    </section>
-
-    <!-- 2. Intro Section (Overlay Style: 1/3 Image - 2/3 Content Overlay) -->
-    <section class="min-h-screen flex items-center">
-      <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
-        <!-- Col 1: High Quality Portrait/Office - Law Books Vertical -->
-        <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
-             <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2000&auto=format&fit=crop" 
-                 class="w-full h-full object-cover" alt="Architecture">
+    <!-- 1. Interactive Navigation Hub (Bento Grid Hero) -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 pb-12 lg:py-0 bg-neutral-900 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-30 blur-[2px]" alt="Court Architecture">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
         </div>
         
-        <!-- Col 2 & 3: Content with Textured Watermark -->
-        <div class="lg:col-span-3 relative flex items-center h-full overflow-hidden isolate">
-             <!-- Textured BG -->
-             <div class="absolute inset-0 -z-20">
-                 <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover opacity-20" alt="Texture">
-             </div>
-             <!-- White Overlay -->
-             <div class="absolute inset-0 bg-white/50 -z-10"></div>
-             
-             <!-- Content -->
-             <div class="relative z-10 p-12 lg:p-24 text-dark w-full">
-                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{{ t('home.intro.label') }}</h2>
-                <h3 class="text-4xl lg:text-5xl font-bold font-serif mb-8 leading-tight text-dark">
-                    {{ t('home.intro.headline') }}
-                </h3>
-                <div class="h-1 w-20 bg-primary mb-10"></div>
+        <div class="container mx-auto px-4 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 
-                <div class="space-y-6 text-gray-600 text-lg leading-relaxed text-left font-serif">
-                    <p>
-                        {{ t('home.intro.content') }}
-                    </p>
-                    <p>
-                        {{ t('home.intro.desc') }}
-                    </p>
-                </div>
-
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex items-start gap-4">
-                        <div class="p-2 bg-white/50 rounded-none border border-neutral-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold font-serif text-dark mb-1">{{ t('home.stats.clients') }}</h4>
-                            <p class="text-sm text-gray-500 font-sans">{{ t('home.stats.clients_desc') }}</p>
-                        </div>
+                <!-- Left: Main Headline & CTA -->
+                <div class="lg:col-span-7 text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-6">
+                        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        <span class="text-xs font-bold text-white uppercase tracking-wider">{{ t('home.hero.subtitle') }}</span>
                     </div>
-                    <div class="flex items-start gap-4">
-                        <div class="p-2 bg-white/50 rounded-none border border-neutral-200">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold font-serif text-dark mb-1">{{ t('home.stats.success_rate') }}</h4>
-                            <p class="text-sm text-gray-500 font-sans">{{ t('home.stats.success_desc') }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-12">
-                    <router-link to="/about" class="text-primary font-bold border-b border-primary hover:text-white hover:border-white transition pb-1">
-                        {{ t('common.view_all') }} &rarr;
+                    
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-lg">
+                        {{ t('home.hero.title') }}
+                    </h1>
+                    
+                    <router-link to="/contact" class="inline-flex items-center justify-center gap-3 bg-secondary text-white px-8 py-4 font-bold hover:bg-neutral-brown transition duration-300 uppercase tracking-widest shadow-2xl hover:gap-5 group">
+                        {{ t('home.hero.cta') }}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform group-hover:translate-x-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
                     </router-link>
                 </div>
-             </div>
+
+                <!-- Right: Bento Grid Quick Links -->
+                <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 lg:mt-0">
+                    
+                    <!-- Box 1: Core Services (Takes 2 columns on SM) -->
+                    <router-link to="/services" class="sm:col-span-2 group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 lg:p-8 hover:bg-primary/80 transition duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <div class="relative z-10 flex justify-between items-start">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white font-serif mb-2">{{ t('home.hero.box1_title') }}</h3>
+                                <p class="text-gray-400 text-sm group-hover:text-white/80 transition leading-relaxed">{{ t('home.hero.box1_desc') }}</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            </div>
+                        </div>
+                    </router-link>
+
+                    <!-- Box 2: Profile -->
+                    <router-link to="/about" class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 hover:bg-white/10 transition duration-300">
+                        <div class="flex flex-col h-full justify-between gap-6">
+                            <div class="text-secondary group-hover:scale-110 transition origin-left">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">{{ t('home.hero.box2_title') }}</h3>
+                                <p class="text-gray-400 text-xs">{{ t('home.hero.box2_desc') }}</p>
+                            </div>
+                        </div>
+                    </router-link>
+
+                    <!-- Box 3: Insights -->
+                    <router-link to="/blog" class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 hover:bg-white/10 transition duration-300">
+                        <div class="flex flex-col h-full justify-between gap-6">
+                            <div class="text-secondary group-hover:scale-110 transition origin-left">
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">{{ t('home.hero.box3_title') }}</h3>
+                                <p class="text-gray-400 text-xs">{{ t('home.hero.box3_desc') }}</p>
+                            </div>
+                        </div>
+                    </router-link>
+
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <!-- 3. Services (Full Width) -->
-    <section class="py-32 bg-gray-50">
+    <!-- 2. Core Expertise (Condensed Services) -->
+    <section class="py-24 bg-gray-50">
       <div class="container mx-auto px-4">
-        <!-- Header similar to Content Hub -->
+        <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-end mb-16">
             <div>
                  <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('home.services.label') }}</h2>
                  <h3 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('home.services.headline') }}</h3>
                  <div class="w-24 h-1 bg-primary"></div>
             </div>
-            <router-link to="/services" class="hidden md:inline-block text-gray-500 hover:text-primary transition font-medium text-lg">
-                {{ t('common.view_all') }} &rarr;
+            <router-link to="/services" class="hidden md:inline-flex items-center gap-2 text-gray-500 hover:text-primary transition font-bold text-lg group">
+                {{ t('common.view_all') }}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
             </router-link>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <router-link v-for="service in services.slice(0, 3)" :key="service.id" 
+        <!-- Minimalist Grid (4 Items) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <router-link v-for="service in services.slice(0, 4)" :key="service.id" 
                 :to="`/services/${service.slug}`"
-                class="group flex flex-col bg-white rounded-none shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 relative overflow-hidden text-center">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-10"></div>
+                class="group flex flex-col justify-between bg-white p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 min-h-[220px]">
                 
-                <!-- Image Thumbnail -->
-                <div class="overflow-hidden h-48 w-full">
-                    <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" 
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                </div>
-                
-                <!-- Content -->
-                <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-2xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition">
+                <div>
+                    <!-- Icon placeholder (can be dynamic if added to data) -->
+                    <div class="w-12 h-12 rounded-full bg-gray-50 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold font-serif text-dark mb-3 group-hover:text-primary transition leading-tight">
                         {{ t(service.titleKey, service.fallbackTitle) }}
                     </h3>
-                    <p class="text-gray-500 line-clamp-4 leading-relaxed mb-8 text-left font-serif">
+                    <p class="text-gray-500 line-clamp-2 text-sm">
                         {{ t(service.descKey, service.fallbackDesc) }}
                     </p>
-                    
-                    <span class="text-sm font-bold text-dark uppercase tracking-wider group-hover:text-secondary transition flex items-center justify-center gap-2 mt-auto">
-                        {{ t('common.details') }} <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-                    </span>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <div class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                    </div>
                 </div>
             </router-link>
         </div>
@@ -175,30 +166,6 @@ const uspItems = [
       </div>
     </section>
 
-    <!-- 4. Why Us (The 4 Pillars Layout) -->
-    <section class="py-24 bg-neutral-50">
-      <div class="container mx-auto px-4">
-         <div class="text-center max-w-2xl mx-auto">
-             <h2 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6">{{ t('home.why_us.title') }}</h2>
-             <div class="w-24 h-1 bg-primary mx-auto"></div>
-         </div>
-
-         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
-            <div v-for="(item, index) in uspItems" :key="index" class="relative group">
-                <!-- Big Number BG -->
-                <div class="absolute -top-10 -left-6 text-8xl font-serif text-primary/10 -z-10 select-none group-hover:text-primary/20 transition-colors">
-                    0{{ index + 1 }}
-                </div>
-                
-                <div class="relative z-10 pt-4">
-                    <h3 class="text-xl font-bold font-serif text-gray-900 mb-4">{{ t(item.title) }}</h3>
-                    <div class="w-12 border-t border-primary/50 my-6"></div>
-                    <p class="font-sans text-gray-600 leading-relaxed">{{ t(item.desc) }}</p>
-                </div>
-            </div>
-         </div>
-      </div>
-    </section>
 
     <!-- 5. Content Hub (Full Width) -->
     <section class="py-32 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
@@ -245,39 +212,7 @@ const uspItems = [
         </div>
     </section>
 
-    <!-- 6. Trust/Vision (Split Layout 2:3) -->
-    <section class="min-h-screen flex items-center bg-white">
-        <div class="grid grid-cols-1 lg:grid-cols-5 w-full h-full">
-            <!-- Left (2 parts): Portrait Image -->
-            <div class="relative h-96 lg:h-auto lg:col-span-2 overflow-hidden">
-                 <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000&auto=format&fit=crop" 
-                     class="w-full h-full object-cover grayscale" 
-                     alt="Signing">
-            </div>
 
-            <!-- Right (3 parts): Content -->
-            <div class="lg:col-span-3 flex items-center justify-center p-12 lg:p-32 bg-neutral-50">
-                 <div class="max-w-3xl">
-                    <div class="text-7xl text-primary/20 mb-8 font-serif">❝</div>
-                    <blockquote class="text-3xl md:text-5xl font-bold font-serif italic text-dark leading-tight mb-12">
-                        {{ t('about_view.mission') }}
-                    </blockquote>
-                    
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-[1px] bg-primary"></div>
-                        <div>
-                            <h4 class="text-lg font-bold uppercase tracking-widest text-primary">
-                                {{ t('home.attorney.name') }}
-                            </h4>
-                            <p class="text-sm text-gray-400 font-serif italic mt-1">
-                                {{ t('home.trust.author') }}
-                            </p>
-                        </div>
-                    </div>
-                 </div>
-            </div>
-        </div>
-    </section>
 
     <!-- 7. Partners (Full Width Banner) -->
     <section class="pt-24 pb-0 bg-neutral-50">

@@ -14,9 +14,15 @@
     },
     "home": {
         "hero": {
-            "title": "Trung thực - Hiệu quả",
+            "title": "Bảo vệ quyền lợi, Kiến tạo tương lai",
             "subtitle": "ĐỒNG HÀNH TIN CẬY CÙNG DOANH NGHIỆP",
-            "cta": "Đăng ký tư vấn ngay"
+            "cta": "Liên hệ ngay",
+            "box1_title": "Dịch vụ cốt lõi",
+            "box1_desc": "Giải pháp Sở hữu trí tuệ & Doanh nghiệp",
+            "box2_title": "Hồ sơ năng lực",
+            "box2_desc": "Hơn 15 năm kinh nghiệm thực tiễn",
+            "box3_title": "Tin tức & Cập nhật",
+            "box3_desc": "Nhận định pháp lý chuyên sâu"
         },
         "intro": {
             "title": "Tại sao chọn chúng tôi?",
