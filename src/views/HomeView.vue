@@ -50,8 +50,9 @@ const uspItems = [
                 <div class="lg:col-span-7 text-left">
 
                     
-                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-lg">
-                        {{ t('home.hero.title') }}
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-serif text-white mb-8 leading-tight drop-shadow-lg flex flex-col gap-2">
+                        <span>{{ t('home.hero.title_line1') }}</span>
+                        <span>{{ t('home.hero.title_line2') }}</span>
                     </h1>
                     
                     <router-link to="/contact" class="inline-flex items-center justify-center gap-3 bg-secondary text-white px-8 py-4 font-bold hover:bg-neutral-brown transition duration-300 uppercase tracking-widest shadow-2xl hover:gap-5 group">

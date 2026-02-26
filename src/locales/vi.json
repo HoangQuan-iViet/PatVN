@@ -14,7 +14,8 @@
     },
     "home": {
         "hero": {
-            "title": "Bảo vệ quyền lợi, Kiến tạo tương lai",
+            "title_line1": "Bảo vệ quyền lợi",
+            "title_line2": "Kiến tạo tương lai",
             "subtitle": "ĐỒNG HÀNH TIN CẬY CÙNG DOANH NGHIỆP",
             "cta": "Liên hệ ngay",
             "box1_title": "Dịch vụ cốt lõi",

@@ -14,7 +14,8 @@
   },
   "home": {
     "hero": {
-      "title": "Protecting Rights, Building Futures",
+      "title_line1": "Protecting Rights",
+      "title_line2": "Building Futures",
       "subtitle": "TRUSTED COMPANION FOR BUSINESSES",
       "cta": "Contact Us",
       "box1_title": "Core Services",
