@@ -18,10 +18,16 @@ const currentYear = new Date().getFullYear()
 
     <!-- Content Layer -->
     <div class="relative z-10 container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-        <!-- Column 1: Business Info -->
-        <div>
-          <h3 class="text-xl lg:text-2xl font-bold font-serif mb-4 leading-snug">{{ t('common.company_name_full') }}</h3>
+      
+      <!-- Company Name (Full Width) -->
+      <div class="mb-12 border-b border-white/20 pb-8">
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold font-serif leading-snug tracking-wide">{{ t('common.company_name_full') }}</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-10 gap-12 mb-8">
+        <!-- Column 1: Business Info (4/10) -->
+        <div class="md:col-span-4">
+          <h4 class="font-bold mb-6 uppercase tracking-widest text-sm">Giới thiệu</h4>
           <p class="text-gray-300 text-sm leading-relaxed mb-6">
             {{ t('home.intro.content') }}
           </p>
@@ -30,8 +36,8 @@ const currentYear = new Date().getFullYear()
           </p>
         </div>
 
-        <!-- Column 2: Navigation -->
-        <div>
+        <!-- Column 2: Navigation (2/10) -->
+        <div class="md:col-span-2">
           <h4 class="font-bold mb-6 uppercase tracking-widest text-sm">Điều hướng</h4>
           <ul class="space-y-3 text-sm text-gray-300">
             <li><router-link to="/" class="hover:text-white transition">{{ t('common.home') }}</router-link></li>
@@ -42,8 +48,8 @@ const currentYear = new Date().getFullYear()
           </ul>
         </div>
 
-        <!-- Column 3: Contact & Social -->
-        <div>
+        <!-- Column 3: Contact & Social (4/10) -->
+        <div class="md:col-span-4">
           <h4 class="font-bold mb-6 uppercase tracking-widest text-sm">Liên hệ</h4>
           <ul class="space-y-3 text-sm text-gray-300">
             <li class="flex items-center gap-2">
