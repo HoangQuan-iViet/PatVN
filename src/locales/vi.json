@@ -1,6 +1,7 @@
 {
     "common": {
         "welcome": "Chào mừng đến với ứng dụng Vue.js của bạn",
+        "company_name_full": "Công ty TNHH Sáng chế & Nhãn hiệu Việt Nam - PATVN",
         "copyright": "Bản quyền thuộc về PATVN © {year}",
         "home": "Trang chủ",
         "about": "Giới thiệu",

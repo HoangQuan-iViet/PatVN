@@ -1,6 +1,7 @@
 {
   "common": {
     "welcome": "Welcome to Your Vue.js App",
+    "company_name_full": "Vietnam Patent and Trademark Company Limited - PATVN",
     "copyright": "Copyright © {year} IP Law Firm",
     "home": "Home",
     "about": "About",

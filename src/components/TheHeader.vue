@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import Logo from '../assets/Logo.png'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -63,8 +64,8 @@ onUnmounted(() => {
   ]">
     <div class="container mx-auto px-4 flex justify-between items-center">
       <!-- Logo -->
-      <router-link to="/" :class="['text-xl font-bold transition-colors hover:text-primary', textColorClass]">
-        PATVN
+      <router-link to="/" class="flex flex-col gap-0 items-center justify-center">
+        <img :src="Logo" alt="PATVN Logo" class="h-10 w-auto object-contain" />
       </router-link>
 
       <!-- Navigation & Language Switcher -->

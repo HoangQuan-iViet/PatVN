@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear()
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
         <!-- Column 1: Business Info -->
         <div>
-          <h3 class="text-2xl font-bold font-serif mb-4">PATVN</h3>
+          <h3 class="text-xl lg:text-2xl font-bold font-serif mb-4 leading-snug">{{ t('common.company_name_full') }}</h3>
           <p class="text-gray-300 text-sm leading-relaxed mb-6">
             {{ t('home.intro.content') }}
           </p>
