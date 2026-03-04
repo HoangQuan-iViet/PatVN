@@ -87,8 +87,8 @@ const uspItems = [
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white mb-1">{{ t('home.hero.box2_title') }}</h3>
-                                <p class="text-gray-400 text-xs">{{ t('home.hero.box2_desc') }}</p>
+                                <h3 class="text-lg font-bold text-white mb-2">{{ t('home.hero.box2_title') }}</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">{{ t('home.hero.box2_desc') }}</p>
                             </div>
                         </div>
                     </router-link>
@@ -100,8 +100,8 @@ const uspItems = [
                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white mb-1">{{ t('home.hero.box3_title') }}</h3>
-                                <p class="text-gray-400 text-xs">{{ t('home.hero.box3_desc') }}</p>
+                                <h3 class="text-lg font-bold text-white mb-2">{{ t('home.hero.box3_title') }}</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">{{ t('home.hero.box3_desc') }}</p>
                             </div>
                         </div>
                     </router-link>
@@ -217,18 +217,7 @@ const uspItems = [
         </div>
     </section>
 
-    <!-- 5. Partners (Full Width Banner) -->
-    <section class="pt-24 pb-0 bg-neutral-50 border-t border-gray-200">
-      <div class="container mx-auto px-4 mb-12">
-        <h2 class="text-center text-dark font-serif text-3xl lg:text-4xl font-bold mb-4">
-            {{ t('home.partners.title') }}
-        </h2>
-        <div class="w-24 h-1 bg-primary mx-auto"></div>
-      </div>
-      <div class="w-full px-4 lg:px-0 opacity-80 hover:opacity-100 transition duration-300">
-        <img :src="partnersBanner" alt="Partners" class="w-full h-auto object-contain">
-      </div>
-    </section>
+
 
   </div>
 </template>
