@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { posts } from '../data/posts'
-import { MagnifyingGlassIcon, ArrowDownTrayIcon, ArrowLongRightIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
 
@@ -14,7 +14,7 @@ const { isHidden } = useStickyToolbar(toolbarRef)
 // --- State ---
 const searchQuery = ref('')
 const activeCategory = ref('all')
-const visibleCount = ref(4) // Start with 4 posts (excluding featured)
+const visibleCount = ref(6) // Start with 6 posts (excluding featured)
 
 const categories = [
     { id: 'all', labelKey: 'blog_view.filter_all' },
@@ -156,12 +156,12 @@ const sidebarPosts = computed(() => {
 
 // --- Watchers ---
 watch([searchQuery, activeCategory], () => {
-    visibleCount.value = 4 // Reset pagination on filter change
+    visibleCount.value = 6 // Reset pagination on filter change
 })
 
 // --- Methods ---
 const loadMore = () => {
-    visibleCount.value += 4
+    visibleCount.value += 6
 }
 
 
@@ -273,15 +273,13 @@ const formatDate = (dateString) => {
             </transition>
         </div>
 
-        <!-- 4. MAIN CONTENT AREA (70/30 SPLIT) -->
+        <!-- 4. MAIN CONTENT AREA (FULL WIDTH GRID) -->
         <div class="container mx-auto px-4 py-12">
-            
-            <div class="flex flex-col lg:flex-row gap-12">
                 
-                <!-- LEFT CONTENT: Post List -->
-                <main class="w-full lg:w-[70%]">
+                <!-- CONTENT: Post List -->
+                <main class="w-full">
                     <div v-if="paginatedPosts.length > 0" class="flex flex-col gap-10">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                             <div v-for="post in paginatedPosts" :key="post.id" 
                                 class="flex flex-col bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
                                 
@@ -336,52 +334,6 @@ const formatDate = (dateString) => {
                          </button>
                     </div>
                 </main>
-
-                <!-- RIGHT SIDEBAR -->
-                <aside class="w-full lg:w-[30%] space-y-8 h-fit lg:sticky lg:top-44">
-                    
-                    <!-- Widget 1: Popular / Latest (Moved Top) -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-dark mb-4 border-b border-gray-100 pb-2">
-                            {{ t('blog_view.sidebar_popular') }}
-                        </h3>
-                        <ul class="space-y-4">
-                            <li v-for="post in sidebarPosts" :key="post.id" class="group">
-                                <router-link :to="`/blog/${post.slug}`" class="block">
-                                    <span class="text-xs text-primary font-bold mb-1 block">{{ post.category }}</span>
-                                    <h4 class="text-sm font-bold text-gray-700 leading-snug group-hover:text-secondary transition">
-                                        {{ post.title }}
-                                    </h4>
-                                </router-link>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Widget 2: Resources Download (Moved Bottom) -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-dark mb-4 border-b border-gray-100 pb-2 flex items-center gap-2">
-                             <ArrowDownTrayIcon class="w-5 h-5 text-primary"/>
-                             {{ t('blog_view.resources_title') }}
-                        </h3>
-                        <p class="text-xs text-gray-500 mb-4">{{ t('blog_view.resources_desc') }}</p>
-                        
-                        <div class="space-y-3">
-                            <div v-for="(doc, idx) in downloads" :key="idx" 
-                                 class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-primary/5 cursor-pointer transition group">
-                                <div class="w-10 h-10 bg-white rounded flex items-center justify-center shadow-sm text-red-600 font-bold text-xs border border-gray-200">
-                                    PDF
-                                </div>
-                                <div class="flex-grow">
-                                    <h4 class="text-sm font-bold text-gray-700 group-hover:text-primary transition line-clamp-1">{{ t(doc.titleKey) }}</h4>
-                                    <span class="text-[10px] text-gray-400 uppercase">{{ doc.size }}</span>
-                                </div>
-                                <ArrowDownTrayIcon class="w-4 h-4 text-gray-400 group-hover:text-primary"/>
-                            </div>
-                        </div>
-                    </div>
-
-                </aside>
-            </div>
 
         </div>
 

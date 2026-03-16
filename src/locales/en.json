@@ -206,6 +206,8 @@
     "resources_desc": "Download registration forms and standard legal guides.",
     "newsletter_title": "Legal Newsletter",
     "newsletter_desc": "Subscribe to receive weekly legal updates.",
+    "newsletter_placeholder": "Enter your email...",
+    "newsletter_btn": "Subscribe",
     "download_now": "Download Now",
     "label_new": "NEWEST",
     "label_important": "IMPORTANT",

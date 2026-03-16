@@ -206,6 +206,8 @@
         "resources_desc": "Tải xuống các mẫu đơn đăng ký, hướng dẫn pháp lý chuẩn.",
         "newsletter_title": "Bản tin Pháp lý",
         "newsletter_desc": "Đăng ký nhận email thông báo văn bản luật mới hàng tuần.",
+        "newsletter_placeholder": "Nhập email của bạn...",
+        "newsletter_btn": "Đăng ký",
         "download_now": "Tải ngay",
         "label_new": "MỚI NHẤT",
         "label_important": "QUAN TRỌNG",
