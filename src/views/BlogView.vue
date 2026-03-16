@@ -198,7 +198,7 @@ const formatDate = (dateString) => {
 
         <!-- 2. STICKY FILTER BAR (Sticky beneath Header/Hero) -->
         <div ref="toolbarRef" 
-            class="sticky top-12 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
+            class="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
             :class="isHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
             style="transition: transform 0.3s ease, opacity 0.3s ease">
             <div class="container mx-auto px-4">

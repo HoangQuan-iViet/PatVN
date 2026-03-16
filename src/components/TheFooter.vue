@@ -87,7 +87,7 @@ const currentYear = new Date().getFullYear()
               </a>
               <!-- Zalo (Z letter) -->
               <a href="https://zalo.me/0967059898" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group">
-                <span class="text-lg font-bold text-gray-300 group-hover:text-white">Z</span>
+                <span class="text-sm font-bold text-gray-300 group-hover:text-white">Zalo</span>
               </a>
             </div>
           </div>
