@@ -185,9 +185,7 @@
     "success_title": "Sent Successfully!",
     "success_desc": "We have received your message and will respond shortly.",
     "success_btn": "Send Another Message",
-    "address_line1": "Keangnam Landmark 72",
-    "address_line2": "Pham Hung, Nam Tu Liem",
-    "address_line3": "Hanoi, Vietnam",
+    "address_full": "Keangnam Landmark 72, Pham Hung, Nam Tu Liem, Hanoi, Vietnam",
     "days": {
       "weekdays": "Mon - Fri",
       "saturday": "Saturday",
