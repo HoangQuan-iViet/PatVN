@@ -59,14 +59,14 @@ const values = [
                         </p>
                     </div>
 
-                    <!-- Signature -->
-                    <div class="mt-12 flex flex-col md:flex-row items-center md:items-start md:justify-end gap-4">
+                    <!-- Signature (Hidden per request) -->
+                    <!-- <div class="mt-12 flex flex-col md:flex-row items-center md:items-start md:justify-end gap-4">
                          <div class="text-right">
                              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png" 
                                   class="h-12 w-auto grayscale opacity-60 ml-auto" alt="Signature">
                              <p class="text-sm mt-2 text-gray-500 font-bold uppercase tracking-widest">{{ t('about_view.signature') }}</p>
                          </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </section>
@@ -97,27 +97,24 @@ const values = [
 
                 <div class="w-full h-[1px] bg-gray-200 mb-20"></div>
 
-                <!-- Bento Grid / Magazine Layout (Preserved layout, updated text content via i18n) -->
+                <!-- Bento Grid / Magazine Layout (Redesigned for Prominence & Solemnity) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div v-for="(item, index) in values" :key="index"
-                         class="group relative bg-white p-10 shadow-sm hover:shadow-2xl transition-all duration-500 ease-in-out border-t-4 border-transparent hover:border-primary">
-                        
-                        <div class="mb-6 text-primary opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300">
-                            <component :is="item.icon" class="w-12 h-12" />
+                         class="group relative bg-white p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 ease-in-out border border-gray-100 overflow-hidden">
+
+                        <!-- Prominent Static Icon Container -->
+                        <div class="mb-8 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                            <component :is="item.icon" class="w-8 h-8" />
                         </div>
                         
-                        <h3 class="text-xl font-bold text-dark mb-4 group-hover:text-primary transition-colors font-serif">
+                        <!-- Content -->
+                        <h3 class="relative z-10 text-2xl font-bold text-dark mb-4 transition-colors font-serif">
                             {{ t(item.title) }}
                         </h3>
                         
-                        <p class="text-gray-500 leading-relaxed group-hover:text-dark transition-colors text-sm text-left">
+                        <p class="relative z-10 text-gray-600 leading-relaxed text-base text-left">
                             {{ t(item.desc) }}
                         </p>
-
-                        <!-- Number watermark -->
-                        <span class="absolute top-4 right-4 text-6xl font-black text-gray-100 -z-0 group-hover:text-primary/10 transition-colors font-sans">
-                            0{{ index + 1 }}
-                        </span>
                     </div>
                 </div>
 

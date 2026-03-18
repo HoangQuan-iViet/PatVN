@@ -13,6 +13,12 @@
         "view_details": "Xem chi tiết",
         "search": "Tìm kiếm..."
     },
+    "footer": {
+        "about": "Giới thiệu",
+        "navigation": "Điều hướng",
+        "contact": "Liên hệ",
+        "connect": "Kết nối với chúng tôi"
+    },
     "home": {
         "hero": {
             "title_line1": "Bảo vệ quyền lợi",
