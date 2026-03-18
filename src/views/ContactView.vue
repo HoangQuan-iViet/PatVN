@@ -60,7 +60,7 @@ const resetForm = () => {
         <div class="bg-white shadow-2xl border border-stone-900 rounded-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[800px]">
             
             <!-- LEFT COLUMN: Info Sidebar (Col-span-5) -->
-            <div class="lg:col-span-5 bg-stone-900 text-white p-8 lg:p-10 xl:p-12 flex flex-col justify-between">
+            <div class="lg:col-span-5 bg-stone-900 text-white p-8 lg:py-10 lg:px-6 xl:py-12 xl:px-8 flex flex-col justify-between">
                 <div class="space-y-12">
                      <div>
                         <h3 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
