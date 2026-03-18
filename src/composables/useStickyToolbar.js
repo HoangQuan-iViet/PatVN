@@ -20,6 +20,12 @@ export function useStickyToolbar(toolbarRef) {
             ? (parseFloat(getComputedStyle(toolbarRef.value).top) || 0)
             : 0
 
+        if (currentScrollY <= 0) {
+            isHidden.value = false
+            lastScrollY = currentScrollY
+            return
+        }
+
         // The toolbar becomes sticky when window.scrollY >= (naturalOffset - stickyTop)
         const stickyThreshold = toolbarNaturalOffsetTop - stickyTop
 
@@ -29,11 +35,11 @@ export function useStickyToolbar(toolbarRef) {
         if (!isSticky) {
             // Toolbar is at its natural position → always show, no hiding
             isHidden.value = false
-        } else if (currentScrollY < lastScrollY) {
-            // Scrolling UP while sticky → hide
+        } else if (currentScrollY > lastScrollY && currentScrollY > stickyThreshold + 50) {
+            // Scrolling DOWN while sticky (with a 50px buffer) → hide
             isHidden.value = true
-        } else if (currentScrollY > lastScrollY) {
-            // Scrolling DOWN → show
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling UP → show
             isHidden.value = false
         }
 
