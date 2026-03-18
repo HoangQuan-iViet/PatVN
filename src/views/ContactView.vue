@@ -72,14 +72,14 @@ const resetForm = () => {
                         </p>
                     </div>
 
-                    <div>
+                    <div class="w-full">
                         <h3 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
-                             <EnvelopeIcon class="w-6 h-6" />
+                             <EnvelopeIcon class="w-6 h-6 shrink-0" />
                             {{ t('contact_view.email') }}
                         </h3>
-                        <a href="mailto:sangchevanhanhieu.patvn@gmail.com" class="text-white hover:text-primary transition border-b border-transparent hover:border-primary inline-block pb-0.5 text-xl font-bold whitespace-nowrap">
+                        <p class="text-white/90 text-xl leading-relaxed break-all w-full">
                             sangchevanhanhieu.patvn@gmail.com
-                        </a>
+                        </p>
                     </div>
 
                     <div>
