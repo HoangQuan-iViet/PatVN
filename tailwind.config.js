@@ -28,7 +28,9 @@ export default {
                 light: '#FFFFFF',        // White bg
                 paper: '#F9F9F7',        // Magazine Paper
                 ink: '#1a1a1a',          // Printing Ink
-                'border-light': '#e5e5e5' // Hairline
+                'border-light': '#e5e5e5', // Hairline
+                surface: '#111111',       // Main dark background
+                'surface-light': '#1C1C1C' // Dark card background
             }
         },
     },

@@ -114,6 +114,9 @@
     "cta": {
       "title": "Need In-depth Legal Consultation?",
       "desc": "Contact our team of lawyers now to receive the optimal solution for your business issues.",
+      "point1": "Direct assessment of legal risks.",
+      "point2": "Propose cost-optimizing options.",
+      "point3": "Strict process supervision.",
       "btn": "Free Consultation"
     }
   },

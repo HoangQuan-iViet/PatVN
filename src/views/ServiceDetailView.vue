@@ -138,70 +138,6 @@ const scrollToSection = (id) => {
                     </div>
                 </section>
 
-                <!-- Section 6: FAQ -->
-                <section v-if="service.faq" id="faq" class="mb-16 scroll-mt-32">
-                    <h2 class="text-3xl font-bold text-dark mb-8 font-serif border-l-4 border-primary pl-4">
-                        {{ t('service_detail.faq') }}
-                    </h2>
-                    <div class="space-y-4">
-                        <details v-for="(item, idx) in service.faq" :key="idx" class="group bg-white border border-gray-200 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:shadow-md">
-                            <summary class="flex items-center justify-between p-6 cursor-pointer text-dark font-bold hover:bg-gray-50 transition select-none">
-                                <span class="text-lg pr-4">Q: {{ item.question }}</span>
-                                <span class="text-gray-400 group-open:rotate-180 transition-transform duration-300 shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </span>
-                            </summary>
-                            <div class="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-100 bg-gray-50/30">
-                                <span class="font-bold text-primary">A:</span> {{ item.answer }}
-                            </div>
-                        </details>
-                    </div>
-                </section>
-
-                <!-- Section 7: Registration Form (Moved from Sidebar) -->
-                <section id="register-form" class="mt-20 scroll-mt-32">
-                    <div class="bg-neutral-brown p-8 md:p-12 rounded-2xl text-white shadow-xl relative overflow-hidden">
-                        <!-- Decor -->
-                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-                        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-                        
-                        <div class="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
-                            <!-- Left: Text Call to Action -->
-                            <div class="w-full lg:w-1/2 text-center lg:text-left">
-                                <h3 class="text-3xl font-bold mb-4 font-serif">{{ t('service_detail.cta_title') }}</h3>
-                                <p class="text-white/80 text-lg leading-relaxed mb-6">{{ t('service_detail.cta_desc') }}</p>
-                                <div class="hidden lg:flex items-center gap-4 text-primary">
-                                    <div class="p-3 bg-white/10 rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                        </svg>
-                                    </div>
-                                    <span class="text-2xl font-bold text-white">1900 1234</span>
-                                </div>
-                            </div>
-
-                            <!-- Right: Input Fields -->
-                            <form class="w-full lg:w-1/2 space-y-4">
-                                <div class="space-y-4">
-                                    <input type="text" :placeholder="t('service_detail.form_name')" 
-                                        class="w-full px-5 py-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:bg-white/20 transition text-white">
-                                    <input type="text" :placeholder="t('service_detail.form_phone')" 
-                                        class="w-full px-5 py-4 rounded-xl bg-white/10 border border-white/20 placeholder-white/50 focus:outline-none focus:bg-white/20 transition text-white">
-                                </div>
-                                <button class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-yellow-600 transition shadow-lg uppercase tracking-wide flex items-center justify-center gap-2">
-                                    {{ t('service_detail.form_submit') }}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                    </svg>
-                                </button>
-                                <p class="text-white/40 text-xs text-center mt-2">{{ t('service_detail.privacy_note') }}</p>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-                
             </div>
 
             <!-- RIGHT COLUMN: Sticky Sidebar (1/3) -->
@@ -227,9 +163,6 @@ const scrollToSection = (id) => {
                         </button>
                         <button v-if="service.pricing" @click="scrollToSection('pricing')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 5. {{ t('service_detail.pricing') }}
-                        </button>
-                        <button v-if="service.faq" @click="scrollToSection('faq')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 6. {{ t('service_detail.faq') }}
                         </button>
                     </nav>
                 </div>

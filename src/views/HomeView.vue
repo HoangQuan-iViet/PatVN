@@ -133,11 +133,10 @@ const uspItems = [
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <router-link v-for="service in services.slice(0, 4)" :key="service.id" 
                 :to="`/services/${service.slug}`"
-                class="group flex flex-col bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden">
+                class="group flex flex-col bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-primary transition-all duration-300 overflow-hidden">
                 
                 <div class="h-48 overflow-hidden relative shrink-0">
                     <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-primary/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
                 <div class="p-6 flex flex-col flex-grow">
@@ -186,7 +185,7 @@ const uspItems = [
             <!-- Compact Blog Array (Max 2 items) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 <div v-for="post in posts.slice(0, 2)" :key="post.id" 
-                     class="group cursor-pointer flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden min-h-[200px]">
+                     class="group cursor-pointer flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden min-h-[200px]">
                     <!-- Image -->
                     <div class="sm:w-2/5 h-48 sm:h-auto overflow-hidden relative shrink-0">
                         <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">

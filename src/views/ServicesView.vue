@@ -22,42 +22,6 @@ const categories = computed(() => [
   { id: 'license', label: t('services_view.categories.license') }
 ])
 
-// Workflow Data
-const workflowSteps = [
-    {
-        id: 1,
-        iconPath: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
-        titleKey: 'services_view.workflow.step1_title',
-        descKey: 'services_view.workflow.step1_desc',
-        fallbackTitle: 'Tư vấn & Thẩm định',
-        fallbackDesc: 'Đánh giá hồ sơ và khả năng thành công.'
-    },
-    {
-        id: 2,
-        iconPath: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
-        titleKey: 'services_view.workflow.step2_title',
-        descKey: 'services_view.workflow.step2_desc',
-        fallbackTitle: 'Xây dựng giải pháp',
-        fallbackDesc: 'Đề xuất phương án tối ưu chi phí & thời gian.'
-    },
-    {
-        id: 3,
-        iconPath: 'M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z',
-        titleKey: 'services_view.workflow.step3_title',
-        descKey: 'services_view.workflow.step3_desc',
-        fallbackTitle: 'Triển khai pháp lý',
-        fallbackDesc: 'Soạn thảo, nộp đơn và làm việc với cơ quan chức năng.'
-    },
-    {
-        id: 4,
-        iconPath: 'M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z',
-        titleKey: 'services_view.workflow.step4_title',
-        descKey: 'services_view.workflow.step4_desc',
-        fallbackTitle: 'Bàn giao kết quả',
-        fallbackDesc: 'Nhận văn bằng và tư vấn bảo vệ sau cấp phép.'
-    }
-]
-
 // Computed
 const filteredServices = computed(() => {
     return services.filter(service => {
@@ -116,10 +80,10 @@ const getDesc = (service) => {
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <!-- Filter Tabs -->
-                <div class="flex flex-wrap gap-2 justify-center">
+                <div class="flex flex-nowrap md:flex-wrap overflow-x-auto gap-2 pb-2 -mb-2 w-full md:w-auto md:justify-center [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     <button v-for="cat in categories" :key="cat.id"
                         @click="activeCategory = cat.id"
-                        class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                        class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
                         :class="activeCategory === cat.id 
                             ? 'bg-neutral-brown text-white border-neutral-brown' 
                             : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
@@ -188,55 +152,59 @@ const getDesc = (service) => {
         </div>
     </div>
 
-    <!-- 4. General Workflow Section (Branding Updated) -->
-    <section class="bg-neutral-brown text-white py-24 relative overflow-hidden">
-        <!-- Decoration -->
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
-
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-16">
-                 <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">
-                    {{ t('services_view.workflow.title', 'Quy trình chuẩn mực') }}
-                 </h2>
-                 <p class="text-white/80">
-                    {{ t('services_view.workflow.subtitle', 'Cam kết minh bạch và hiệu quả trong từng bước thực hiện') }}
-                 </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div v-for="step in workflowSteps" :key="step.id" class="relative group">
-                    <!-- Connector Line (PC only) -->
-                    <div v-if="step.id !== 4" 
-                        class="hidden md:block absolute top-8 left-1/2 w-full h-[1px] bg-white/20 -z-10 group-hover:bg-primary/50 transition duration-500"></div>
+    <!-- 4. CTA Section -->
+    <section class="py-24 bg-gray-50 flex justify-center">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="bg-neutral-brown rounded-3xl shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-stretch">
+                <!-- Content (2/5) -->
+                <div class="w-full md:w-2/5 p-10 md:p-14 relative z-10 flex flex-col justify-center bg-neutral-brown">
+                    <!-- Decor -->
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
                     
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-white/10 border-2 border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:border-white/20 transition-all duration-300 shadow-xl overflow-hidden relative">
-                            <!-- TODO: Replace with Real Image/Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                                <path stroke-linecap="round" stroke-linejoin="round" :d="step.iconPath" />
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2">{{ step.id }}. {{ t(step.titleKey, step.fallbackTitle) }}</h3>
-                        <p class="text-sm text-gray-300 leading-relaxed px-4">
-                            {{ t(step.descKey, step.fallbackDesc) }}
-                        </p>
+                    <h2 class="relative z-10 text-3xl font-bold font-serif text-white mb-6 leading-tight">
+                        {{ t('services_view.cta.title') }}
+                    </h2>
+                    
+                    <p class="relative z-10 text-white/80 mb-8 text-base leading-relaxed hidden sm:block">
+                        {{ t('services_view.cta.desc') }}
+                    </p>
+
+                    <ul class="relative z-10 space-y-4 mb-10 text-white/90">
+                        <li class="flex items-start gap-4">
+                            <span class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                            </span>
+                            <span class="font-medium text-sm md:text-base">{{ t('services_view.cta.point1') }}</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                            </span>
+                            <span class="font-medium text-sm md:text-base">{{ t('services_view.cta.point2') }}</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                            </span>
+                            <span class="font-medium text-sm md:text-base">{{ t('services_view.cta.point3') }}</span>
+                        </li>
+                    </ul>
+
+                    <div class="relative z-10">
+                        <router-link to="/contact" class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-yellow-600 transition duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 uppercase tracking-wide text-sm">
+                            {{ t('services_view.cta.btn') }}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                        </router-link>
                     </div>
                 </div>
+                
+                <!-- Image (3/5) -->
+                <div class="w-full md:w-3/5 relative min-h-[300px] md:min-h-full">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop" alt="Legal Consultation" class="absolute inset-0 w-full h-full object-cover">
+                    <!-- Gradient overlay to melt the image smoothly into the content on the left -->
+                    <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-neutral-brown via-neutral-brown/40 to-transparent"></div>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- 5. CTA Section -->
-    <section class="py-20 bg-white text-center">
-        <div class="container mx-auto px-4">
-             <h2 class="text-3xl font-bold text-dark mb-6">{{ t('services_view.cta.title') }}</h2>
-             <p class="text-gray-500 mb-8 max-w-2xl mx-auto">
-                 {{ t('services_view.cta.desc') }}
-             </p>
-             <router-link to="/contact" class="inline-block bg-secondary text-white px-10 py-4 rounded-full font-bold hover:bg-neutral-brown transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                 {{ t('services_view.cta.btn') }}
-             </router-link>
         </div>
     </section>
 
