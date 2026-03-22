@@ -181,8 +181,12 @@ const formatDate = (dateString) => {
         <!-- 1. HERO SECTION -->
         <div class="relative h-[450px] flex items-center justify-center bg-gray-900 overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop" 
-                     class="w-full h-full object-cover opacity-30" alt="Library Background">
+                <img srcset="https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
+                             https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
+                             https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop 2070w"
+                     sizes="100vw"
+                     src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop" 
+                     class="w-full h-full object-cover opacity-30" alt="Library Background" fetchpriority="high" width="2070" height="1380">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
             </div>
             <div class="relative z-10 container mx-auto px-4 text-center">

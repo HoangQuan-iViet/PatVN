@@ -22,9 +22,13 @@ const values = [
         <section class="relative h-[80vh] w-full overflow-hidden">
             <!-- Background Image: Modern Building / Skyscraper -->
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+                <img srcset="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
+                             https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
+                             https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fm=webp&fit=crop 2070w"
+                     sizes="100vw"
+                     src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fm=webp&fit=crop" 
                      alt="Corporate Building" 
-                     class="w-full h-full object-cover object-center brightness-[0.85]">
+                     class="w-full h-full object-cover object-center brightness-[0.85]" fetchpriority="high" width="2070" height="1380">
             </div>
             
             <!-- Content: Bottom Left, Minimalist -->

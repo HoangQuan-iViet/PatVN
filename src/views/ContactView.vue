@@ -40,8 +40,12 @@ const resetForm = () => {
     <!-- 1. Hero Section -->
     <section class="relative h-[70vh] flex items-center justify-center bg-surface overflow-hidden">
         <div class="absolute inset-0 z-0">
-             <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
-                 class="w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Contact Hero">
+             <img srcset="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
+                          https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
+                          https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fm=webp&fit=crop 2069w"
+                  sizes="100vw"
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fm=webp&fit=crop" 
+                 class="w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Contact Hero" fetchpriority="high" width="2069" height="1379">
              <!-- Gradient overlay blending into bg-surface perfectly -->
              <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-surface"></div>
         </div>
@@ -63,30 +67,30 @@ const resetForm = () => {
             <div class="lg:col-span-5 bg-stone-900 text-white p-8 lg:py-10 lg:px-6 xl:py-12 xl:px-8 flex flex-col justify-between">
                 <div class="space-y-12">
                      <div>
-                        <h3 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
-                            <MapPinIcon class="w-6 h-6" />
+                        <h2 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                            <MapPinIcon class="w-6 h-6 shrink-0" />
                             {{ t('contact_view.address') }}
-                        </h3>
+                        </h2>
                         <p class="text-white/90 text-xl leading-relaxed">
                             {{ t('contact_view.address_full') }}
                         </p>
                     </div>
 
                     <div class="w-full">
-                        <h3 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <h2 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
                              <EnvelopeIcon class="w-6 h-6 shrink-0" />
                             {{ t('contact_view.email') }}
-                        </h3>
-                        <p class="text-white/90 text-xl leading-relaxed break-all w-full">
+                        </h2>
+                        <p class="text-white/90 text-xl lg:text-[20px] xl:text-xl leading-relaxed whitespace-nowrap">
                             sangchevanhanhieu.patvn@gmail.com
                         </p>
                     </div>
 
                     <div>
-                        <h3 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
-                             <PhoneIcon class="w-6 h-6" />
+                        <h2 class="font-serif text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                             <PhoneIcon class="w-6 h-6 shrink-0" />
                              {{ t('contact_view.hotline') }}
-                        </h3>
+                        </h2>
                         <p class="text-4xl font-sans font-bold tracking-wider text-white">0243 762 1788</p>
                         <p class="text-base text-gray-300 mt-2">{{ t('contact_view.quick_consult') }}</p>
                     </div>
@@ -94,10 +98,10 @@ const resetForm = () => {
 
                 <!-- Work Hours at Bottom of Left Col -->
                 <div class="mt-12 pt-12 border-t border-gray-800">
-                    <h3 class="font-serif text-xl font-bold text-primary mb-4 flex items-center gap-2">
-                        <ClockIcon class="w-5 h-5" />
+                    <h2 class="font-serif text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                        <ClockIcon class="w-5 h-5 shrink-0" />
                         {{ t('contact_view.working_hours') }}
-                    </h3>
+                    </h2>
                      <ul class="space-y-2 text-base text-gray-300 font-mono">
                         <li class="flex justify-between">
                             <span>{{ t('contact_view.days.weekdays') }}</span>

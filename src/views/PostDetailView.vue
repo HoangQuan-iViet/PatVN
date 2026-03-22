@@ -80,7 +80,7 @@ watch(() => route.params.slug, () => {
     
     <!-- Feature Image -->
     <div class="container mx-auto px-4 max-w-5xl mb-16" v-animate-on-scroll>
-        <img :src="post.image" :alt="post.title" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-lg">
+        <img :src="post.image" :alt="post.title" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-lg" fetchpriority="high" width="1000" height="500">
     </div>
 
     <!-- Content Body -->

@@ -36,7 +36,7 @@ const currentYear = new Date().getFullYear()
         <!-- Column 2: Navigation (2/10) -->
         <div class="md:col-span-2">
           <h4 class="font-bold mb-6 uppercase tracking-widest text-base">{{ t('footer.navigation') }}</h4>
-          <ul class="space-y-4 text-base text-gray-300">
+          <ul class="space-y-4 text-base text-gray-200">
             <li><router-link to="/" class="hover:text-white transition">{{ t('common.home') }}</router-link></li>
             <li><router-link to="/services" class="hover:text-white transition">{{ t('common.services') }}</router-link></li>
             <li><router-link to="/blog" class="hover:text-white transition">{{ t('common.blog') }}</router-link></li>
@@ -48,7 +48,7 @@ const currentYear = new Date().getFullYear()
         <!-- Column 3: Contact & Social (4/10) -->
         <div class="md:col-span-4">
           <h4 class="font-bold mb-6 uppercase tracking-widest text-base">{{ t('footer.contact') }}</h4>
-          <ul class="space-y-4 text-base text-gray-300">
+          <ul class="space-y-4 text-base text-gray-200">
             <li class="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-primary">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -77,13 +77,13 @@ const currentYear = new Date().getFullYear()
             <h5 class="font-bold mb-6 uppercase tracking-widest text-base text-white">{{ t('footer.connect') }}</h5>
             <div class="flex items-center gap-4">
               <!-- Facebook -->
-              <a href="https://www.facebook.com/sangchevanhanhieu.vn" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+              <a href="https://www.facebook.com/sangchevanhanhieu.vn" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group" aria-label="Facebook PATVN">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-200 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
                 </svg>
               </a>
               <!-- Zalo (Z letter) -->
-              <a href="https://zalo.me/0967059898" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group">
+              <a href="https://zalo.me/0967059898" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group" aria-label="Zalo PATVN">
                 <span class="text-base font-bold text-gray-300 group-hover:text-white">Zalo</span>
               </a>
             </div>
@@ -91,7 +91,7 @@ const currentYear = new Date().getFullYear()
         </div>
       </div>
 
-      <div class="text-center pt-2 border-t border-white/10 text-white/40 text-[10px]">
+      <div class="text-center pt-2 border-t border-white/20 text-white/70 text-xs">
         <p>{{ t('common.copyright', { year: currentYear }) }}</p>
       </div>
     </div>

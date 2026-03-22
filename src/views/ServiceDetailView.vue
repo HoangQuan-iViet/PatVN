@@ -27,8 +27,8 @@ const scrollToSection = (id) => {
     <!-- 1. Hero Banner (Fullwidth) -->
     <section class="relative h-[500px] flex items-center justify-center bg-neutral-900 text-white overflow-hidden pt-20">
         <div class="absolute inset-0 z-0">
-             <img :src="service.image || 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop'" 
-                 class="w-full h-full object-cover opacity-60" :alt="t(service.titleKey, service.fallbackTitle)">
+             <img :src="service.image || 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fm=webp&fit=crop'" 
+                 class="w-full h-full object-cover opacity-60" :alt="t(service.titleKey, service.fallbackTitle)" fetchpriority="high" width="2000" height="1333">
              <!-- Dark Overlay -->
              <div class="absolute inset-0 bg-black/60"></div>
         </div>
@@ -145,9 +145,9 @@ const scrollToSection = (id) => {
                 
                 <!-- Box 1: Table of Contents -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold text-dark mb-4 border-b border-gray-100 pb-2">
+                    <h2 class="text-lg font-bold text-dark mb-4 border-b border-gray-100 pb-2">
                         {{ t('service_detail.toc') }}
-                    </h3>
+                    </h2>
                     <nav class="flex flex-col space-y-2 text-sm">
                         <button @click="scrollToSection('overview')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 1. {{ t('service_detail.overview') }}

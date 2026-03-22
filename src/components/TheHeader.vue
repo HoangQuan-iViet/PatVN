@@ -59,40 +59,40 @@ onUnmounted(() => {
 
 <template>
   <header :class="[
-    'fixed top-0 left-0 w-full z-50 transition-all duration-300',
-    (isScrolled || forceDarkHeader) ? 'bg-black/90 backdrop-blur-md shadow-lg py-3 border-b border-white/10' : 'bg-transparent py-3 border-b border-transparent'
+    'fixed top-0 left-0 w-full z-50 transition-colors duration-300',
+    (isScrolled || forceDarkHeader) ? 'bg-neutral-brown/95 backdrop-blur-md shadow-lg py-3 border-b border-neutral-brown/20' : 'bg-transparent py-3 border-b border-transparent'
   ]">
     <div class="container mx-auto px-4 flex justify-between items-center">
       <!-- Logo -->
-      <router-link to="/" class="flex flex-col gap-0 items-center justify-center">
+      <router-link to="/" class="flex flex-col gap-0 items-center justify-center" aria-label="PATVN Home">
         <img :src="Logo" alt="PATVN Logo" class="h-10 w-auto object-contain" />
       </router-link>
 
       <!-- Navigation & Language Switcher -->
       <div class="flex items-center gap-6">
-        <nav class="flex gap-4">
+        <nav class="flex">
           <router-link to="/" 
-            :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
+            :class="['font-medium transition-colors hover:text-primary px-3 py-2 min-h-[48px] flex items-center', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
             {{ t('common.home') }}
           </router-link>
           <router-link to="/about" 
-            :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
+            :class="['font-medium transition-colors hover:text-primary px-3 py-2 min-h-[48px] flex items-center', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
             {{ t('common.about') }}
           </router-link>
           <router-link to="/services" 
-            :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
+            :class="['font-medium transition-colors hover:text-primary px-3 py-2 min-h-[48px] flex items-center', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
             {{ t('common.services') }}
           </router-link>
           <router-link to="/blog" 
-            :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
+            :class="['font-medium transition-colors hover:text-primary px-3 py-2 min-h-[48px] flex items-center', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
             {{ t('common.blog') }}
           </router-link>
           <router-link to="/contact" 
-            :class="['font-medium transition-colors hover:text-primary', textColorClass]" 
+            :class="['font-medium transition-colors hover:text-primary px-3 py-2 min-h-[48px] flex items-center', textColorClass]" 
             :active-class="isScrolled ? 'text-primary font-bold' : 'text-primary font-bold'">
             {{ t('contact_view.title') }}
           </router-link>
@@ -100,8 +100,8 @@ onUnmounted(() => {
 
         <!-- Language Dropdown -->
         <div class="relative lang-dropdown">
-            <button @click.stop="toggleLang" 
-                    :class="['flex items-center gap-1 px-3 py-2 rounded transition-colors focus:outline-none hover:bg-white/20', textColorClass]">
+            <button @click.stop="toggleLang" aria-label="Change Language"
+                    :class="['flex items-center justify-center gap-1 px-3 py-2 rounded transition-colors focus:outline-none hover:bg-white/20 min-h-[48px] min-w-[48px]', textColorClass]">
                 <!-- Globe Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S12 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S12 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />

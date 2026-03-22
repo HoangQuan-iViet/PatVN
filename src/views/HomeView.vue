@@ -39,7 +39,12 @@ const uspItems = [
     <section class="relative min-h-screen flex items-center justify-center pt-20 pb-12 lg:py-0 bg-neutral-900 overflow-hidden">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-30 blur-[2px]" alt="Court Architecture">
+            <img srcset="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
+                         https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
+                         https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fm=webp&fit=crop 2070w"
+                 sizes="100vw"
+                 src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fm=webp&fit=crop" 
+                 class="w-full h-full object-cover opacity-30 blur-[2px]" alt="Court Architecture" fetchpriority="high" width="2070" height="1380">
             <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
         </div>
         
@@ -117,8 +122,8 @@ const uspItems = [
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-end mb-16">
             <div>
-                 <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('home.services.label') }}</h2>
-                 <h3 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('home.services.headline') }}</h3>
+                 <p class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('home.services.label') }}</p>
+                 <h2 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('home.services.headline') }}</h2>
                  <div class="w-24 h-1 bg-primary"></div>
             </div>
             <router-link to="/services" class="hidden md:inline-flex items-center gap-2 text-gray-500 hover:text-primary transition font-bold text-lg group">
@@ -136,7 +141,7 @@ const uspItems = [
                 class="group flex flex-col bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-primary transition-all duration-300 overflow-hidden">
                 
                 <div class="h-48 overflow-hidden relative shrink-0">
-                    <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                 </div>
 
                 <div class="p-6 flex flex-col flex-grow">
@@ -170,8 +175,8 @@ const uspItems = [
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12">
                 <div>
-                    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('common.latest_news') }}</h2>
-                    <h3 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('blog_view.title') }}</h3>
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-[0.3em] mb-4 text-left">{{ t('common.latest_news') }}</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold font-serif text-dark mb-6 text-left">{{ t('blog_view.title') }}</h2>
                     <div class="w-20 h-1 bg-primary"></div>
                 </div>
                 <router-link to="/blog" class="hidden md:inline-flex items-center gap-2 text-gray-500 hover:text-primary transition font-bold text-lg group">
@@ -188,7 +193,7 @@ const uspItems = [
                      class="group cursor-pointer flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden min-h-[200px]">
                     <!-- Image -->
                     <div class="sm:w-2/5 h-48 sm:h-auto overflow-hidden relative shrink-0">
-                        <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy">
                     </div>
                     <!-- Content -->
                     <div class="p-6 sm:p-8 flex flex-col justify-center w-full">

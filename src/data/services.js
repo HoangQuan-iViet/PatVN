@@ -2,7 +2,7 @@ export const services = [
     {
         id: 'patent',
         slug: 'sang-che',
-        image: 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1000&auto=format&fm=webp&fit=crop',
         category: 'ip',
         titleKey: 'services.patent.title',
         descKey: 'services.patent.desc',
@@ -37,7 +37,7 @@ export const services = [
     {
         id: 'trademark',
         slug: 'nhan-hieu',
-        image: 'https://images.unsplash.com/photo-1629904853716-f0bc54eea481?q=80&w=2070&auto=format&fit=crop', // Branding/Logo Sketch
+        image: 'https://images.unsplash.com/photo-1629904853716-f0bc54eea481?q=80&w=2070&auto=format&fm=webp&fit=crop', // Branding/Logo Sketch
         category: 'ip',
         titleKey: 'services.trademark.title',
         descKey: 'services.trademark.desc',
@@ -74,7 +74,7 @@ export const services = [
     {
         id: 'copyright',
         slug: 'ban-quyen',
-        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=2073&auto=format&fit=crop', // Writing/Copyright
+        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=2073&auto=format&fm=webp&fit=crop', // Writing/Copyright
         category: 'ip',
         titleKey: 'services.copyright.title',
         descKey: 'services.copyright.desc',
@@ -108,7 +108,7 @@ export const services = [
     {
         id: 'company_setup',
         slug: 'thanh-lap-doanh-nghiep',
-        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop', // Office Building
+        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fm=webp&fit=crop', // Office Building
         category: 'corporate',
         titleKey: 'services.company_setup.title',
         descKey: 'services.company_setup.desc',
@@ -141,7 +141,7 @@ export const services = [
     {
         id: 'license',
         slug: 'giay-phep-con',
-        image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop', // Certificate/Paperwork
+        image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fm=webp&fit=crop', // Certificate/Paperwork
         category: 'license',
         titleKey: 'services.license.title',
         descKey: 'services.license.desc',
@@ -174,7 +174,7 @@ export const services = [
     {
         id: 'dispute',
         slug: 'tranh-tung',
-        image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop', // Gavel/Court
+        image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop', // Gavel/Court
         category: 'dispute',
         titleKey: 'services.dispute.title',
         descKey: 'services.dispute.desc',

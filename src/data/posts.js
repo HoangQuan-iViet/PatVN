@@ -6,7 +6,7 @@ export const posts = [
         excerpt: 'Tổng hợp những thay đổi quan trọng về quyền tác giả, nhãn hiệu và bằng sáng chế giúp doanh nghiệp tránh rủi ro pháp lý.',
         date: '2024-03-15',
         category: 'Pháp luật',
-        image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fm=webp&fit=crop',
         isPinned: true
     },
     {
@@ -16,7 +16,7 @@ export const posts = [
         excerpt: 'Hướng dẫn chi tiết từ tra cứu khả năng bảo hộ đến khi nhận văn bằng bảo hộ. Tránh các lỗi thường gặp khiến đơn bị từ chối.',
         date: '2024-03-10',
         category: 'Hướng dẫn',
-        image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fm=webp&fit=crop',
         isPinned: false
     },
     {
@@ -26,7 +26,7 @@ export const posts = [
         excerpt: 'IP Law Firm xin thông báo đến Quý khách hàng và Đối tác lịch nghỉ lễ và thời gian làm việc trở lại.',
         date: '2024-04-10',
         category: 'Thông báo',
-        image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fm=webp&fit=crop'
     },
     {
         id: 5,
@@ -35,7 +35,7 @@ export const posts = [
         excerpt: 'Kiểu dáng độc đáo không chỉ thu hút khách hàng mà còn là tài sản cần được bảo vệ trước nạn hàng giả, hàng nhái.',
         date: '2024-01-20',
         category: 'Pháp luật',
-        image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop'
     },
     {
         id: 6,
@@ -44,6 +44,6 @@ export const posts = [
         excerpt: 'Nắm vững các quy định pháp luật để tránh tranh chấp khi tham gia vào chuỗi nhượng quyền.',
         date: '2023-12-15',
         category: 'Doanh nghiệp',
-        image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2070&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2070&auto=format&fm=webp&fit=crop'
     }
 ]

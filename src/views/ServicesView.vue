@@ -54,8 +54,12 @@ const getDesc = (service) => {
     <!-- 1. Hero Section -->
     <div class="relative h-[400px] flex items-center justify-center bg-gray-900 overflow-hidden">
         <div class="absolute inset-0 z-0">
-             <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" 
-                 class="w-full h-full object-cover opacity-40" alt="Office Background">
+             <img srcset="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
+                          https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
+                          https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fm=webp&fit=crop 2070w"
+                  sizes="100vw"
+                  src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fm=webp&fit=crop" 
+                 class="w-full h-full object-cover opacity-40" alt="Office Background" fetchpriority="high" width="2070" height="1380">
              <!-- Enhanced Overlay Gradient for Better Text Contrast -->
              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
@@ -114,9 +118,10 @@ const getDesc = (service) => {
                     <!-- New: Image Thumbnail -->
                     <div class="w-full h-48 overflow-hidden rounded-t-2xl relative">
                         <img 
-                            :src="service.image || 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop'" 
+                            :src="service.image || 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop'" 
                             :alt="getTitle(service)"
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            loading="lazy"
                         >
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                     </div>
@@ -126,9 +131,9 @@ const getDesc = (service) => {
                             {{ categories.find(c => c.id === service.category)?.label }}
                         </div>
                         
-                        <h3 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition">
+                        <h2 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition">
                             {{ getTitle(service) }}
-                        </h3>
+                        </h2>
                         <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow text-justify">
                             {{ getDesc(service) }}
                         </p>
@@ -144,7 +149,7 @@ const getDesc = (service) => {
         <!-- Empty State -->
         <div v-if="filteredServices.length === 0" class="text-center py-20">
             <div class="text-6xl mb-4">🔍</div>
-            <h3 class="text-xl font-bold text-gray-700 mb-2">{{ t('services_view.empty_title') }}</h3>
+            <h2 class="text-xl font-bold text-gray-700 mb-2">{{ t('services_view.empty_title') }}</h2>
             <p class="text-gray-500">{{ t('services_view.empty_desc') }}</p>
             <button @click="() => { activeCategory = 'all'; searchQuery = '' }" class="mt-6 text-primary font-bold hover:underline">
                 {{ t('services_view.clear_filter') }}
