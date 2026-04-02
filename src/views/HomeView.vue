@@ -1,11 +1,32 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { services } from '../data/services'
-import { posts } from '../data/posts'
-import partnersBanner from '../assets/partners_banner.png'
-
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import bannerImg from '../assets/Banner.webp'
 
 const { t } = useI18n()
+const services = ref([])
+const postsDB = ref([])
+const isLoading = ref(true)
+
+onMounted(async () => {
+    try {
+        const [resServices, resPosts] = await Promise.all([
+            axios.get('/api/services?status=live'),
+            axios.get('/api/posts?status=live')
+        ])
+        if (resServices.data.success) {
+            services.value = resServices.data.data
+        }
+        if (resPosts.data.success) {
+            postsDB.value = resPosts.data.data
+        }
+    } catch(e) { 
+        console.error('Lỗi khi tải dữ liệu từ DB:', e) 
+    } finally {
+        isLoading.value = false
+    }
+})
 
 const partners = [1, 2, 3, 4, 5, 6] 
 
@@ -39,13 +60,9 @@ const uspItems = [
     <section class="relative min-h-screen flex items-center justify-center pt-20 pb-12 lg:py-0 bg-neutral-900 overflow-hidden">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
-            <img srcset="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=480&auto=format&fm=webp&fit=crop 480w,
-                         https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=1024&auto=format&fm=webp&fit=crop 1024w,
-                         https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fm=webp&fit=crop 2070w"
-                 sizes="100vw"
-                 src="https://images.unsplash.com/photo-1479142506502-19b3a3b7ff33?q=80&w=2070&auto=format&fm=webp&fit=crop" 
-                 class="w-full h-full object-cover opacity-30 blur-[2px]" alt="Court Architecture" fetchpriority="high" width="2070" height="1380">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
+            <img :src="bannerImg"
+                 class="w-full h-full object-cover opacity-100" alt="Court Architecture" fetchpriority="high">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-black/60"></div>
         </div>
         
         <div class="container mx-auto px-4 relative z-10 w-full">
@@ -72,41 +89,40 @@ const uspItems = [
                 <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 lg:mt-0">
                     
                     <!-- Box 1: Core Services (Takes 2 columns on SM) -->
-                    <router-link to="/services" class="sm:col-span-2 group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 lg:p-8 hover:bg-primary/80 transition duration-300 overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <router-link to="/services" class="sm:col-span-2 group relative bg-white/90 backdrop-blur-xl border border-white/60 rounded-xl p-6 lg:p-8 shadow-lg hover:bg-primary hover:border-primary hover:shadow-2xl transition-all duration-300 overflow-hidden">
                         <div class="relative z-10 flex justify-between items-start">
                             <div>
-                                <h3 class="text-2xl font-bold text-white font-serif mb-2">{{ t('home.hero.box1_title') }}</h3>
-                                <p class="text-gray-400 text-sm group-hover:text-white/80 transition leading-relaxed">{{ t('home.hero.box1_desc') }}</p>
+                                <h3 class="text-2xl font-bold text-gray-900 font-serif mb-2 group-hover:text-white transition-colors">{{ t('home.hero.box1_title') }}</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed group-hover:text-white/90 transition-colors">{{ t('home.hero.box1_desc') }}</p>
                             </div>
-                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-white group-hover:text-primary transition-all shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
                             </div>
                         </div>
                     </router-link>
 
                     <!-- Box 2: Profile -->
-                    <router-link to="/about" class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 hover:bg-white/10 transition duration-300">
-                        <div class="flex flex-col h-full justify-between gap-6">
-                            <div class="text-secondary group-hover:scale-110 transition origin-left">
+                    <router-link to="/about" class="group relative bg-white/90 backdrop-blur-xl border border-white/60 rounded-xl p-6 shadow-lg hover:bg-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex flex-col h-full justify-between gap-5">
+                            <div class="text-primary group-hover:scale-110 transition origin-left">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white mb-2">{{ t('home.hero.box2_title') }}</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed">{{ t('home.hero.box2_desc') }}</p>
+                                <h3 class="text-lg font-bold text-gray-900 mb-1.5">{{ t('home.hero.box2_title') }}</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed">{{ t('home.hero.box2_desc') }}</p>
                             </div>
                         </div>
                     </router-link>
 
                     <!-- Box 3: Insights -->
-                    <router-link to="/blog" class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 hover:bg-white/10 transition duration-300">
-                        <div class="flex flex-col h-full justify-between gap-6">
-                            <div class="text-secondary group-hover:scale-110 transition origin-left">
+                    <router-link to="/blog" class="group relative bg-white/90 backdrop-blur-xl border border-white/60 rounded-xl p-6 shadow-lg hover:bg-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex flex-col h-full justify-between gap-5">
+                            <div class="text-primary group-hover:scale-110 transition origin-left">
                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white mb-2">{{ t('home.hero.box3_title') }}</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed">{{ t('home.hero.box3_desc') }}</p>
+                                <h3 class="text-lg font-bold text-gray-900 mb-1.5">{{ t('home.hero.box3_title') }}</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed">{{ t('home.hero.box3_desc') }}</p>
                             </div>
                         </div>
                     </router-link>
@@ -134,22 +150,28 @@ const uspItems = [
             </router-link>
         </div>
         
+        <!-- Loading State for Services -->
+        <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 min-h-[300px]">
+             <div class="w-10 h-10 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-4"></div>
+             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
+        </div>
+
         <!-- Grid with images (4 Items) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <router-link v-for="service in services.slice(0, 4)" :key="service.id" 
+        <div v-else-if="services.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <router-link v-for="service in services.slice(0, 4)" :key="service.slug" 
                 :to="`/services/${service.slug}`"
                 class="group flex flex-col bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-primary transition-all duration-300 overflow-hidden">
                 
                 <div class="h-48 overflow-hidden relative shrink-0">
-                    <img :src="service.image" :alt="t(service.titleKey, service.fallbackTitle)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                    <img :src="service.image" :alt="service.title" :style="{ objectPosition: service.imagePosition || '50% 50%' }" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                 </div>
 
                 <div class="p-6 flex flex-col flex-grow">
                     <h3 class="text-xl font-bold font-serif text-dark mb-3 group-hover:text-primary transition leading-tight">
-                        {{ t(service.titleKey, service.fallbackTitle) }}
+                        {{ service.title || '' }}
                     </h3>
                     <p class="text-gray-500 line-clamp-2 text-sm mb-6">
-                        {{ t(service.descKey, service.fallbackDesc) }}
+                        {{ service.excerpt || service.overview || '' }}
                     </p>
                     
                     <div class="mt-auto flex justify-end">
@@ -187,9 +209,15 @@ const uspItems = [
                 </router-link>
             </div>
 
+            <!-- Loading State for Blog -->
+            <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white min-h-[250px] border border-gray-100 shadow-sm">
+                 <div class="w-10 h-10 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-4"></div>
+                 <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
+            </div>
+
             <!-- Compact Blog Array (Max 2 items) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                <div v-for="post in posts.slice(0, 2)" :key="post.id" 
+            <div v-else-if="postsDB.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                <div v-for="post in postsDB.slice(0, 2)" :key="post.slug" 
                      class="group cursor-pointer flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden min-h-[200px]">
                     <!-- Image -->
                     <div class="sm:w-2/5 h-48 sm:h-auto overflow-hidden relative shrink-0">

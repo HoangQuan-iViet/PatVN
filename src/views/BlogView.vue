@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
-import { posts } from '../data/posts'
 import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
@@ -12,19 +12,15 @@ const toolbarRef = ref(null)
 const { isHidden } = useStickyToolbar(toolbarRef)
 
 // --- State ---
+const dbPosts = ref([])
+const isFetching = ref(true)
 const searchQuery = ref('')
 const activeCategory = ref('all')
-const visibleCount = ref(6) // Start with 6 posts (excluding featured)
+const visibleCount = ref(8)
 
-const categories = [
-    { id: 'all', labelKey: 'blog_view.filter_all' },
-    { id: 'Pháp luật', labelKey: 'blog_view.categories.legal' }, 
-    { id: 'Sở hữu trí tuệ', labelKey: 'blog_view.categories.ip' }, 
-    { id: 'Hướng dẫn', labelKey: 'blog_view.categories.guide' },
-    { id: 'Case Study', labelKey: 'blog_view.categories.case_study' },
-    { id: 'Thông báo', labelKey: 'blog_view.categories.news' },
-    { id: 'Doanh nghiệp', labelKey: 'blog_view.categories.corporate' }
-]
+const categories = ref([
+    { id: 'all', labelKey: 'blog_view.filter_all' }
+])
 
 const downloads = [
     { titleKey: "blog_view.downloads.form_tm", size: "DOCX - 2.5MB" },
@@ -37,7 +33,7 @@ const downloads = [
 // 1. Base Filter (Search + Category)
 // Used to generate the list of *candidates* for display in the grid
 const allFilteredPosts = computed(() => {
-    let result = posts
+    let result = dbPosts.value
 
     // Filter by Category
     if (activeCategory.value !== 'all') {
@@ -51,7 +47,7 @@ const allFilteredPosts = computed(() => {
     }
     
     // Always sort by date desc for the general list
-    return result.sort((a, b) => new Date(b.date) - new Date(a.date))
+    return result.sort((a, b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date))
 })
 
 // 2. Featured Post - SELECTION LOGIC
@@ -68,7 +64,7 @@ const displayFeaturePost = computed(() => {
         
         if (pinnedInCat.length > 0) {
             // "Last Pinned Wins": Sort by date DESC
-            pinnedInCat.sort((a, b) => new Date(b.date) - new Date(a.date))
+            pinnedInCat.sort((a, b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date))
             return pinnedInCat[0]
         }
         // Fallback: Latest in category
@@ -77,11 +73,11 @@ const displayFeaturePost = computed(() => {
 
     // Priority 3: DEFAULT MODE (No search, Category 'all')
     // Find absolute pinned posts from source
-    const allPinned = posts.filter(p => p.isPinned)
+    const allPinned = dbPosts.value.filter(p => p.isPinned)
     
     if (allPinned.length > 0) {
         // "Last Pinned Wins" global
-        allPinned.sort((a, b) => new Date(b.date) - new Date(a.date))
+        allPinned.sort((a, b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date))
         return allPinned[0]
     }
     
@@ -118,7 +114,7 @@ const featureSubLabel = computed(() => {
 
     // Case 2: Filter
     if (activeCategory.value !== 'all') {
-        const catLabel = categories.find(c => c.id === activeCategory.value)?.labelKey
+        const catLabel = categories.value.find(c => c.id === activeCategory.value)?.labelKey || categories.value.find(c => c.id === activeCategory.value)?.name
         // If labelKey is a translation key, use display t(), else use literal
         const displayCat = catLabel && catLabel.includes('.') ? t(catLabel) : catLabel
         return t('blog_view.result_for_category', { category: displayCat })
@@ -132,9 +128,9 @@ const featureSubLabel = computed(() => {
 const paginatedPosts = computed(() => {
     if (!displayFeaturePost.value) return [] 
     
-    const featuredId = displayFeaturePost.value.id
+    const featuredId = displayFeaturePost.value._id || displayFeaturePost.value.id
     // Filter out the featured post from the main list
-    const remaining = allFilteredPosts.value.filter(p => p.id !== featuredId)
+    const remaining = allFilteredPosts.value.filter(p => (p._id || p.id) !== featuredId)
     
     // Slice for pagination
     return remaining.slice(0, visibleCount.value)
@@ -142,26 +138,43 @@ const paginatedPosts = computed(() => {
 
 const hasMore = computed(() => {
     if (!displayFeaturePost.value) return false
-    const featuredId = displayFeaturePost.value.id
-    const remainingCount = allFilteredPosts.value.filter(p => p.id !== featuredId).length
+    const featuredId = displayFeaturePost.value._id || displayFeaturePost.value.id
+    const remainingCount = allFilteredPosts.value.filter(p => (p._id || p.id) !== featuredId).length
     return visibleCount.value < remainingCount
 })
 
 // 6. Sidebar Posts (Latest 5 items global)
 const sidebarPosts = computed(() => {
-    // Return top 5 latest posts from global 'posts'
-    // We sort a copy to avoid mutating original if not already sorted
-    return [...posts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5)
+    return [...dbPosts.value].sort((a, b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date)).slice(0, 5)
+})
+
+onMounted(async () => {
+    isFetching.value = true
+    try {
+        const catRes = await axios.get('/api/categories?type=post')
+        if (catRes.data.success) {
+            catRes.data.data.forEach(c => categories.value.push({ id: c.slug, labelKey: c.name }))
+        }
+
+        const { data } = await axios.get('/api/posts?status=live')
+        if (data && data.success) {
+            dbPosts.value = data.data
+        }
+    } catch(e) {
+        console.error("Failed to load news")
+    } finally {
+        isFetching.value = false
+    }
 })
 
 // --- Watchers ---
 watch([searchQuery, activeCategory], () => {
-    visibleCount.value = 6 // Reset pagination on filter change
+    visibleCount.value = 8 // Reset pagination on filter change
 })
 
 // --- Methods ---
 const loadMore = () => {
-    visibleCount.value += 6
+    visibleCount.value += 8
 }
 
 
@@ -215,7 +228,7 @@ const formatDate = (dateString) => {
                             :class="activeCategory === cat.id 
                                 ? 'bg-neutral-brown text-white border-neutral-brown' 
                                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
-                            {{ t(cat.labelKey) }}
+                            {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
                         </button>
                     </div>
 
@@ -230,15 +243,24 @@ const formatDate = (dateString) => {
             </div>
         </div>
 
-        <!-- 3. FEATURED POST (Moved Below Filter) -->
-        <div class="container mx-auto px-4 pt-12 pb-6">
-            <transition name="fade">
-                <div v-if="displayFeaturePost" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 group">
+        <!-- LOADING STATE (Nằm gọn dưới Hero & Toolbar) -->
+        <div v-if="isFetching" class="w-full min-h-[50vh] flex flex-col items-center justify-center">
+            <div class="w-12 h-12 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-6"></div>
+            <span class="text-sm font-black uppercase tracking-[0.3em] text-[#8b6b55]">Đang tải báo...</span>
+        </div>
+
+        <template v-else>
+            <!-- 3. FEATURED POST (Moved Below Filter) -->
+            <div class="container mx-auto px-4 pt-12 pb-6 animate-fade-in-up">
+                <transition name="fade">
+                <router-link v-if="displayFeaturePost" :to="`/blog/${displayFeaturePost.slug}`" class="block bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 group transition-all duration-300 hover:shadow-2xl">
                     <div class="flex flex-col lg:flex-row min-h-[400px]">
-                        <div class="w-full lg:w-1/2 relative overflow-hidden bg-gray-100">
+                        <!-- Cố định chiều cao trên mobile/tablet, để auto trên desktop chờ flex match -->
+                        <div class="w-full lg:w-1/2 h-64 md:h-80 lg:h-auto font-serif relative overflow-hidden bg-gray-100 shrink-0">
                              <!-- Lazy Loading Image -->
                             <img :src="displayFeaturePost.image" :alt="displayFeaturePost.title" loading="lazy"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                 :style="{ objectPosition: displayFeaturePost.imagePosition || 'center' }"
+                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             
                              <!-- Dynamic Label -->
                              <div class="absolute top-6 left-6 bg-primary text-white text-xs font-bold px-3 py-1 rounded shadow-md uppercase tracking-wide">
@@ -255,25 +277,22 @@ const formatDate = (dateString) => {
                             <div class="flex items-center gap-3 text-sm text-gray-400 mb-4 font-bold uppercase tracking-wider">
                                 <span class="text-secondary">{{ displayFeaturePost.category }}</span> 
                                 <span>&bull;</span>
-                                <span>{{ formatDate(displayFeaturePost.date) }}</span>
+                                <span>{{ formatDate(displayFeaturePost.publishedAt || displayFeaturePost.date) }}</span>
                             </div>
-                            <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-6 font-serif leading-tight">
-                                <router-link :to="`/blog/${displayFeaturePost.slug}`" class="hover:text-primary transition-colors">
-                                    {{ displayFeaturePost.title }}
-                                </router-link>
+                            <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-6 font-serif leading-tight hover:text-primary transition-colors">
+                                {{ displayFeaturePost.title }}
                             </h2>
                             <p class="text-gray-600 text-lg mb-8 line-clamp-3 leading-relaxed">
                                 {{ displayFeaturePost.excerpt }}
                             </p>
                             <div>
-                                <router-link :to="`/blog/${displayFeaturePost.slug}`" 
-                                    class="inline-flex items-center gap-2 text-dark font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors">
+                                <div class="inline-flex items-center gap-2 text-dark font-bold border-b-2 border-primary pb-1 group-hover:text-primary transition-colors">
                                     {{ t('blog_view.read_more') }} <ArrowLongRightIcon class="w-5 h-5"/>
-                                </router-link>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </router-link>
             </transition>
         </div>
 
@@ -284,30 +303,29 @@ const formatDate = (dateString) => {
                 <main class="w-full">
                     <div v-if="paginatedPosts.length > 0" class="flex flex-col gap-10">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                            <div v-for="post in paginatedPosts" :key="post.id" 
+                            <router-link v-for="post in paginatedPosts" :key="post.id" 
+                                :to="`/blog/${post.slug}`"
                                 class="flex flex-col bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
                                 
                                 <div class="h-56 overflow-hidden relative bg-gray-100">
                                     <img :src="post.image" :alt="post.title" loading="lazy"
+                                        :style="{ objectPosition: post.imagePosition || 'center' }"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded text-dark">
-                                        {{ post.category }}
-                                    </span>
                                 </div>
 
                                 <div class="p-6 flex-grow flex flex-col">
-                                    <div class="text-xs text-gray-400 mb-3 font-bold">{{ formatDate(post.date) }}</div>
+                                    <div class="text-xs text-gray-400 mb-3 font-bold">{{ formatDate(post.publishedAt || post.date) }}</div>
                                     <h3 class="text-xl font-bold text-dark mb-3 font-serif line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-                                        <router-link :to="`/blog/${post.slug}`">{{ post.title }}</router-link>
+                                        {{ post.title }}
                                     </h3>
                                     <p class="text-gray-500 text-sm mb-4 line-clamp-3 flex-grow text-justify leading-relaxed">
                                         {{ post.excerpt }}
                                     </p>
-                                    <router-link :to="`/blog/${post.slug}`" class="text-secondary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all mt-auto">
+                                    <div class="text-secondary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-primary">
                                         {{ t('blog_view.read_more') }} &rarr;
-                                    </router-link>
+                                    </div>
                                 </div>
-                            </div>
+                            </router-link>
                         </div>
 
                         <!-- LOAD MORE BUTTON -->
@@ -339,7 +357,8 @@ const formatDate = (dateString) => {
                     </div>
                 </main>
 
-        </div>
+            </div>
+        </template>
 
     </div>
 </template>

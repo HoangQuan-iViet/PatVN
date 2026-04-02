@@ -176,8 +176,9 @@
         "hotline": "Hotline",
         "form": {
             "name": "Họ và tên",
+            "phone": "Số điện thoại *",
             "email": "Email",
-            "subject": "Tiêu đề",
+            "subject": "Dịch vụ quan tâm / Tiêu đề",
             "message": "Nội dung",
             "submit": "Gửi liên hệ",
             "submitting": "Đang gửi..."

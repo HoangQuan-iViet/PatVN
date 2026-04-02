@@ -1,25 +1,39 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { posts } from '../data/posts'
+import axios from 'axios'
 
 const route = useRoute()
 const router = useRouter()
 const { t, locale } = useI18n()
 
 // Find current post
-const post = computed(() => {
-  return posts.find(p => p.slug === route.params.slug)
-})
+const post = ref(null)
+const isFetching = ref(true)
 
-// Find related posts (exclude current, take 2)
-const relatedPosts = computed(() => {
-  if (!post.value) return []
-  return posts.filter(p => p.id !== post.value.id).slice(0, 2)
-})
+// Dữ liệu Related Post tạm thời có thể fetch API hoặc ẩn tạm
+const relatedPosts = ref([])
+
+const fetchPost = async (slug) => {
+    isFetching.value = true
+    try {
+        const { data } = await axios.get(`/api/posts?slug=${slug}`)
+        if (data && data.success) {
+            post.value = data.data
+            updateTitle()
+        } else {
+            router.replace('/blog')
+        }
+    } catch {
+        router.replace('/blog')
+    } finally {
+        isFetching.value = false
+    }
+}
 
 const formatDate = (dateString) => {
+  if (!dateString) return 'Bản Nháp'
   const date = new Date(dateString)
   return date.toLocaleDateString(locale.value === 'vi' ? 'vi-VN' : 'en-US')
 }
@@ -30,43 +44,38 @@ const updateTitle = () => {
   }
 }
 
-const checkAndRedirect = () => {
-  if (!post.value) {
-    router.replace('/blog')
-  } else {
-    updateTitle()
-  }
-}
-
 onMounted(() => {
-  checkAndRedirect()
+  fetchPost(route.params.slug)
 })
 
-watch(() => route.params.slug, () => {
-  checkAndRedirect()
+watch(() => route.params.slug, (newSlug) => {
+  if (newSlug) fetchPost(newSlug)
 })
 </script>
 
 <template>
-  <div v-if="post" class="pt-14">
-    <!-- Breadcrumb -->
-    <div class="bg-gray-100 py-4">
-      <div class="container mx-auto px-4 text-sm text-gray-600">
-        <router-link to="/" class="hover:text-primary">{{ t('common.home') }}</router-link> 
-        <span class="mx-2">/</span> 
-        <router-link to="/blog" class="hover:text-primary">{{ t('common.blog') }}</router-link>
-        <span class="mx-2">/</span> 
-        <span class="font-bold text-dark">{{ post.title }}</span>
-      </div>
-    </div>
+  <div v-if="isFetching" class="pt-32 pb-32 w-full min-h-[70vh] flex flex-col items-center justify-center">
+      <div class="w-12 h-12 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-6"></div>
+      <span class="text-sm font-black uppercase tracking-[0.3em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
+  </div>
 
+  <div v-else-if="post" class="pt-16 animate-fade-in-up">
     <!-- Header Section -->
-    <header class="pt-20 pb-10 text-center container mx-auto px-4 max-w-4xl" v-animate-on-scroll>
-      <div class="flex items-center justify-center gap-4 mb-6 text-sm">
-        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold uppercase tracking-wide">
+    <header class="pt-12 pb-10 text-center container mx-auto px-4 max-w-4xl" v-animate-on-scroll>
+      <div class="flex items-center justify-center gap-4 mb-4 text-sm">
+        <span class="bg-[#8b6b55] text-white px-4 py-1.5 rounded font-bold uppercase tracking-widest text-[11px]">
             {{ post.category }}
         </span>
-        <span class="text-gray-500">{{ formatDate(post.date) }}</span>
+        <span class="text-gray-500 font-bold tracking-widest uppercase text-xs">{{ formatDate(post.publishedAt || post.date) }}</span>
+      </div>
+
+      <!-- Breadcrumb mới -->
+      <div class="flex justify-center flex-wrap items-center gap-2 text-xs md:text-sm text-gray-400 mb-8 font-medium">
+        <router-link to="/" class="hover:text-primary transition-colors">{{ t('common.home') }}</router-link> 
+        <span>/</span> 
+        <router-link to="/blog" class="hover:text-primary transition-colors">{{ t('common.blog') }}</router-link>
+        <span>/</span> 
+        <span class="text-gray-800 line-clamp-1 max-w-[200px] md:max-w-md">{{ post.title }}</span>
       </div>
       
       <h1 class="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-8">
@@ -80,53 +89,27 @@ watch(() => route.params.slug, () => {
     
     <!-- Feature Image -->
     <div class="container mx-auto px-4 max-w-5xl mb-16" v-animate-on-scroll>
-        <img :src="post.image" :alt="post.title" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-lg" fetchpriority="high" width="1000" height="500">
+        <img :src="post.image" :alt="post.title" :style="{ objectPosition: post.imagePosition || 'center' }" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-lg" fetchpriority="high" width="1000" height="500">
     </div>
 
     <!-- Content Body -->
-    <article class="container mx-auto px-4 max-w-3xl prose prose-lg prose-blue text-gray-800 mb-20" v-animate-on-scroll>
-        <!-- Dummy Content -->
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-        
-        <h2>{{ t('post_detail.content_title') }}</h2>
-        <p>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        
-        <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, 
-            eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        </p>
-        
-        <blockquote>
-            "Đây là một trích dẫn quan trọng liên quan đến vấn đề pháp lý được đề cập trong bài viết này."
-        </blockquote>
-        
-        <h3>{{ t('post_detail.conclusion') }}</h3>
-        <p>
-            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos 
-            qui ratione voluptatem sequi nesciunt.
-        </p>
+    <article class="container mx-auto px-4 max-w-3xl prose prose-lg prose-blue text-gray-800 mb-20 relative" v-animate-on-scroll v-html="post.content">
     </article>
 
     <!-- Related Posts -->
-    <section class="bg-gray-50 py-16 border-t border-gray-200">
+    <section v-if="relatedPosts.length > 0" class="bg-gray-50 py-16 border-t border-gray-200">
         <div class="container mx-auto px-4 max-w-5xl">
             <h2 class="text-2xl font-bold text-gray-900 mb-8 border-l-4 border-primary pl-4">{{ t('post_detail.related_posts') }}</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div v-for="related in relatedPosts" :key="related.id" class="bg-white rounded-lg shadow p-6 flex gap-4 hover:shadow-md transition">
-                    <img :src="related.image" class="w-24 h-24 object-cover rounded" :alt="related.title">
+                <div v-for="related in relatedPosts" :key="related._id" class="bg-white rounded-lg shadow p-6 flex gap-4 hover:shadow-md transition">
+                    <img :src="related.image" :style="{ objectPosition: related.imagePosition || 'center' }" class="w-24 h-24 object-cover rounded shrink-0" :alt="related.title">
                     <div>
                          <span class="text-xs text-blue-600 font-bold uppercase mb-1 block">{{ related.category }}</span>
                          <h3 class="font-bold text-gray-900 mb-2 line-clamp-2">
                              <router-link :to="`/blog/${related.slug}`" class="hover:text-primary">{{ related.title }}</router-link>
                          </h3>
-                         <span class="text-xs text-gray-500">{{ formatDate(related.date) }}</span>
+                         <span class="text-xs text-gray-500">{{ formatDate(related.publishedAt || related.date) }}</span>
                     </div>
                 </div>
             </div>

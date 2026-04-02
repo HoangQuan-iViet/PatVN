@@ -1,15 +1,43 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { services } from '../data/services'
+import axios from 'axios'
 
 const route = useRoute()
 const { t } = useI18n()
 
 // Find current service
-const service = computed(() => {
-    return services.find(s => s.slug === route.params.slug)
+const service = ref(null)
+const isLoading = ref(true)
+
+const loadService = async () => {
+    if(!route.params.slug) return;
+    isLoading.value = true
+    try {
+        // Tương tự posts, nhưng lấy record từ Mongo collections Dịch Vụ
+        const { data } = await axios.get('/api/services?slug=' + route.params.slug)
+        if (data.success && data.data) {
+            service.value = data.data
+        } else {
+            service.value = null
+        }
+    } catch(e) {
+        console.error('Không tìm thấy dịch vụ:', e)
+        service.value = null
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(() => {
+    loadService()
+})
+
+watch(() => route.params.slug, () => {
+    if (route.name === 'service-detail') {
+        loadService()
+    }
 })
 
 // Scroll function for anchor links
@@ -19,23 +47,50 @@ const scrollToSection = (id) => {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 }
+
+const availableSections = computed(() => {
+    if (!service.value) return []
+    const sections = []
+    if (service.value.overview || service.value.excerpt) {
+        sections.push({ id: 'overview', label: t('service_detail.overview') })
+    }
+    if (service.value.targetAudience && service.value.targetAudience.length > 0) {
+        sections.push({ id: 'audience', label: t('service_detail.target') })
+    }
+    if (service.value.process && service.value.process.length > 0) {
+        sections.push({ id: 'process', label: t('service_detail.process') })
+    }
+    if (service.value.documents && service.value.documents.length > 0) {
+        sections.push({ id: 'documents', label: t('service_detail.documents') })
+    }
+    if (service.value.pricing) {
+        sections.push({ id: 'pricing', label: t('service_detail.pricing') })
+    }
+    return sections
+})
 </script>
 
 <template>
-  <div v-if="service" class="bg-gray-50 min-h-screen font-sans">
+  <!-- Loading State -->
+  <div v-if="isLoading" class="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div class="w-12 h-12 border-[3px] border-gray-200 border-t-primary rounded-full animate-spin mb-6"></div>
+      <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">{{ t('common.loading', 'Đang tải dữ liệu...') }}</p>
+  </div>
+
+  <div v-else-if="service" class="bg-gray-50 min-h-screen font-sans">
     
     <!-- 1. Hero Banner (Fullwidth) -->
     <section class="relative h-[500px] flex items-center justify-center bg-neutral-900 text-white overflow-hidden pt-20">
         <div class="absolute inset-0 z-0">
              <img :src="service.image || 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fm=webp&fit=crop'" 
-                 class="w-full h-full object-cover opacity-60" :alt="t(service.titleKey, service.fallbackTitle)" fetchpriority="high" width="2000" height="1333">
+                 class="w-full h-full object-cover opacity-60" :alt="service.title" :style="{ objectPosition: service.imagePosition || '50% 50%' }" fetchpriority="high" width="2000" height="1333">
              <!-- Dark Overlay -->
              <div class="absolute inset-0 bg-black/60"></div>
         </div>
         
         <div class="relative z-10 container mx-auto px-4 text-center">
              <h1 class="text-4xl md:text-6xl font-bold mb-6 font-serif leading-tight">
-                {{ t(service.titleKey, service.fallbackTitle) }}
+                {{ service.title || 'Đang tải...' }}
              </h1>
              <!-- Breadcrumb -->
              <nav class="flex justify-center items-center gap-2 text-sm text-gray-300 font-medium">
@@ -43,7 +98,7 @@ const scrollToSection = (id) => {
                 <span>/</span>
                 <router-link to="/services" class="hover:text-white transition">{{ t('common.services') }}</router-link>
                 <span>/</span>
-                <span class="text-primary truncate max-w-[200px]">{{ t(service.titleKey, service.fallbackTitle) }}</span>
+                <span class="text-primary truncate max-w-[200px]">{{ service.title || '...' }}</span>
              </nav>
         </div>
     </section>
@@ -56,17 +111,17 @@ const scrollToSection = (id) => {
             <div class="w-full lg:w-2/3">
                 
                 <!-- Section 1: Overview -->
-                <section id="overview" class="mb-16 scroll-mt-32">
+                <section v-if="service.overview || service.excerpt" id="overview" class="mb-16 scroll-mt-32">
                     <h2 class="text-3xl font-bold text-dark mb-6 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.overview') }}
                     </h2>
-                    <p class="text-lg text-gray-600 leading-loose text-justify">
-                        {{ service.overview || t(service.contentKey, service.fallbackDesc) }}
+                    <p class="text-lg text-gray-600 leading-loose text-justify whitespace-pre-line">
+                        {{ service.overview || service.excerpt }}
                     </p>
                 </section>
 
                 <!-- Section 2: Target Audience (Grid Style) -->
-                <section v-if="service.targetAudience" id="audience" class="mb-16 scroll-mt-32">
+                <section v-if="service.targetAudience && service.targetAudience.length > 0" id="audience" class="mb-16 scroll-mt-32">
                     <h2 class="text-3xl font-bold text-dark mb-6 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.target') }}
                     </h2>
@@ -84,7 +139,7 @@ const scrollToSection = (id) => {
                 </section>
 
                 <!-- Section 3: Process (Vertical Steps with Brand Colors) -->
-                <section v-if="service.process" id="process" class="mb-16 scroll-mt-32">
+                <section v-if="service.process && service.process.length > 0" id="process" class="mb-16 scroll-mt-32">
                     <h2 class="text-3xl font-bold text-dark mb-8 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.process') }}
                     </h2>
@@ -103,7 +158,7 @@ const scrollToSection = (id) => {
                 </section>
 
                 <!-- Section 4: Documents (Checklist Style) -->
-                <section v-if="service.documents" id="documents" class="mb-16 scroll-mt-32">
+                <section v-if="service.documents && service.documents.length > 0" id="documents" class="mb-16 scroll-mt-32">
                     <h2 class="text-3xl font-bold text-dark mb-8 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.documents') }}
                     </h2>
@@ -149,20 +204,8 @@ const scrollToSection = (id) => {
                         {{ t('service_detail.toc') }}
                     </h2>
                     <nav class="flex flex-col space-y-2 text-sm">
-                        <button @click="scrollToSection('overview')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 1. {{ t('service_detail.overview') }}
-                        </button>
-                        <button v-if="service.targetAudience" @click="scrollToSection('audience')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 2. {{ t('service_detail.target') }}
-                        </button>
-                        <button v-if="service.process" @click="scrollToSection('process')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 3. {{ t('service_detail.process') }}
-                        </button>
-                        <button v-if="service.documents" @click="scrollToSection('documents')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 4. {{ t('service_detail.documents') }}
-                        </button>
-                        <button v-if="service.pricing" @click="scrollToSection('pricing')" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> 5. {{ t('service_detail.pricing') }}
+                        <button v-for="(sec, idx) in availableSections" :key="sec.id" @click="scrollToSection(sec.id)" class="text-left text-gray-500 hover:text-primary hover:font-bold transition py-1 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> {{ idx + 1 }}. {{ sec.label }}
                         </button>
                     </nav>
                 </div>

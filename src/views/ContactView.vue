@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import axios from 'axios'
 import { MapPinIcon, EnvelopeIcon, PhoneIcon, ClockIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
@@ -8,6 +9,7 @@ const { t } = useI18n()
 // --- Form State ---
 const form = reactive({
   name: '',
+  phone: '',
   email: '',
   subject: '',
   message: ''
@@ -17,16 +19,41 @@ const isSubmitting = ref(false)
 const isSuccess = ref(false)
 
 // --- Methods ---
-const handleSubmit = () => {
+const errorMessage = ref('')
+
+// --- Methods ---
+const handleSubmit = async () => {
+  errorMessage.value = ''
+  if (!form.name || !form.phone || !form.message) {
+      errorMessage.value = 'Vui lòng kiểm tra lại Tên, Số điện thoại và Lời nhắn.'
+      return
+  }
+  
   isSubmitting.value = true
-  setTimeout(() => {
-    isSubmitting.value = false
-    isSuccess.value = true
-    form.name = ''
-    form.email = ''
-    form.subject = ''
-    form.message = ''
-  }, 2000)
+  try {
+      const payload = {
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          serviceInterest: form.subject.trim(),
+          message: form.message.trim(),
+          urlSource: window.location.href
+      }
+      
+      const { data } = await axios.post('/api/contact', payload)
+      if (data.success) {
+          isSuccess.value = true
+          form.name = ''
+          form.phone = ''
+          form.email = ''
+          form.subject = ''
+          form.message = ''
+      }
+  } catch(e) {
+      errorMessage.value = e.response?.data?.message || 'Hệ thống đang bận, vui lòng thử lại sau.'
+  } finally {
+      isSubmitting.value = false
+  }
 }
 
 const resetForm = () => {
@@ -142,32 +169,45 @@ const resetForm = () => {
                                 <input v-model="form.name" type="text" required placeholder=" "
                                     class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent">
                                 <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
-                                    {{ t('contact_view.form.name') }}
+                                    {{ t('contact_view.form.name') }} *
                                 </label>
                             </div>
                             <div class="group relative">
-                                <input v-model="form.email" type="email" required placeholder=" "
+                                <input v-model="form.phone" type="tel" required placeholder=" "
                                     class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent">
                                 <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
-                                    {{ t('contact_view.form.email') }}
+                                    {{ t('contact_view.form.phone') }}
                                 </label>
                             </div>
                         </div>
 
-                        <div class="group relative">
-                            <input v-model="form.subject" type="text" placeholder=" "
-                                class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent">
-                             <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
-                                {{ t('contact_view.form.subject') }}
-                            </label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div class="group relative">
+                                <input v-model="form.email" type="email" placeholder=" "
+                                    class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent">
+                                <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
+                                    {{ t('contact_view.form.email') }} (Không bắt buộc)
+                                </label>
+                            </div>
+                            <div class="group relative">
+                                <input v-model="form.subject" type="text" placeholder=" "
+                                    class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent">
+                                <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
+                                    {{ t('contact_view.form.subject') }}
+                                </label>
+                            </div>
                         </div>
                         
                         <div class="group relative">
                             <textarea v-model="form.message" rows="4" required placeholder=" "
                                 class="peer w-full border-b border-gray-300 py-4 focus:border-black outline-none transition-all duration-300 bg-transparent text-dark placeholder-transparent resize-none"></textarea>
                             <label class="absolute left-0 top-4 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black peer-[&:not(:placeholder-shown)]:-top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-black pointer-events-none">
-                                {{ t('contact_view.form.message') }}
+                                {{ t('contact_view.form.message') }} *
                             </label>
+                        </div>
+
+                        <div v-if="errorMessage" class="text-sm font-bold text-red-500 uppercase tracking-widest border border-red-200 bg-red-50 p-4">
+                            ⚠ {{ errorMessage }}
                         </div>
 
                         <div class="pt-6">

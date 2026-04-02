@@ -1,10 +1,33 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
-import { services } from '../data/services'
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import ctaImg from '../assets/CTA.webp'
 
 const { t } = useI18n()
+const services = ref([])
+const isLoading = ref(true)
+
+onMounted(async () => {
+    try {
+        const catRes = await axios.get('/api/categories?type=service')
+        categories.value = [{ id: 'all', label: t('services_view.categories.all') }]
+        if (catRes.data.success) {
+            catRes.data.data.forEach(c => categories.value.push({ id: c.slug, label: c.name }))
+        }
+
+        const { data } = await axios.get('/api/services?status=live')
+        if (data.success) {
+            services.value = data.data
+        }
+    } catch(e) { 
+        console.error('Lỗi khi tải dịch vụ từ DB:', e) 
+    } finally {
+        isLoading.value = false
+    }
+})
 
 // --- Sticky Toolbar Auto-Hide ---
 const toolbarRef = ref(null)
@@ -14,25 +37,21 @@ const { isHidden } = useStickyToolbar(toolbarRef)
 const activeCategory = ref('all')
 const searchQuery = ref('')
 
-const categories = computed(() => [
-  { id: 'all', label: t('services_view.categories.all') },
-  { id: 'ip', label: t('services_view.categories.ip') },
-  { id: 'corporate', label: t('services_view.categories.corporate') },
-  { id: 'dispute', label: t('services_view.categories.dispute') },
-  { id: 'license', label: t('services_view.categories.license') }
+const categories = ref([
+    { id: 'all', label: t('services_view.categories.all') }
 ])
 
 // Computed
 const filteredServices = computed(() => {
-    return services.filter(service => {
+    return services.value.filter(service => {
         // Filter by Category
         const matchCategory = activeCategory.value === 'all' || service.category === activeCategory.value
         
         // Filter by Search
         const query = searchQuery.value.toLowerCase()
         const textToSearch = [
-            t(service.titleKey, service.fallbackTitle), 
-            t(service.descKey, service.fallbackDesc)
+            service.title, 
+            service.excerpt
         ].join(' ').toLowerCase()
         const matchSearch = textToSearch.includes(query)
 
@@ -41,11 +60,11 @@ const filteredServices = computed(() => {
 })
 
 const getTitle = (service) => {
-    return t(service.titleKey, service.fallbackTitle)
+    return service.title || ''
 }
 
 const getDesc = (service) => {
-    return t(service.descKey, service.fallbackDesc)
+    return service.excerpt || ''
 }
 </script>
 
@@ -110,51 +129,71 @@ const getDesc = (service) => {
 
     <!-- 3. Service Grid -->
     <div class="container mx-auto px-4 py-16 min-h-[500px]">
-        <transition-group name="fade" tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <template v-if="filteredServices.length > 0">
-                <router-link v-for="service in filteredServices" :key="service.id" :to="`/services/${service.slug}`"
-                    class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary flex flex-col h-full hover:-translate-y-1">
-                    
-                    <!-- New: Image Thumbnail -->
-                    <div class="w-full h-48 overflow-hidden rounded-t-2xl relative">
-                        <img 
-                            :src="service.image || 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop'" 
-                            :alt="getTitle(service)"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                            loading="lazy"
-                        >
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-
-                    <div class="p-8 flex-grow flex flex-col">
-                        <div class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
-                            {{ categories.find(c => c.id === service.category)?.label }}
-                        </div>
-                        
-                        <h2 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition">
-                            {{ getTitle(service) }}
-                        </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow text-justify">
-                            {{ getDesc(service) }}
-                        </p>
-                        <div class="flex items-center text-sm font-bold text-gray-400 group-hover:text-secondary transition mt-auto">
-                            {{ t('common.view_details') }}
-                            <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
-                        </div>
-                    </div>
-                </router-link>
-            </template>
-        </transition-group>
-
-        <!-- Empty State -->
-        <div v-if="filteredServices.length === 0" class="text-center py-20">
-            <div class="text-6xl mb-4">🔍</div>
-            <h2 class="text-xl font-bold text-gray-700 mb-2">{{ t('services_view.empty_title') }}</h2>
-            <p class="text-gray-500">{{ t('services_view.empty_desc') }}</p>
-            <button @click="() => { activeCategory = 'all'; searchQuery = '' }" class="mt-6 text-primary font-bold hover:underline">
-                {{ t('services_view.clear_filter') }}
-            </button>
+        
+        <!-- Loading State -->
+        <div v-if="isLoading" class="flex flex-col items-center justify-center py-32">
+            <div class="w-12 h-12 border-[3px] border-gray-200 border-t-primary rounded-full animate-spin mb-6"></div>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">{{ t('common.loading', 'Đang tải dữ liệu...') }}</p>
         </div>
+
+        <template v-else>
+            <transition-group name="fade" tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template v-if="filteredServices.length > 0">
+                    <router-link v-for="service in filteredServices" :key="service.slug" :to="`/services/${service.slug}`"
+                        class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary flex flex-col h-full hover:-translate-y-1">
+                        
+                        <!-- New: Image Thumbnail -->
+                        <div class="w-full h-48 overflow-hidden rounded-t-2xl relative shrink-0">
+                            <img 
+                                :src="service.image || 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fm=webp&fit=crop'" 
+                                :alt="getTitle(service)"
+                                :style="{ objectPosition: service.imagePosition || '50% 50%' }"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                loading="lazy"
+                            >
+                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                        </div>
+
+                        <div class="p-8 flex-grow flex flex-col">
+                            <div class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
+                                {{ categories.find(c => c.id === service.category)?.label }}
+                            </div>
+                            
+                            <h2 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition line-clamp-2">
+                                {{ getTitle(service) }}
+                            </h2>
+                            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow text-justify">
+                                {{ getDesc(service) }}
+                            </p>
+                            <div class="flex items-center text-sm font-bold text-gray-400 group-hover:text-secondary transition mt-auto">
+                                {{ t('common.view_details') }}
+                                <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                            </div>
+                        </div>
+                    </router-link>
+                </template>
+            </transition-group>
+
+            <!-- Empty State -->
+            <div v-if="filteredServices.length === 0" class="text-center py-24 bg-white rounded-2xl border border-dashed border-gray-200 shadow-sm mt-8">
+                 <div class="inline-block rounded-full bg-gray-50 p-6 mb-6">
+                     <MagnifyingGlassIcon class="w-16 h-16 text-gray-300" />
+                 </div>
+                 <h3 class="text-2xl font-serif font-bold text-neutral-900 mb-2">
+                     {{ t('services_view.empty_title') }}
+                 </h3>
+                 <p class="text-gray-500 font-sans max-w-md mx-auto mb-6">
+                     {{ t('services_view.empty_desc') }}
+                 </p>
+                 <button @click="() => { activeCategory = 'all'; searchQuery = '' }" 
+                     class="inline-flex items-center gap-2 text-primary font-bold hover:underline transition-all">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                     </svg>
+                     {{ t('services_view.clear_filter') }}
+                 </button>
+            </div>
+        </template>
     </div>
 
     <!-- 4. CTA Section -->
@@ -205,7 +244,7 @@ const getDesc = (service) => {
                 
                 <!-- Image (3/5) -->
                 <div class="w-full md:w-3/5 relative min-h-[300px] md:min-h-full">
-                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop" alt="Legal Consultation" class="absolute inset-0 w-full h-full object-cover">
+                    <img :src="ctaImg" alt="Legal Consultation" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
                     <!-- Gradient overlay to melt the image smoothly into the content on the left -->
                     <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-neutral-brown via-neutral-brown/40 to-transparent"></div>
                 </div>

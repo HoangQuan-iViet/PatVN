@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
+import footerBg from '../assets/Footer.webp'
 const { t } = useI18n()
 const currentYear = new Date().getFullYear()
 </script>
@@ -9,11 +10,12 @@ const currentYear = new Date().getFullYear()
     <!-- Background Layer -->
     <div class="absolute inset-0 z-0 overflow-hidden">
       <img
-        src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3"
+        :src="footerBg"
         alt="Office Background"
-        class="w-full h-full object-cover filter grayscale contrast-75"
+        class="w-full h-full object-cover opacity-40"
+        loading="lazy"
       />
-      <div class="absolute inset-0 bg-neutral-brown/90 mix-blend-multiply"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#1a0f08]/95 via-[#2c1a0e]/85 to-[#1a0f08]/80"></div>
     </div>
 
     <!-- Content Layer -->
