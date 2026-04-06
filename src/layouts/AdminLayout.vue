@@ -30,6 +30,11 @@
             <span class="w-2 h-2 rounded-full bg-transparent group-hover:bg-black transition-colors shrink-0" :class="{'bg-black scale-125': $route.path.startsWith('/admin/categorie'), 'ml-3': !isSidebarOpen}"></span>
             <span v-if="isSidebarOpen" class="whitespace-nowrap">Danh Mục</span>
           </router-link>
+
+          <router-link to="/admin/account" class="group flex items-center gap-4 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-black transition-colors" active-class="text-black mt-4 border-t border-gray-100 pt-4">
+            <span class="w-2 h-2 rounded-full border border-gray-400 group-hover:border-black transition-colors shrink-0 flex items-center justify-center pt-0.5" :class="{'border-black bg-black scale-125': $route.path.startsWith('/admin/account'), 'ml-3': !isSidebarOpen}"></span>
+            <span v-if="isSidebarOpen" class="whitespace-nowrap">Đổi Mật Khẩu</span>
+          </router-link>
         </nav>
       </div>
 

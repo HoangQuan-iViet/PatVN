@@ -51,19 +51,17 @@ export default async function handler(req, res) {
 
         if (!email || !password) return res.status(400).json({ success: false, message: "Invalid email or password" });
 
-        const userCount = await User.countDocuments();
-        if (userCount === 0) {
-            const defaultPassword = await bcrypt.hash('admin123', 10);
-            await User.create({ email: 'admin@patvn.com', password: defaultPassword });
-        }
-
         const user = await User.findOne({ email });
         if (!user) return res.status(401).json({ success: false, message: "Invalid email or password" });
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).json({ success: false, message: "Invalid email or password" });
 
-        const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_123';
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if (!JWT_SECRET) {
+            console.error("CRITICAL SECURITY ERROR: Missing JWT_SECRET in environment variables.");
+            return res.status(500).json({ success: false, message: "Server Misconfiguration (Fail Secure)" });
+        }
         const token = jwt.sign({ userId: user._id, role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
 
         rateLimitMap.delete(ip);
