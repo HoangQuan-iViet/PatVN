@@ -21,7 +21,7 @@
 
             <!-- Vị trí cắm Cloudflare Turnstile -->
             <div class="w-full h-16 flex items-center justify-center">
-                <vue-turnstile site-key="0x4AAAAAAC1OHWCfEfBOEjfe" v-model="form.turnstileToken" />
+                <vue-turnstile ref="turnstileRef" site-key="0x4AAAAAAC1OHWCfEfBOEjfe" v-model="form.turnstileToken" />
             </div>
 
             <!-- Lỗi: Nhả 1 kiểu lỗi chung chung duy nhất -->
@@ -48,6 +48,7 @@ const router = useRouter()
 const form = reactive({ email: '', password: '' })
 const error = ref('')
 const isSubmitting = ref(false)
+const turnstileRef = ref(null)
 
 const handleLogin = async () => {
     error.value = ''
@@ -70,6 +71,11 @@ const handleLogin = async () => {
         } else {
             // Lỗi 401 Unauthorized mới giấu thông báo để chống Hacker
             error.value = "Invalid email or password";
+        }
+        
+        // Bắt buộc reset lại mã xác minh Robot (vì token cũ đã bị sử dụng và không còn hiệu lực)
+        if (turnstileRef.value) {
+            turnstileRef.value.reset()
         }
     } finally {
         isSubmitting.value = false
