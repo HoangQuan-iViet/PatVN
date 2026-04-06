@@ -21,7 +21,7 @@
 
             <!-- Vị trí cắm Cloudflare Turnstile -->
             <div class="w-full h-16 flex items-center justify-center">
-                <vue-turnstile site-key="0x4AAAAAACuwpqhUHdLeij9W" v-model="form.turnstileToken" />
+                <vue-turnstile site-key="0x4AAAAAAC1OHWCfEfBOEjfe" v-model="form.turnstileToken" />
             </div>
 
             <!-- Lỗi: Nhả 1 kiểu lỗi chung chung duy nhất -->
