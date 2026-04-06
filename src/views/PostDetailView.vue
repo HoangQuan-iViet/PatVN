@@ -64,9 +64,9 @@ watch(locale, () => {
       <span class="text-sm font-black uppercase tracking-[0.3em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
   </div>
 
-  <div v-else-if="post" class="pt-16 animate-fade-in-up">
+  <div v-else-if="post" class="pt-16">
     <!-- Header Section -->
-    <header class="pt-12 pb-10 text-center container mx-auto px-4 max-w-4xl" v-animate-on-scroll>
+    <header class="pt-12 pb-10 text-center container mx-auto px-4 max-w-4xl">
       <div class="flex items-center justify-center gap-4 mb-4 text-sm">
         <span class="bg-[#8b6b55] text-white px-4 py-1.5 rounded font-bold uppercase tracking-widest text-[11px]">
             {{ post.category }}
@@ -93,12 +93,12 @@ watch(locale, () => {
     </header>
     
     <!-- Feature Image -->
-    <div class="container mx-auto px-4 max-w-5xl mb-16" v-animate-on-scroll>
+    <div class="container mx-auto px-4 max-w-5xl mb-16">
         <img :src="post.image" :alt="post.title" :style="{ objectPosition: post.imagePosition || 'center' }" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-lg" fetchpriority="high" width="1000" height="500">
     </div>
 
     <!-- Content Body -->
-    <article class="container mx-auto px-4 max-w-3xl prose prose-lg prose-blue text-gray-800 mb-20 relative" v-animate-on-scroll v-html="post.content">
+    <article class="container mx-auto px-4 max-w-3xl prose prose-lg prose-blue text-gray-800 mb-20 relative" v-html="post.content">
     </article>
 
     <!-- Related Posts -->
