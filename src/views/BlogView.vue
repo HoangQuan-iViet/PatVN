@@ -327,10 +327,10 @@ const formatDate = (dateString) => {
 
                                 <div class="p-6 flex-grow flex flex-col">
                                     <div class="text-xs text-gray-400 mb-3 font-bold">{{ formatDate(post.publishedAt || post.date) }}</div>
-                                    <h3 class="text-xl font-bold text-dark mb-3 font-serif line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                                    <h3 class="text-xl font-bold text-dark mb-3 font-serif line-clamp-2 leading-snug group-hover:text-primary transition-colors min-h-[3.5rem] text-left">
                                         {{ post.title }}
                                     </h3>
-                                    <p class="text-gray-500 text-sm mb-4 line-clamp-3 flex-grow text-justify leading-relaxed">
+                                    <p class="text-gray-500 text-sm mb-4 line-clamp-3 flex-grow min-h-[4.5rem] text-left leading-relaxed">
                                         {{ post.excerpt }}
                                     </p>
                                     <div class="text-secondary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-primary">

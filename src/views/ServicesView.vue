@@ -173,10 +173,10 @@ const getDesc = (service) => {
                                 {{ categories.find(c => c.id === service.category)?.label }}
                             </div>
                             
-                            <h2 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition line-clamp-2">
+                            <h2 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition line-clamp-2 min-h-[3.5rem] text-left">
                                 {{ getTitle(service) }}
                             </h2>
-                            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow text-justify">
+                            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow min-h-[4.5rem] text-left">
                                 {{ getDesc(service) }}
                             </p>
                             <div class="flex items-center text-sm font-bold text-gray-400 group-hover:text-secondary transition mt-auto">

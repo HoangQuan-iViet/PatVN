@@ -176,10 +176,10 @@ const uspItems = [
                 </div>
 
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold font-serif text-dark mb-3 group-hover:text-primary transition leading-tight">
+                    <h3 class="text-xl font-bold font-serif text-dark mb-3 group-hover:text-primary transition leading-tight min-h-[3.5rem] text-left">
                         {{ service.title || '' }}
                     </h3>
-                    <p class="text-gray-500 line-clamp-2 text-sm mb-6">
+                    <p class="text-gray-500 line-clamp-2 text-sm mb-6 min-h-[3rem] text-left">
                         {{ service.excerpt || service.overview || '' }}
                     </p>
                     
@@ -237,7 +237,7 @@ const uspItems = [
                         <div class="text-xs font-bold uppercase tracking-wider text-secondary mb-3">
                             {{ post.category }}
                         </div>
-                        <h3 class="text-xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition line-clamp-2 leading-snug">
+                        <h3 class="text-xl font-bold font-serif text-dark mb-4 group-hover:text-primary transition line-clamp-2 leading-snug min-h-[3.5rem] text-left">
                             <router-link :to="`/blog/${post.slug}`">{{ post.title }}</router-link>
                         </h3>
                         <router-link :to="`/blog/${post.slug}`" class="mt-auto text-sm font-bold text-dark hover:text-primary transition flex items-center gap-2 uppercase tracking-wide">

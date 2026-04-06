@@ -108,7 +108,7 @@ onMounted(() => {
                     <th class="p-4 font-bold">Danh mục</th>
                     <th class="p-4 font-bold">Ngày đăng</th>
                     <th class="p-4 font-bold w-32">Trạng thái</th>
-                    <th class="p-4 font-bold text-right">Hành động</th>
+                    <th class="p-4 font-bold text-right min-w-[160px]">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,13 +136,15 @@ onMounted(() => {
                             {{ getServiceStatus(p.publishedAt).label }}
                         </span>
                     </td>
-                    <td class="p-4 text-right space-x-4">
-                        <a :href="`/services/${p.slug}`" target="_blank" class="text-xs font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700">Xem</a>
-                        <router-link :to="`/admin/services/${p._id}/edit`" class="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-black">Sửa</router-link>
-                        <button @click="deleteService(p._id)" class="text-xs font-bold uppercase tracking-widest text-red-500 hover:text-red-700 inline-flex items-center gap-1.5 focus:outline-none">
-                            <span v-if="deletingIds.includes(p._id)" class="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
-                            {{ deletingIds.includes(p._id) ? 'Đang xoá...' : 'Xóa' }}
-                        </button>
+                    <td class="p-4">
+                        <div class="flex items-center justify-end gap-4 whitespace-nowrap text-right">
+                            <a :href="`/services/${p.slug}`" target="_blank" class="text-xs font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700">Xem</a>
+                            <router-link :to="`/admin/services/${p._id}/edit`" class="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-black">Sửa</router-link>
+                            <button @click="deleteService(p._id)" class="text-xs font-bold uppercase tracking-widest text-red-500 hover:text-red-700 inline-flex items-center gap-1.5 focus:outline-none">
+                                <span v-if="deletingIds.includes(p._id)" class="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+                                {{ deletingIds.includes(p._id) ? 'Đang xoá...' : 'Xóa' }}
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 <tr v-if="services.length === 0">
