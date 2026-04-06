@@ -12,7 +12,7 @@ const isDeleting = ref(null)
 
 // Add/Edit State
 const isEditing = ref(null)
-const formData = ref({ name: '', slug: '', type: 'post' })
+const formData = ref({ name: '', name_en: '', slug: '', type: 'post' })
 
 const fetchCategories = async () => {
     isFetching.value = true
@@ -47,6 +47,30 @@ const syncSlug = () => {
         formData.value.slug = generateSlug(formData.value.name)
     }
 }
+const isTranslating = ref(false)
+
+const autoTranslate = async () => {
+    if (!formData.value.name || formData.value.name.trim() === '') {
+        showAlert('Chưa nhập tên danh mục tiếng Việt', 'error');
+        return;
+    }
+    
+    isTranslating.value = true;
+    try {
+        const { data } = await axios.post('/api/translate', { texts: [formData.value.name] });
+        if (data.success && data.translations && data.translations.length > 0) {
+            formData.value.name_en = data.translations[0];
+            let info = 'Đã dịch tự động sang Tiếng Anh!';
+            if (data.mode !== 'gemini') info = 'Dịch bằng Google (Cơ chế dự phòng)';
+            showAlert(info, 'success');
+        }
+    } catch(e) {
+        console.error(e);
+        showAlert('Lỗi khi biên dịch AI', 'error');
+    } finally {
+        isTranslating.value = false;
+    }
+}
 
 const saveCategory = async () => {
     if (!formData.value.name.trim() || !formData.value.slug.trim()) {
@@ -76,12 +100,17 @@ const saveCategory = async () => {
 
 const editCategory = (cat) => {
     isEditing.value = cat._id
-    formData.value = { name: cat.name, slug: cat.slug, type: cat.type }
+    formData.value = { 
+        name: cat.name, 
+        name_en: cat.name_en || '', 
+        slug: cat.slug, 
+        type: cat.type 
+    }
 }
 
 const cancelEdit = () => {
     isEditing.value = null
-    formData.value = { name: '', slug: '', type: activeType.value }
+    formData.value = { name: '', name_en: '', slug: '', type: activeType.value }
 }
 
 const deleteCategory = async (id) => {
@@ -168,8 +197,19 @@ const deleteMultiple = async () => {
             </h2>
             <div class="space-y-4">
                 <div>
-                   <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Tên Danh Mục (Hiển thị ra Web)</label>
+                   <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Tên Danh Mục (VI)</label>
                    <input v-model="formData.name" @input="syncSlug" type="text" class="w-full text-sm font-bold p-2 px-3 border border-gray-300 focus:outline-none focus:border-black transition" placeholder="VD: Sở hữu Trí Tuệ" />
+                </div>
+                <div>
+                   <div class="flex items-center justify-between mb-2">
+                       <label class="block text-[10px] font-bold uppercase tracking-widest text-blue-400">Tên Danh Mục (EN)</label>
+                       <button @click="autoTranslate" :disabled="isTranslating" class="px-2 py-0.5 text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-all flex items-center gap-1 disabled:opacity-50">
+                            <span v-if="isTranslating" class="w-2 h-2 border-[1.5px] border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+                            <span v-else>✨</span>
+                            {{ isTranslating ? 'Đang dịch...' : 'Dịch AI' }}
+                        </button>
+                   </div>
+                   <input v-model="formData.name_en" type="text" class="w-full text-sm font-bold p-2 px-3 border border-blue-200 focus:outline-none focus:border-blue-600 transition" placeholder="VD: Intellectual Property" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">URL SEO (Viết liền ko dấu)</label>
@@ -201,7 +241,7 @@ const deleteMultiple = async () => {
                              <th class="p-4 w-12 text-center border-r border-gray-200">
                                  <input type="checkbox" @change="toggleSelectAll" :checked="filteredCategories.length > 0 && selectedIds.length === filteredCategories.length" class="w-4 h-4 cursor-pointer accent-black" />
                              </th>
-                             <th class="p-4 font-bold">Tên Danh Mục Nhãn</th>
+                             <th class="p-4 font-bold">Tên Danh Mục (VI / EN)</th>
                              <th class="p-4 font-bold">Quy Ước Code (Slug)</th>
                              <th class="p-4 font-bold text-right">Quản Trị</th>
                          </tr>
@@ -211,7 +251,10 @@ const deleteMultiple = async () => {
                              <td class="p-4 text-center border-r border-gray-100">
                                  <input type="checkbox" v-model="selectedIds" :value="cat._id" class="w-4 h-4 cursor-pointer accent-black" />
                              </td>
-                             <td class="p-4 font-bold text-sm text-dark">{{ cat.name }}</td>
+                             <td class="p-4 border-r border-gray-50">
+                                 <div class="font-bold text-sm text-dark">{{ cat.name }}</div>
+                                 <div class="text-[10px] text-blue-500 font-bold uppercase tracking-wider mt-1">{{ cat.name_en || 'CHƯA DỊCH' }}</div>
+                             </td>
                              <td class="p-4 font-mono text-xs text-gray-400 bg-gray-50">{{ cat.slug }}</td>
                              <td class="p-4 text-right space-x-3">
                                  <button @click="editCategory(cat)" :disabled="isDeleting === cat._id" class="text-[10px] uppercase font-bold text-gray-400 hover:text-black tracking-widest disabled:opacity-50">Sửa</button>

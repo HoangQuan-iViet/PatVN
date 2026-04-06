@@ -148,23 +148,35 @@ const sidebarPosts = computed(() => {
     return [...dbPosts.value].sort((a, b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date)).slice(0, 5)
 })
 
-onMounted(async () => {
+const fetchData = async () => {
     isFetching.value = true
     try {
-        const catRes = await axios.get('/api/categories?type=post')
+        const [catRes, postRes] = await Promise.all([
+            axios.get(`/api/categories?type=post&locale=${locale.value}`),
+            axios.get(`/api/posts?status=live&locale=${locale.value}`)
+        ])
+        
         if (catRes.data.success) {
-            catRes.data.data.forEach(c => categories.value.push({ id: c.slug, labelKey: c.name }))
+            const apiCats = catRes.data.data.map(c => ({ id: c.slug, name: c.name }))
+            categories.value = [{ id: 'all', labelKey: 'blog_view.filter_all' }, ...apiCats]
         }
 
-        const { data } = await axios.get('/api/posts?status=live')
-        if (data && data.success) {
-            dbPosts.value = data.data
+        if (postRes.data && postRes.data.success) {
+            dbPosts.value = postRes.data.data
         }
     } catch(e) {
-        console.error("Failed to load news")
+        console.error("Failed to load news", e)
     } finally {
         isFetching.value = false
     }
+}
+
+onMounted(() => {
+    fetchData()
+})
+
+watch(locale, () => {
+    fetchData()
 })
 
 // --- Watchers ---

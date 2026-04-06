@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // Find current service
 const service = ref(null)
@@ -16,7 +16,7 @@ const loadService = async () => {
     isLoading.value = true
     try {
         // Tương tự posts, nhưng lấy record từ Mongo collections Dịch Vụ
-        const { data } = await axios.get('/api/services?slug=' + route.params.slug)
+        const { data } = await axios.get(`/api/services?slug=${route.params.slug}&locale=${locale.value}`)
         if (data.success && data.data) {
             service.value = data.data
         } else {
@@ -35,6 +35,12 @@ onMounted(() => {
 })
 
 watch(() => route.params.slug, () => {
+    if (route.name === 'service-detail') {
+        loadService()
+    }
+})
+
+watch(locale, () => {
     if (route.name === 'service-detail') {
         loadService()
     }

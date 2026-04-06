@@ -42,7 +42,8 @@ export default async function handler(req, res) {
         if (id) {
           const post = await Post.findById(id);
           if (!post) return res.status(404).json({ success: false, message: "Bài viết không tồn tại" });
-          res.status(200).json({ success: true, data: post }); // Trả về nguyên bản để Admin edit
+          // Không dùng mapTranslations cho Admin để lấy trường _en
+          res.status(200).json({ success: true, data: post });
         } 
         // 2. Phục vụ Xem chi tiết ở Frontend: Lọc bằng Slug
         else if (slug) {

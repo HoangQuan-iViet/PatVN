@@ -1,19 +1,20 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import bannerImg from '../assets/Banner.webp'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const services = ref([])
 const postsDB = ref([])
 const isLoading = ref(true)
 
-onMounted(async () => {
+const fetchData = async () => {
+    isLoading.value = true
     try {
         const [resServices, resPosts] = await Promise.all([
-            axios.get('/api/services?status=live'),
-            axios.get('/api/posts?status=live')
+            axios.get(`/api/services?status=live&locale=${locale.value}`),
+            axios.get(`/api/posts?status=live&locale=${locale.value}`)
         ])
         if (resServices.data.success) {
             services.value = resServices.data.data
@@ -26,6 +27,14 @@ onMounted(async () => {
     } finally {
         isLoading.value = false
     }
+}
+
+onMounted(() => {
+    fetchData()
+})
+
+watch(locale, () => {
+    fetchData()
 })
 
 const partners = [1, 2, 3, 4, 5, 6] 

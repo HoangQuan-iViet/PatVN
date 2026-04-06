@@ -207,21 +207,24 @@ const unLink = () => {
 
 // 5. FETCH DATA (NẾU LÀ RE-EDIT)
 onMounted(async () => {
+    const { id } = route.params
+    if (id) {
+        isEditMode.value = true
+        isFetching.value = true
+    }
+
     try {
         const catRes = await axios.get('/api/categories?type=post')
         if (catRes.data.success) availableCategories.value = catRes.data.data
     } catch(e) {}
 
     // Bắt sự kiện thả ảnh...
-    const { id } = route.params
     if (id) {
-        isEditMode.value = true
-        isFetching.value = true
         try {
             // Tải duy nhất 1 bài từ DB, tránh kéo cả MB Data thừa thãi
             const { data: res } = await axios.get('/api/posts?id=' + id)
-            if (res.data.success) {
-                currentPost.value = { ...initialForm, ...res.data.data }
+            if (res.success && res.data) {
+                currentPost.value = { ...initialForm, ...res.data }
                 // Luôn ưu tiên hiển thị bản tiếng Việt trước khi load
                 activeLang.value = 'vi'
                 editor.value.commands.setContent(currentPost.value.content || '')
@@ -237,6 +240,53 @@ const generateSlug = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .replace(/đ/g, 'd').replace(/Đ/g, 'D')
         .toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+}
+
+const isTranslating = ref(false)
+
+const autoTranslate = async () => {
+    let contentToTranslate = currentPost.value.content;
+    if (activeLang.value === 'vi' && editor.value) {
+        contentToTranslate = editor.value.getHTML();
+    }
+
+    const payload = [
+        currentPost.value.title || '',
+        currentPost.value.excerpt || '',
+        contentToTranslate || ''
+    ];
+
+    if (payload.every(p => p.trim() === '' || p.trim() === '<p></p>')) {
+        showAlert('Chưa có nội dung Tiếng Việt để dịch!', 'error');
+        return;
+    }
+
+    isTranslating.value = true;
+    try {
+        const { data } = await axios.post('/api/translate', { texts: payload });
+        if (data.success && data.translations && data.translations.length === 3) {
+            currentPost.value.title_en = data.translations[0];
+            currentPost.value.excerpt_en = data.translations[1];
+            currentPost.value.content_en = data.translations[2];
+            
+            if (activeLang.value === 'en') {
+                if (editor.value) editor.value.commands.setContent(currentPost.value.content_en || '');
+            } else {
+                switchLang('en');
+            }
+            
+            let info = 'Đã tự động dịch sang Tiếng Anh (Bằng AI)!';
+            if (data.mode !== 'gemini') info = 'Đã tự động dịch bằng Google (Cơ chế fallback)';
+            showAlert(info, 'success');
+        } else {
+            throw new Error(data.message || 'Lỗi dữ liệu trả về');
+        }
+    } catch (e) {
+        console.error("Lỗi Dịch Tự động: ", e);
+        showAlert('Có lỗi khi kết nối với AI dịch thuật.', 'error');
+    } finally {
+        isTranslating.value = false;
+    }
 }
 
 const savePost = async (actionType) => {
@@ -343,18 +393,27 @@ const savePost = async (actionType) => {
             {{ isEditMode ? 'Chỉnh sửa tài liệu' : 'Khởi tạo tài liệu mới' }}
         </h1>
         
-        <!-- Tab chuyển đổi ngôn ngữ -->
-        <div class="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
-            <button @click="switchLang('vi')" 
-                class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
-                :class="activeLang === 'vi' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
-                Tiếng Việt
+        <div class="flex flex-wrap items-center gap-2 md:gap-4">
+            <!-- Nút Dịch AI -->
+            <button @click="autoTranslate" :disabled="isTranslating" class="px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#8b6b55] bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100 transition-all flex items-center gap-1.5 disabled:opacity-50">
+                <span v-if="isTranslating" class="w-3 h-3 border-2 border-[#8b6b55] border-t-transparent rounded-full animate-spin"></span>
+                <span v-else>✨</span>
+                {{ isTranslating ? 'Đang dịch...' : 'Dịch AI (EN)' }}
             </button>
-            <button @click="switchLang('en')" 
-                class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
-                :class="activeLang === 'en' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
-                English (EN)
-            </button>
+
+            <!-- Tab chuyển đổi ngôn ngữ -->
+            <div class="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
+                <button @click="switchLang('vi')" 
+                    class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
+                    :class="activeLang === 'vi' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                    Tiếng Việt
+                </button>
+                <button @click="switchLang('en')" 
+                    class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
+                    :class="activeLang === 'en' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                    English (EN)
+                </button>
+            </div>
         </div>
     </div>
 

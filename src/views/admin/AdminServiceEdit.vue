@@ -15,10 +15,19 @@ const isEditMode = ref(false)
 const isFetching = ref(false)
 const { showAlert } = useNotification()
 
+const activeLang = ref('vi')
 const initialForm = {
-    title: '', slug: '', excerpt: '', category: '', image: '', imagePosition: '50% 50%',
-    overview: '', targetAudience: [''], documents: [''],
-    process: [{ title: '', desc: '', time: '' }], pricing: '',
+    title: '', title_en: '',
+    slug: '', 
+    excerpt: '', excerpt_en: '',
+    category: '', 
+    image: '', imagePosition: '50% 50%',
+    overview: '', overview_en: '',
+    targetAudience: [''], targetAudience_en: [''],
+    documents: [''], documents_en: [''],
+    process: [{ title: '', desc: '', time: '' }],
+    process_en: [{ title: '', desc: '', time: '' }],
+    pricing: '', pricing_en: '',
     publishedAt: null
 }
 const currentService = ref(JSON.parse(JSON.stringify(initialForm)))
@@ -77,24 +86,32 @@ const endDrag = () => {
 
 // --- Fetch Edit Data ---
 onMounted(async () => {
+    const { id } = route.params
+    if (id) {
+        isEditMode.value = true
+        isFetching.value = true
+    }
+
     try {
         const catRes = await axios.get('/api/categories?type=service')
         if (catRes.data.success) availableCategories.value = catRes.data.data
     } catch(e) {}
 
-    const { id } = route.params
     if (id) {
-        isEditMode.value = true
-        isFetching.value = true
         try {
-            const { data } = await axios.get('/api/services?id=' + id)
-            if (data.success && data.data) {
+            const { data: res } = await axios.get('/api/services?id=' + id)
+            if (res.success && res.data) {
                 // Đảm bảo không bị null các mảng
-                const fetched = data.data
+                const fetched = res.data
                 if (!fetched.targetAudience || !fetched.targetAudience.length) fetched.targetAudience = ['']
+                if (!fetched.targetAudience_en || !fetched.targetAudience_en.length) fetched.targetAudience_en = ['']
                 if (!fetched.documents || !fetched.documents.length) fetched.documents = ['']
+                if (!fetched.documents_en || !fetched.documents_en.length) fetched.documents_en = ['']
                 if (!fetched.process || !fetched.process.length) fetched.process = [{ title: '', desc: '', time: '' }]
-                currentService.value = { ...fetched }
+                if (!fetched.process_en || !fetched.process_en.length) fetched.process_en = [{ title: '', desc: '', time: '' }]
+                
+                currentService.value = { ...initialForm, ...fetched }
+                activeLang.value = 'vi'
             }
         } catch(e) { console.error('Lỗi khi tải dịch vụ:', e) }
         finally { isFetching.value = false }
@@ -133,8 +150,11 @@ const saveService = async (actionType) => {
 
     // Xoá bớt string rỗng trong mảng trước khi đẩy
     currentService.value.targetAudience = currentService.value.targetAudience.filter(i => i.trim() !== '')
+    currentService.value.targetAudience_en = currentService.value.targetAudience_en.filter(i => i.trim() !== '')
     currentService.value.documents = currentService.value.documents.filter(i => i.trim() !== '')
+    currentService.value.documents_en = currentService.value.documents_en.filter(i => i.trim() !== '')
     currentService.value.process = currentService.value.process.filter(p => p.title.trim() !== '')
+    currentService.value.process_en = currentService.value.process_en.filter(p => p.title.trim() !== '')
 
     isLoading.value = true
     let successMessage = ''
@@ -182,6 +202,69 @@ const saveService = async (actionType) => {
         isLoading.value = false
     }
 }
+
+const isTranslating = ref(false)
+
+const autoTranslate = async () => {
+    let payload = [];
+    
+    payload.push(currentService.value.title || '');
+    payload.push(currentService.value.excerpt || '');
+    payload.push(currentService.value.overview || '');
+    payload.push(currentService.value.pricing || '');
+    
+    const taLen = currentService.value.targetAudience.length;
+    currentService.value.targetAudience.forEach(item => payload.push(item || ''));
+    
+    const docLen = currentService.value.documents.length;
+    currentService.value.documents.forEach(item => payload.push(item || ''));
+    
+    const processLen = currentService.value.process.length;
+    currentService.value.process.forEach(p => {
+        payload.push(p.title || '');
+        payload.push(p.desc || '');
+        payload.push(p.time || '');
+    });
+
+    isTranslating.value = true;
+    try {
+        const { data } = await axios.post('/api/translate', { texts: payload });
+        if (data.success && data.translations) {
+            let t = data.translations;
+            let cursor = 0;
+            
+            currentService.value.title_en = t[cursor++];
+            currentService.value.excerpt_en = t[cursor++];
+            currentService.value.overview_en = t[cursor++];
+            currentService.value.pricing_en = t[cursor++];
+            
+            currentService.value.targetAudience_en = [];
+            for(let i=0; i<taLen; i++) currentService.value.targetAudience_en.push(t[cursor++]);
+            
+            currentService.value.documents_en = [];
+            for(let i=0; i<docLen; i++) currentService.value.documents_en.push(t[cursor++]);
+            
+            currentService.value.process_en = [];
+            for(let i=0; i<processLen; i++) {
+                currentService.value.process_en.push({
+                    title: t[cursor++],
+                    desc: t[cursor++],
+                    time: t[cursor++]
+                });
+            }
+
+            activeLang.value = 'en';
+            let info = 'Đã tự động dịch sang Tiếng Anh (Bằng AI)!';
+            if (data.mode !== 'gemini') info = 'Đã tự động dịch bằng Google (Cơ chế fallback)';
+            showAlert(info, 'success');
+        }
+    } catch(e) {
+        console.error(e);
+        showAlert('Có lỗi khi tự động dịch dịch vụ.', 'error');
+    } finally {
+        isTranslating.value = false;
+    }
+}
 </script>
 
 <template>
@@ -197,104 +280,159 @@ const saveService = async (actionType) => {
         </button>
     </div>
 
-    <h1 class="text-3xl font-bold font-sans text-dark tracking-tight mb-8">
-        {{ isEditMode ? 'Chỉnh sửa Thông tin Dịch Vụ' : 'Khởi tạo Dịch vụ mới' }}
-    </h1>
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold font-serif text-dark tracking-tight">
+            {{ isEditMode ? 'Chỉnh sửa Dịch Vụ' : 'Thiết lập Dịch Vụ mới' }}
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-2 md:gap-4">
+            <!-- Nút Dịch AI -->
+            <button @click="autoTranslate" :disabled="isTranslating" class="px-3 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#8b6b55] bg-orange-50 border border-orange-200 rounded-md hover:bg-orange-100 transition-all flex items-center gap-1.5 disabled:opacity-50">
+                <span v-if="isTranslating" class="w-3 h-3 border-2 border-[#8b6b55] border-t-transparent rounded-full animate-spin"></span>
+                <span v-else>✨</span>
+                {{ isTranslating ? 'Đang dịch...' : 'Dịch AI (EN)' }}
+            </button>
+
+            <!-- Tab chuyển đổi ngôn ngữ -->
+            <div class="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
+                <button @click="activeLang = 'vi'" 
+                    class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
+                    :class="activeLang === 'vi' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                    Tiếng Việt
+                </button>
+                <button @click="activeLang = 'en'" 
+                    class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all"
+                    :class="activeLang === 'en' ? 'bg-white text-black shadow-sm' : 'text-gray-400 hover:text-gray-600'">
+                    English (EN)
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <!-- Cột trái: Thông tin chính -->
         <div class="lg:col-span-2 space-y-6">
-            <!-- Basic Info -->
-            <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
-                <h2 class="text-sm font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-5">Thông Tin Căn Bản</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Tên Dịch Vụ</label>
-                        <input v-model="currentService.title" class="w-full border-b border-gray-300 py-2 text-xl font-bold text-dark focus:outline-none focus:border-black transition-colors" placeholder="Vd: Đăng ký Nhãn hiệu..." />
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 mt-2">Đường dẫn URL SEO (Để trống tự động sinh)</label>
-                        <input v-model="currentService.slug" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black transition-colors" placeholder="vd: dang-ky-nhan-hieu" />
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tóm tắt ngắn (Excerpt / Meta Desc)</label>
-                        <textarea v-model="currentService.excerpt" rows="2" class="w-full border border-gray-200 p-3 text-sm focus:outline-none focus:border-black transition-colors bg-gray-50"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tổng quan / Giới thiệu chi tiết (Overview)</label>
-                        <textarea v-model="currentService.overview" rows="4" class="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black transition-colors"></textarea>
+            <!-- VI FIELDS -->
+            <div v-show="activeLang === 'vi'" class="space-y-6 animate-fade-in">
+                <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
+                    <h2 class="text-xs font-black uppercase tracking-widest border-b border-gray-100 pb-3 mb-5 text-gray-400">Thông Tin Căn Bản (VI)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Tên Dịch Vụ (VI)</label>
+                            <input v-model="currentService.title" @input="!isEditMode && (currentService.slug = generateSlug(currentService.title))" class="w-full border-b border-gray-300 py-2 text-xl font-bold text-dark focus:outline-none focus:border-black transition-colors" placeholder="Vd: Đăng ký Nhãn hiệu..." />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tóm tắt ngắn (VI)</label>
+                            <textarea v-model="currentService.excerpt" rows="2" class="w-full border border-gray-200 p-3 text-sm focus:outline-none focus:border-black transition-colors bg-gray-50" placeholder="Hiển thị ở trang danh sách..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tổng quan chi tiết (VI)</label>
+                            <textarea v-model="currentService.overview" rows="4" class="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black transition-colors" placeholder="Nội dung giới thiệu dịch vụ..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Chính Sách Giá (VI)</label>
+                            <input v-model="currentService.pricing" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black" placeholder="Vd: Liên hệ để báo giá..." />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Target Audience & Documents -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
-                     <h2 class="text-sm font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-4">Đối Tượng Phù Hợp</h2>
-                     <div v-for="(item, idx) in currentService.targetAudience" :key="'ta'+idx" class="flex gap-2 mb-2">
-                         <input v-model="currentService.targetAudience[idx]" class="w-full border-b border-gray-200 py-1 text-sm focus:outline-none focus:border-black" placeholder="Vd: Startup công nghệ..." />
-                         <button @click="currentService.targetAudience.splice(idx, 1)" class="text-red-400 hover:text-red-600 px-2"><TrashIcon class="w-4 h-4"/></button>
-                     </div>
-                     <button @click="currentService.targetAudience.push('')" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 mt-2 flex items-center gap-1 hover:text-black"><PlusIcon class="w-4 h-4"/> Thêm Đối tượng</button>
+            <!-- EN FIELDS -->
+            <div v-show="activeLang === 'en'" class="space-y-6 animate-fade-in">
+                <div class="bg-white p-6 shadow-sm border-[0.5px] border-blue-100">
+                    <h2 class="text-xs font-black uppercase tracking-widest border-b border-blue-50 pb-3 mb-5 text-blue-400">Basic Information (EN)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Service Name (EN)</label>
+                            <input v-model="currentService.title_en" class="w-full border-b border-blue-200 py-2 text-xl font-bold text-dark focus:outline-none focus:border-blue-600 transition-colors" placeholder="Service name in English..." />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Short Excerpt (EN)</label>
+                            <textarea v-model="currentService.excerpt_en" rows="2" class="w-full border border-blue-100 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors bg-blue-50/30" placeholder="English summary..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Detailed Overview (EN)</label>
+                            <textarea v-model="currentService.overview_en" rows="4" class="w-full border border-blue-200 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors" placeholder="English detailed content..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Pricing Policy (EN)</label>
+                            <input v-model="currentService.pricing_en" class="w-full border-b border-blue-200 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="Vd: Contact for pricing..." />
+                        </div>
+                    </div>
                 </div>
-                
+            </div>
+
+            <!-- Shared Data Arrays (Target Audience, Documents) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Target Audience -->
                 <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
-                     <h2 class="text-sm font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-4">Hồ Sơ Yêu Cầu</h2>
-                     <div v-for="(item, idx) in currentService.documents" :key="'doc'+idx" class="flex gap-2 mb-2">
-                         <input v-model="currentService.documents[idx]" class="w-full border-b border-gray-200 py-1 text-sm focus:outline-none focus:border-black" placeholder="Vd: CMND/CCCD..." />
-                         <button @click="currentService.documents.splice(idx, 1)" class="text-red-400 hover:text-red-600 px-2"><TrashIcon class="w-4 h-4"/></button>
-                     </div>
-                     <button @click="currentService.documents.push('')" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 mt-2 flex items-center gap-1 hover:text-black"><PlusIcon class="w-4 h-4"/> Thêm Hồ sơ</button>
+                    <h2 class="text-xs font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-4">Đối Tượng {{ activeLang === 'vi' ? '(VI)' : '(EN)' }}</h2>
+                    <div v-for="(item, idx) in (activeLang === 'vi' ? currentService.targetAudience : currentService.targetAudience_en)" :key="'ta'+idx" class="flex gap-2 mb-2">
+                        <input v-model="(activeLang === 'vi' ? currentService.targetAudience : currentService.targetAudience_en)[idx]" class="w-full border-b border-gray-200 py-1 text-sm focus:outline-none focus:border-black" placeholder="Người đại diện, doanh nghiệp..." />
+                        <button @click="(activeLang === 'vi' ? currentService.targetAudience : currentService.targetAudience_en).splice(idx, 1)" class="text-red-400 hover:text-red-600 px-2"><TrashIcon class="w-4 h-4"/></button>
+                    </div>
+                    <button @click="(activeLang === 'vi' ? currentService.targetAudience : currentService.targetAudience_en).push('')" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 mt-2 flex items-center gap-1 hover:text-black"><PlusIcon class="w-4 h-4"/> Thêm mục</button>
+                </div>
+
+                <!-- Documents -->
+                <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
+                    <h2 class="text-xs font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-4">Hồ Sơ Cần Có {{ activeLang === 'vi' ? '(VI)' : '(EN)' }}</h2>
+                    <div v-for="(item, idx) in (activeLang === 'vi' ? currentService.documents : currentService.documents_en)" :key="'doc'+idx" class="flex gap-2 mb-2">
+                        <input v-model="(activeLang === 'vi' ? currentService.documents : currentService.documents_en)[idx]" class="w-full border-b border-gray-200 py-1 text-sm focus:outline-none focus:border-black" placeholder="Vd: Giấy phép kinh doanh..." />
+                        <button @click="(activeLang === 'vi' ? currentService.documents : currentService.documents_en).splice(idx, 1)" class="text-red-400 hover:text-red-600 px-2"><TrashIcon class="w-4 h-4"/></button>
+                    </div>
+                    <button @click="(activeLang === 'vi' ? currentService.documents : currentService.documents_en).push('')" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 mt-2 flex items-center gap-1 hover:text-black"><PlusIcon class="w-4 h-4"/> Thêm hồ sơ</button>
                 </div>
             </div>
 
             <!-- Process -->
             <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
-                <h2 class="text-sm font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-5">Quy Trình & Thời Gian</h2>
-                <div v-for="(proc, idx) in currentService.process" :key="'proc'+idx" class="p-4 bg-gray-50 border border-dash border-gray-200 mb-4 relative">
-                    <button @click="currentService.process.splice(idx, 1)" class="absolute top-4 right-4 text-red-400 hover:text-red-600"><TrashIcon class="w-4 h-4"/></button>
+                <h2 class="text-xs font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-5">Quy Trình Thực Hiện {{ activeLang === 'vi' ? '(VI)' : '(EN)' }}</h2>
+                <div v-for="(proc, idx) in (activeLang === 'vi' ? currentService.process : currentService.process_en)" :key="'proc'+idx" class="p-4 bg-gray-50 border border-dash border-gray-200 mb-4 relative">
+                    <button @click="(activeLang === 'vi' ? currentService.process : currentService.process_en).splice(idx, 1)" class="absolute top-4 right-4 text-red-400 hover:text-red-600"><TrashIcon class="w-4 h-4"/></button>
                     <div class="grid grid-cols-2 gap-4 mb-2">
                         <div>
                             <label class="text-[10px] font-bold text-gray-400 uppercase">Tên Bước</label>
-                            <input v-model="proc.title" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm font-bold focus:outline-none focus:border-black" placeholder="Tên bước thực hiện" />
+                            <input v-model="proc.title" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm font-bold focus:outline-none focus:border-black" placeholder="Bước 1: Tiếp nhận..." />
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-gray-400 uppercase">Thời Gian Cần Thiết</label>
-                            <input v-model="proc.time" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm text-green-700 font-mono focus:outline-none focus:border-black" placeholder="vd: 5-7 ngày" />
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Thời Gian</label>
+                            <input v-model="proc.time" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm text-green-700 font-mono focus:outline-none focus:border-black" placeholder="Vd: 3 ngày" />
                         </div>
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-gray-400 uppercase">Mô tả công việc</label>
-                        <input v-model="proc.desc" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm focus:outline-none focus:border-black" placeholder="Mô tả chi tiết bước này sẽ làm gì..." />
+                        <input v-model="proc.desc" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm focus:outline-none focus:border-black" placeholder="Ký kết hợp đồng và tạm ứng..." />
                     </div>
                 </div>
-                <button @click="currentService.process.push({title:'',desc:'',time:''})" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 flex items-center gap-1 hover:text-black mt-2"><PlusIcon class="w-4 h-4"/> Thêm Bước Mới</button>
-            </div>
-
-            <!-- Biểu phí -->
-            <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200 w-full mb-10">
-                <h2 class="text-sm font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-4">Chính Sách Giá (Pricing Text)</h2>
-                <textarea v-model="currentService.pricing" rows="2" class="w-full border border-gray-300 bg-[#f9f9f9] p-3 text-sm focus:outline-none focus:border-black" placeholder="Vd: Chi phí trọn gói 15.000.000 VNĐ..."></textarea>
+                <button @click="(activeLang === 'vi' ? currentService.process : currentService.process_en).push({title:'',desc:'',time:''})" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 flex items-center gap-1 hover:text-black mt-2"><PlusIcon class="w-4 h-4"/> Thêm Bước Mới</button>
             </div>
         </div>
 
-        <!-- Sidebar phải -->
+        <!-- Sidebar phải: Cấu hình chung -->
         <div class="space-y-6">
             <div class="bg-white border-[0.5px] border-gray-300 p-6 shadow-sm">
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Phân loại Danh mục</label>
                     <select v-model="currentService.category" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black font-bold text-dark mb-4 bg-transparent">
-                        <option value="" disabled>-- Vui lòng chọn Danh mục --</option>
+                        <option value="" disabled>-- Chọn Danh mục --</option>
                         <option v-for="cat in availableCategories" :key="cat._id" :value="cat.slug">{{ cat.name }}</option>
                     </select>
                 </div>
+
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Kèm Hình Ảnh Bìa (URL)</label>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 mt-2">Đường dẫn SEO (Dùng chung)</label>
+                    <input v-model="currentService.slug" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black font-mono mb-6" />
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Hình Ảnh Bìa (URL)</label>
                     <input v-model="currentService.image" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black mb-1" placeholder="https://..." />
                     
                     <div class="mb-2 mt-4 flex items-center justify-between">
                         <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex gap-2 items-center">
                             <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> 
-                            Di chuột để Crop mỏ neo
+                            Kéo ảnh để căn chỉnh
                         </label>
                         <span class="text-[10px] font-mono text-gray-400 font-bold bg-gray-100 px-2 py-0.5 rounded">{{ currentService.imagePosition || '50% 50%' }}</span>
                     </div>
@@ -302,48 +440,39 @@ const saveService = async (actionType) => {
                     <div class="w-full h-48 bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden relative group cursor-move shadow-inner"
                          @mousedown.prevent="startDrag"
                          @touchstart.passive="startDrag">
-                         
                         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 pointer-events-none" :class="{ 'hidden': isDragging }">
-                            <span class="text-white text-xs font-bold uppercase tracking-widest bg-black/50 px-3 py-1 rounded backdrop-blur">
-                                Nắm Kéo
-                            </span>
+                            <span class="text-white text-[10px] font-bold uppercase tracking-widest bg-black/50 px-3 py-1 rounded backdrop-blur">Nắm Kéo</span>
                         </div>
-
                         <img v-if="currentService.image" :src="currentService.image" draggable="false" :style="{ objectPosition: currentService.imagePosition || '50% 50%' }" class="w-full h-full object-cover pointer-events-none select-none transition-none" />
-                        <span v-else class="text-xs text-gray-400 font-bold uppercase tracking-widest absolute">Không ảnh</span>
+                        <span v-else class="text-[10px] text-gray-400 font-bold uppercase tracking-widest absolute">Không ảnh</span>
                     </div>
                 </div>
             </div>
             
             <div class="bg-gray-100 p-5 rounded-md border border-gray-200">
-                <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Lưu ý cấu trúc Dịch Vụ:</h3>
-                <p class="text-xs text-gray-500 leading-relaxed font-medium">
-                    Bài Dịch vụ (Services) được xây dựng trên một bộ Data cứng (Data Arrays) thay vì nguyên một cục văn bản Rich Text (TipTap) lộn xộn như Bài Báo (News). Hãy bấm '+' ở từng mục để thêm các đối tượng Yêu cầu Hồ Sơ, Các bước Quy Trình và Hỏi Đáp...
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Lưu ý Đa Ngôn Ngữ:</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Vui lòng nhập đầy đủ thông tin ở cả 2 Tab (Tiếng Việt & English) để nội dung hiển thị chính xác khi khách hàng chuyển đổi ngôn ngữ trên website. Các trường SEO và Ảnh sẽ được dùng chung.
                 </p>
             </div>
         </div>
     </div>
     
     <!-- Thanh Panel Điều Khiển -->
-    <div class="fixed bottom-0 left-0 lg:left-64 right-0 border-t border-gray-300 bg-white/95 backdrop-blur-md p-4 px-8 flex justify-between items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <div class="fixed bottom-0 left-0 lg:left-64 right-0 border-t border-gray-300 bg-white/95 backdrop-blur-md p-4 px-8 flex justify-between items-center z-40 shadow-lg">
         <div class="text-[10px] font-bold uppercase tracking-widest text-gray-500 hidden md:flex items-center gap-3">
             Trạng Thái: 
-            <span v-if="!currentService.publishedAt" class="text-gray-800 flex items-center gap-1.5 ml-1 bg-gray-100 px-3 py-1.5 rounded"><DocumentIcon class="w-4 h-4"/> BẢN NHÁP CHIẾN LƯỢC</span>
-            <span v-else class="text-green-700 flex items-center gap-1.5 ml-1 bg-green-50/50 px-3 py-1.5 rounded border border-green-200"><CheckBadgeIcon class="w-4 h-4"/> ONLINE CÔNG KHAI</span>
+            <span v-if="!currentService.publishedAt" class="text-gray-800 flex items-center gap-1.5 ml-1 bg-gray-100 px-3 py-1.5 rounded">BẢN NHÁP</span>
+            <span v-else class="text-green-700 flex items-center gap-1.5 ml-1 bg-green-50 px-3 py-1.5 rounded border border-green-200">ĐÃ XUẤT BẢN</span>
         </div>
 
         <div class="flex gap-4">
-            <button @click="router.push('/admin/services')" class="px-4 py-2 text-[10px] uppercase font-bold text-gray-500 hover:text-black">Quay Lại</button>
-            <button v-if="currentService.publishedAt" @click="saveService('draft')" :disabled="isLoading" class="border border-gray-300 text-black px-4 py-2 text-[10px] uppercase font-bold tracking-widest hover:bg-gray-100">
-                Gỡ thành Nháp
+            <button @click="router.push('/admin/services')" class="px-4 py-2 text-[10px] uppercase font-bold text-gray-500 hover:text-black">Hủy</button>
+            <button @click="saveService('draft')" :disabled="isLoading" class="border border-gray-300 text-black px-4 py-2 text-[10px] uppercase font-bold tracking-widest hover:bg-gray-100">
+                Lưu Nháp
             </button>
-            <button v-else @click="saveService('draft')" :disabled="isLoading" class="border border-gray-300 text-black px-4 py-2 text-[10px] uppercase font-bold tracking-widest hover:bg-gray-100">
-                Lưu Nháp Tạm
-            </button>
-
-            <!-- Nút Lưu & Xuất Bàn -->
-            <button @click="saveService('publish_now')" :disabled="isLoading" class="bg-black text-white px-8 py-3 rounded text-[10px] uppercase font-bold tracking-widest hover:bg-gray-800 shadow-xl transition transform hover:-translate-y-0.5">
-                {{ isLoading ? 'Loading...' : 'LƯU & CÔNG KHAI' }}
+            <button @click="saveService('publish_now')" :disabled="isLoading" class="bg-black text-white px-8 py-3 rounded text-[10px] uppercase font-bold tracking-widest hover:bg-gray-800 shadow-xl transition transition-transform hover:-translate-y-0.5">
+                {{ isLoading ? 'Đang xử lý...' : 'LƯU & XUẤT BẢN' }}
             </button>
         </div>
     </div>

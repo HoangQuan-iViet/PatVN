@@ -16,9 +16,10 @@ const isFetching = ref(true)
 const relatedPosts = ref([])
 
 const fetchPost = async (slug) => {
+    if (!slug) return
     isFetching.value = true
     try {
-        const { data } = await axios.get(`/api/posts?slug=${slug}`)
+        const { data } = await axios.get(`/api/posts?slug=${slug}&locale=${locale.value}`)
         if (data && data.success) {
             post.value = data.data
             updateTitle()
@@ -50,6 +51,10 @@ onMounted(() => {
 
 watch(() => route.params.slug, (newSlug) => {
   if (newSlug) fetchPost(newSlug)
+})
+
+watch(locale, () => {
+  if (route.params.slug) fetchPost(route.params.slug)
 })
 </script>
 

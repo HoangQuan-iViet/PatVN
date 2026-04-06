@@ -1,32 +1,46 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import ctaImg from '../assets/CTA.webp'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const services = ref([])
 const isLoading = ref(true)
 
-onMounted(async () => {
+const fetchData = async () => {
+    isLoading.value = true
     try {
-        const catRes = await axios.get('/api/categories?type=service')
+        const [catRes, serviceRes] = await Promise.all([
+            axios.get(`/api/categories?type=service&locale=${locale.value}`),
+            axios.get(`/api/services?status=live&locale=${locale.value}`)
+        ])
+        
         categories.value = [{ id: 'all', label: t('services_view.categories.all') }]
         if (catRes.data.success) {
-            catRes.data.data.forEach(c => categories.value.push({ id: c.slug, label: c.name }))
+            catRes.data.data.forEach(c => {
+                categories.value.push({ id: c.slug, label: c.name })
+            })
         }
 
-        const { data } = await axios.get('/api/services?status=live')
-        if (data.success) {
-            services.value = data.data
+        if (serviceRes.data.success) {
+            services.value = serviceRes.data.data
         }
     } catch(e) { 
         console.error('Lỗi khi tải dịch vụ từ DB:', e) 
     } finally {
         isLoading.value = false
     }
+}
+
+onMounted(() => {
+    fetchData()
+})
+
+watch(locale, () => {
+    fetchData()
 })
 
 // --- Sticky Toolbar Auto-Hide ---
