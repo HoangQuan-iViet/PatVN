@@ -3,15 +3,13 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
-import { useScrollNav } from '../composables/useScrollNav'
-import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
 
 // --- Sticky Toolbar Auto-Hide ---
 const toolbarRef = ref(null)
 const { isHidden } = useStickyToolbar(toolbarRef)
-const { scrollContainerRef: catScrollRef, canScrollLeft: catCanLeft, canScrollRight: catCanRight, scrollBy: catScrollBy } = useScrollNav()
 
 // --- State ---
 const dbPosts = ref([])
@@ -23,6 +21,26 @@ const visibleCount = ref(8)
 const categories = ref([
     { id: 'all', labelKey: 'blog_view.filter_all' }
 ])
+
+// --- Phương án B: Tab + "Thêm" Dropdown ---
+const MAX_VISIBLE_CATS = 4 // Số danh mục hiển thị trực tiếp (bao gồm "Tất cả")
+const showMoreMenu = ref(false)
+
+const visibleCats = computed(() => categories.value.slice(0, MAX_VISIBLE_CATS))
+const moreCats = computed(() => categories.value.slice(MAX_VISIBLE_CATS))
+
+// Đóng Dropdown khi click ra ngoài
+const closeMoreMenu = () => { showMoreMenu.value = false }
+const selectMoreCat = (catId) => {
+    activeCategory.value = catId
+    showMoreMenu.value = false
+}
+// Kiểm tra danh mục đang chọn có nằm trong nhóm "Thêm" không
+const isMoreActive = computed(() => moreCats.value.some(c => c.id === activeCategory.value))
+const activeCatLabel = computed(() => {
+    const found = moreCats.value.find(c => c.id === activeCategory.value)
+    return found ? (found.labelKey ? t(found.labelKey) : found.name) : null
+})
 
 const downloads = [
     { titleKey: "blog_view.downloads.form_tm", size: "DOCX - 2.5MB" },
@@ -227,46 +245,55 @@ const formatDate = (dateString) => {
             </div>
         </div>
 
-        <!-- 2. STICKY FILTER BAR (Sticky beneath Header/Hero) -->
+        <!-- 2. STICKY FILTER BAR -->
         <div ref="toolbarRef" 
-            class="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
+            class="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-3"
             :class="isHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
             style="transition: transform 0.3s ease, opacity 0.3s ease">
             <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <!-- Categories with Arrow Navigation -->
-                    <div class="relative w-full md:flex-1 overflow-hidden">
-                        <!-- Left Arrow (Desktop only) -->
-                        <button v-if="catCanLeft" @click="catScrollBy(-1)"
-                            class="hidden md:flex absolute left-0 top-0 bottom-0 z-20 w-8 items-center justify-center bg-gradient-to-r from-white via-white/90 to-transparent cursor-pointer hover:from-gray-50 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
+                <div class="flex items-center justify-between gap-3">
+                    <!-- Tab Buttons -->
+                    <div class="flex items-center gap-2 flex-1 min-w-0">
+                        <button v-for="cat in visibleCats" :key="cat.id"
+                            @click="activeCategory = cat.id"
+                            class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                            :class="activeCategory === cat.id 
+                                ? 'bg-neutral-brown text-white border-neutral-brown' 
+                                : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
+                            {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
                         </button>
 
-                        <!-- Scrollable Category List -->
-                        <div ref="catScrollRef" class="flex flex-nowrap overflow-x-auto gap-2 w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth" :class="{ 'pl-8': catCanLeft, 'pr-8': catCanRight }">
-                            <button v-for="cat in categories" :key="cat.id"
-                                @click="activeCategory = cat.id"
-                                class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
-                                :class="activeCategory === cat.id 
+                        <!-- Nút "Thêm ▾" (chỉ hiện khi có danh mục thừa) -->
+                        <div v-if="moreCats.length > 0" class="relative shrink-0">
+                            <button @click="showMoreMenu = !showMoreMenu"
+                                class="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                                :class="isMoreActive 
                                     ? 'bg-neutral-brown text-white border-neutral-brown' 
                                     : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
-                                {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
+                                <span>{{ isMoreActive && activeCatLabel ? activeCatLabel : t('blog_view.filter_more', 'Thêm') }}</span>
+                                <ChevronDownIcon class="w-3.5 h-3.5 transition-transform" :class="{ 'rotate-180': showMoreMenu }" />
                             </button>
-                        </div>
 
-                        <!-- Right Arrow (Desktop only) -->
-                        <button v-if="catCanRight" @click="catScrollBy(1)"
-                            class="hidden md:flex absolute right-0 top-0 bottom-0 z-20 w-8 items-center justify-center bg-gradient-to-l from-white via-white/90 to-transparent cursor-pointer hover:from-gray-50 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </button>
+                            <!-- Dropdown Menu -->
+                            <Teleport to="body">
+                                <div v-if="showMoreMenu" class="fixed inset-0 z-[99]" @click="closeMoreMenu"></div>
+                            </Teleport>
+                            <div v-if="showMoreMenu" class="absolute left-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[100] animate-fade-in-up">
+                                <button v-for="cat in moreCats" :key="cat.id"
+                                    @click="selectMoreCat(cat.id)"
+                                    class="w-full text-left px-4 py-2.5 text-sm font-medium transition-colors flex items-center gap-2"
+                                    :class="activeCategory === cat.id 
+                                        ? 'bg-neutral-brown/10 text-neutral-brown font-bold' 
+                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'">
+                                    <span v-if="activeCategory === cat.id" class="w-1.5 h-1.5 rounded-full bg-neutral-brown shrink-0"></span>
+                                    {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Search -->
-                    <div class="relative w-full md:w-72 shrink-0">
+                    <div class="relative w-full md:w-64 shrink-0">
                         <input v-model="searchQuery" type="text" 
                             :placeholder="t('blog_view.search_label')"
                             class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-sm bg-white/50 focus:bg-white">
