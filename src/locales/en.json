@@ -206,6 +206,8 @@
     "subtitle_label": "Our Journal",
     "search_label": "Search articles...",
     "filter_all": "All",
+    "filter_category": "Categories",
+    "filter_collapse": "Collapse",
     "read_more": "Read more",
     "sidebar_popular": "Popular Posts",
     "sidebar_cats": "Categories",

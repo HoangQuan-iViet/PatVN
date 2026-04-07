@@ -207,6 +207,8 @@
         "subtitle_label": "Tạp chí của chúng tôi",
         "search_label": "Tìm kiếm bài viết...",
         "filter_all": "Tất cả",
+        "filter_category": "Danh mục",
+        "filter_collapse": "Ẩn bớt",
         "read_more": "Đọc tiếp",
         "sidebar_popular": "Bài viết xem nhiều",
         "sidebar_cats": "Chuyên mục",

@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
-import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
 
@@ -22,25 +22,20 @@ const categories = ref([
     { id: 'all', labelKey: 'blog_view.filter_all' }
 ])
 
-// --- Phương án B: Tab + "Thêm" Dropdown ---
-const MAX_VISIBLE_CATS = 4 // Số danh mục hiển thị trực tiếp (bao gồm "Tất cả")
-const showMoreMenu = ref(false)
+// --- Category Panel Toggle ---
+const showCategoryPanel = ref(false)
 
-const visibleCats = computed(() => categories.value.slice(0, MAX_VISIBLE_CATS))
-const moreCats = computed(() => categories.value.slice(MAX_VISIBLE_CATS))
-
-// Đóng Dropdown khi click ra ngoài
-const closeMoreMenu = () => { showMoreMenu.value = false }
-const selectMoreCat = (catId) => {
-    activeCategory.value = catId
-    showMoreMenu.value = false
-}
-// Kiểm tra danh mục đang chọn có nằm trong nhóm "Thêm" không
-const isMoreActive = computed(() => moreCats.value.some(c => c.id === activeCategory.value))
+// Lấy tên danh mục đang được chọn (trừ "Tất cả")
 const activeCatLabel = computed(() => {
-    const found = moreCats.value.find(c => c.id === activeCategory.value)
+    if (activeCategory.value === 'all') return null
+    const found = categories.value.find(c => c.id === activeCategory.value)
     return found ? (found.labelKey ? t(found.labelKey) : found.name) : null
 })
+
+const selectCategory = (catId) => {
+    activeCategory.value = catId
+    if (catId === 'all') showCategoryPanel.value = false
+}
 
 const downloads = [
     { titleKey: "blog_view.downloads.form_tm", size: "DOCX - 2.5MB" },
@@ -247,57 +242,65 @@ const formatDate = (dateString) => {
 
         <!-- 2. STICKY FILTER BAR -->
         <div ref="toolbarRef" 
-            class="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm py-3"
+            class="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm"
             :class="isHidden ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
             style="transition: transform 0.3s ease, opacity 0.3s ease">
-            <div class="container mx-auto px-4">
+            
+            <!-- Main Toolbar Row -->
+            <div class="container mx-auto px-4 py-3">
                 <div class="flex items-center justify-between gap-3">
-                    <!-- Tab Buttons -->
-                    <div class="flex items-center gap-2 flex-1 min-w-0">
-                        <button v-for="cat in visibleCats" :key="cat.id"
-                            @click="activeCategory = cat.id"
-                            class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
-                            :class="activeCategory === cat.id 
+                    <!-- Left: Tất cả + Danh mục -->
+                    <div class="flex items-center gap-2">
+                        <!-- Nút Tất cả -->
+                        <button @click="selectCategory('all')"
+                            class="shrink-0 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                            :class="activeCategory === 'all' 
                                 ? 'bg-neutral-brown text-white border-neutral-brown' 
                                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
-                            {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
+                            {{ t('blog_view.filter_all') }}
                         </button>
 
-                        <!-- Nút "Thêm ▾" (chỉ hiện khi có danh mục thừa) -->
-                        <div v-if="moreCats.length > 0" class="relative shrink-0">
-                            <button @click="showMoreMenu = !showMoreMenu"
-                                class="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
-                                :class="isMoreActive 
-                                    ? 'bg-neutral-brown text-white border-neutral-brown' 
-                                    : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
-                                <span>{{ isMoreActive && activeCatLabel ? activeCatLabel : t('blog_view.filter_more', 'Thêm') }}</span>
-                                <ChevronDownIcon class="w-3.5 h-3.5 transition-transform" :class="{ 'rotate-180': showMoreMenu }" />
-                            </button>
-
-                            <!-- Dropdown Menu -->
-                            <Teleport to="body">
-                                <div v-if="showMoreMenu" class="fixed inset-0 z-[99]" @click="closeMoreMenu"></div>
-                            </Teleport>
-                            <div v-if="showMoreMenu" class="absolute left-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[100] animate-fade-in-up">
-                                <button v-for="cat in moreCats" :key="cat.id"
-                                    @click="selectMoreCat(cat.id)"
-                                    class="w-full text-left px-4 py-2.5 text-sm font-medium transition-colors flex items-center gap-2"
-                                    :class="activeCategory === cat.id 
-                                        ? 'bg-neutral-brown/10 text-neutral-brown font-bold' 
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'">
-                                    <span v-if="activeCategory === cat.id" class="w-1.5 h-1.5 rounded-full bg-neutral-brown shrink-0"></span>
-                                    {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
-                                </button>
-                            </div>
-                        </div>
+                        <!-- Nút Danh mục -->
+                        <button @click="showCategoryPanel = !showCategoryPanel"
+                            class="shrink-0 flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                            :class="showCategoryPanel || (activeCategory !== 'all')
+                                ? 'bg-neutral-brown text-white border-neutral-brown' 
+                                : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
+                            <span>{{ activeCatLabel || t('blog_view.filter_category', 'Danh mục') }}</span>
+                            <ChevronDownIcon v-if="!showCategoryPanel" class="w-3.5 h-3.5" />
+                            <ChevronUpIcon v-else class="w-3.5 h-3.5" />
+                        </button>
                     </div>
 
-                    <!-- Search -->
+                    <!-- Right: Search -->
                     <div class="relative w-full md:w-64 shrink-0">
                         <input v-model="searchQuery" type="text" 
                             :placeholder="t('blog_view.search_label')"
                             class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-sm bg-white/50 focus:bg-white">
                         <MagnifyingGlassIcon class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Panel (Full-width dropdown) -->
+            <div v-if="showCategoryPanel" class="border-t border-gray-100 bg-white/95 backdrop-blur-md animate-fade-in-up">
+                <div class="container mx-auto px-4 py-5">
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button v-for="cat in categories.slice(1)" :key="cat.id"
+                            @click="selectCategory(cat.id)"
+                            class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
+                            :class="activeCategory === cat.id 
+                                ? 'bg-neutral-brown text-white border-neutral-brown shadow-sm' 
+                                : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary hover:bg-gray-50'">
+                            {{ cat.labelKey ? t(cat.labelKey) : cat.name }}
+                        </button>
+                    </div>
+                    <div class="flex justify-end">
+                        <button @click="showCategoryPanel = false" 
+                            class="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-gray-600 transition-colors">
+                            <ChevronUpIcon class="w-3.5 h-3.5" />
+                            {{ t('blog_view.filter_collapse', 'Ẩn bớt') }}
+                        </button>
                     </div>
                 </div>
             </div>
