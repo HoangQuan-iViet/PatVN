@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
+import { useScrollNav } from '../composables/useScrollNav'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import ctaImg from '../assets/CTA.webp'
 
@@ -46,6 +47,7 @@ watch(locale, () => {
 // --- Sticky Toolbar Auto-Hide ---
 const toolbarRef = ref(null)
 const { isHidden } = useStickyToolbar(toolbarRef)
+const { scrollContainerRef: svcScrollRef, canScrollLeft: svcCanLeft, canScrollRight: svcCanRight, scrollBy: svcScrollBy } = useScrollNav()
 
 // Filters
 const activeCategory = ref('all')
@@ -116,9 +118,18 @@ const getDesc = (service) => {
         style="transition: transform 0.3s ease, opacity 0.3s ease">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <!-- Filter Tabs -->
-                <div class="relative w-full md:flex-1 overflow-hidden pr-2">
-                    <div class="flex flex-nowrap overflow-x-auto gap-2 pb-4 -mb-4 w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth">
+                <!-- Filter Tabs with Arrow Navigation -->
+                <div class="relative w-full md:flex-1 overflow-hidden">
+                    <!-- Left Arrow (Desktop only) -->
+                    <button v-if="svcCanLeft" @click="svcScrollBy(-1)"
+                        class="hidden md:flex absolute left-0 top-0 bottom-0 z-20 w-8 items-center justify-center bg-gradient-to-r from-white via-white/90 to-transparent cursor-pointer hover:from-gray-50 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <!-- Scrollable Category List -->
+                    <div ref="svcScrollRef" class="flex flex-nowrap overflow-x-auto gap-2 w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth" :class="{ 'pl-8': svcCanLeft, 'pr-8': svcCanRight }">
                         <button v-for="cat in categories" :key="cat.id"
                             @click="activeCategory = cat.id"
                             class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
@@ -127,11 +138,15 @@ const getDesc = (service) => {
                                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-primary hover:text-primary'">
                             {{ cat.label }}
                         </button>
-                        <!-- Extra space at the end to allow fully scrolling past the fade -->
-                        <div class="shrink-0 w-12 md:w-16"></div>
                     </div>
-                    <!-- Right edge fade indicator -->
-                    <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10"></div>
+
+                    <!-- Right Arrow (Desktop only) -->
+                    <button v-if="svcCanRight" @click="svcScrollBy(1)"
+                        class="hidden md:flex absolute right-0 top-0 bottom-0 z-20 w-8 items-center justify-center bg-gradient-to-l from-white via-white/90 to-transparent cursor-pointer hover:from-gray-50 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
                 </div>
                 
                 <!-- Search Input -->
