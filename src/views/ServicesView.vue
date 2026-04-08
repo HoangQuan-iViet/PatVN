@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import ctaImg from '../assets/CTA.webp'
 
 const { t, locale } = useI18n()
+const router = useRouter()
+const route = useRoute()
 const services = ref([])
 const isLoading = ref(true)
 
@@ -49,6 +52,21 @@ const searchQuery = ref('')
 const categories = ref([
     { id: 'all', label: t('services_view.categories.all') }
 ])
+
+// Điều hướng URL khi chọn danh mục (SEO-friendly)
+const selectCategory = (catId) => {
+    if (catId === 'all') {
+        router.push({ name: 'services' })
+    } else {
+        activeCategory.value = catId
+        router.push({ name: 'services-category', params: { categorySlug: catId } })
+    }
+}
+
+// Đồng bộ activeCategory từ URL khi truy cập trực tiếp hoặc khi route thay đổi
+watch(() => route.params.categorySlug, (slug) => {
+    activeCategory.value = slug || 'all'
+}, { immediate: true })
 
 // Computed
 const filteredServices = computed(() => {
@@ -118,7 +136,7 @@ const getDesc = (service) => {
             <!-- Category Tag Chips (Wrap freely) -->
             <div class="flex flex-wrap justify-center gap-2">
                 <button v-for="cat in categories" :key="cat.id"
-                    @click="activeCategory = cat.id"
+                    @click="selectCategory(cat.id)"
                     class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border"
                     :class="activeCategory === cat.id 
                         ? 'bg-neutral-brown text-white border-neutral-brown shadow-sm' 
