@@ -3,6 +3,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import { useNotification } from '../../composables/useNotification'
+import { generateSlug, sanitizeSlugInput } from '../../utils/slug'
 
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
@@ -236,10 +237,8 @@ onMounted(async () => {
     }
 })
 
-const generateSlug = (str) => {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+const onSlugInput = () => {
+    currentPost.value.slug = sanitizeSlugInput(currentPost.value.slug)
 }
 
 const isTranslating = ref(false)
@@ -445,7 +444,7 @@ const savePost = async (actionType) => {
 
             <div>
                 <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 mt-2">Đường dẫn URL SEO (Dùng chung)</label>
-                <input v-model="currentPost.slug" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black transition-colors" placeholder="vd: nhung-luu-y-khi-dk-shtt" />
+                <input v-model="currentPost.slug" @input="onSlugInput" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black transition-colors font-mono" placeholder="vd: nhung-luu-y-khi-dk-shtt" />
             </div>
         </div>
 

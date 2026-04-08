@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useNotification } from '../../composables/useNotification'
+import { generateSlug, sanitizeSlugInput } from '../../utils/slug'
 
 const { showConfirm, showAlert } = useNotification()
 const isFetching = ref(true)
@@ -36,16 +37,14 @@ const filteredCategories = computed(() => {
     return categories.value.filter(c => c.type === activeType.value)
 })
 
-const generateSlug = (str) => {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-       .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-       .toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
-}
-
 const syncSlug = () => {
     if (!isEditing.value) {
         formData.value.slug = generateSlug(formData.value.name)
     }
+}
+
+const onSlugInput = () => {
+    formData.value.slug = sanitizeSlugInput(formData.value.slug)
 }
 const isTranslating = ref(false)
 
@@ -213,7 +212,7 @@ const deleteMultiple = async () => {
                 </div>
                 <div>
                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">URL SEO (Viết liền ko dấu)</label>
-                   <input v-model="formData.slug" type="text" class="w-full text-sm text-gray-500 bg-white p-2 px-3 border border-gray-300 focus:outline-none focus:border-black transition" placeholder="vd: so-huu-tri-tue" />
+                   <input v-model="formData.slug" @input="onSlugInput" type="text" class="w-full text-sm text-gray-500 bg-white p-2 px-3 border border-gray-300 focus:outline-none focus:border-black transition font-mono" placeholder="vd: so-huu-tri-tue" />
                 </div>
             </div>
             

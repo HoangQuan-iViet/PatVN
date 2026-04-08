@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import { useNotification } from '../../composables/useNotification'
+import { generateSlug, sanitizeSlugInput } from '../../utils/slug'
 import { DocumentIcon, CheckBadgeIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/solid'
 
 const router = useRouter()
@@ -118,10 +119,8 @@ onMounted(async () => {
     }
 })
 
-const generateSlug = (str) => {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+const onSlugInput = () => {
+    currentService.value.slug = sanitizeSlugInput(currentService.value.slug)
 }
 
 const saveService = async (actionType) => {
@@ -422,7 +421,7 @@ const autoTranslate = async () => {
 
                 <div>
                     <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 mt-2">Đường dẫn SEO (Dùng chung)</label>
-                    <input v-model="currentService.slug" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black font-mono mb-6" />
+                    <input v-model="currentService.slug" @input="onSlugInput" class="w-full bg-transparent border-b border-gray-200 py-2 text-sm text-gray-500 focus:outline-none focus:border-black font-mono mb-6" />
                 </div>
 
                 <div>
