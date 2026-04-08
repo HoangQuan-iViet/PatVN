@@ -225,7 +225,11 @@ const autoTranslate = async () => {
     payload.push(currentService.value.title || '');
     payload.push(currentService.value.excerpt || '');
     payload.push(currentService.value.overview || '');
-    payload.push(currentService.value.pricing || '');
+    const pricingLen = (currentService.value.pricing || []).length;
+    (currentService.value.pricing || []).forEach(p => {
+        payload.push(p.title || '');
+        payload.push(p.desc || '');
+    });
     
     const taLen = currentService.value.targetAudience.length;
     currentService.value.targetAudience.forEach(item => payload.push(item || ''));
@@ -250,7 +254,14 @@ const autoTranslate = async () => {
             currentService.value.title_en = t[cursor++];
             currentService.value.excerpt_en = t[cursor++];
             currentService.value.overview_en = t[cursor++];
-            currentService.value.pricing_en = t[cursor++];
+            
+            currentService.value.pricing_en = [];
+            for(let i=0; i<pricingLen; i++) {
+                currentService.value.pricing_en.push({
+                    title: t[cursor++],
+                    desc: t[cursor++]
+                });
+            }
             
             currentService.value.targetAudience_en = [];
             for(let i=0; i<taLen; i++) currentService.value.targetAudience_en.push(t[cursor++]);
