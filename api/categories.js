@@ -1,5 +1,7 @@
 import connectToDatabase from './_db.js';
 import Category from './_models/Category.js';
+import Post from './_models/Post.js';
+import Service from './_models/Service.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true)
@@ -55,7 +57,18 @@ export default async function handler(req, res) {
     case 'PATCH':
       try {
         const { id } = req.query;
+        // Fetch old category to check if slug changed
+        const oldCat = await Category.findById(id);
+        const oldSlug = oldCat?.slug;
+
         const updatedCat = await Category.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+
+        // If slug changed, update all connected posts and services
+        if (updatedCat && oldSlug && updatedCat.slug !== oldSlug) {
+            await Post.updateMany({ category: oldSlug }, { category: updatedCat.slug });
+            await Service.updateMany({ category: oldSlug }, { category: updatedCat.slug });
+        }
+
         res.status(200).json({ success: true, data: updatedCat });
       } catch (error) {
         res.status(400).json({ success: false, message: error.message });
