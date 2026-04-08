@@ -25,8 +25,8 @@ const ServiceSchema = new mongoose.Schema({
       desc: String,
       time: String
   }],
-  pricing: { type: String, default: '' },
-  pricing_en: { type: String, default: '' },
+  pricing: { type: mongoose.Schema.Types.Mixed, default: [] },
+  pricing_en: { type: mongoose.Schema.Types.Mixed, default: [] },
   publishedAt: { type: Date, default: null },
   date:      { type: Date, default: Date.now },
   isPinned:  { type: Boolean, default: false }

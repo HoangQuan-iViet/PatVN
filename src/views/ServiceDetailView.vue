@@ -182,19 +182,21 @@ const availableSections = computed(() => {
                 </section>
 
                  <!-- Section 5: Pricing (Quote Box Style) -->
-                <section v-if="service.pricing" id="pricing" class="mb-16 scroll-mt-32">
+                <section v-if="service.pricing && service.pricing.length > 0 && service.pricing[0].title" id="pricing" class="mb-16 scroll-mt-32">
                     <h2 class="text-3xl font-bold text-dark mb-6 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.pricing') }}
                     </h2>
-                    <div class="bg-gray-50 border-l-4 border-secondary p-8 rounded-r-2xl shadow-sm flex items-center gap-6">
-                        <div class="shrink-0 w-12 h-12 bg-white rounded-full flex items-center justify-center text-secondary border border-secondary/20 shadow-sm">
+                    <div class="bg-gray-50 border-l-4 border-secondary p-8 rounded-r-2xl shadow-sm flex flex-col md:flex-row md:items-start gap-6">
+                        <div class="shrink-0 w-12 h-12 bg-white rounded-full flex items-center justify-center text-secondary border border-secondary/20 shadow-sm md:mt-2">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-dark text-lg mb-1">{{ t('service_detail.pricing_ref') }}</h3>
-                            <p class="text-gray-600">{{ service.pricing }}</p>
+                        <div class="space-y-4 flex-1">
+                            <div v-for="(item, idx) in service.pricing" :key="idx" class="border-b border-gray-200/60 last:border-0 pb-4 last:pb-0">
+                                <h3 class="font-bold text-dark text-lg mb-1">{{ item.title || t('service_detail.pricing_ref') }}</h3>
+                                <p class="text-gray-600 font-mono text-sm bg-white inline-block px-3 py-1 rounded-md border border-gray-100 shadow-sm">{{ item.desc }}</p>
+                            </div>
                         </div>
                     </div>
                 </section>

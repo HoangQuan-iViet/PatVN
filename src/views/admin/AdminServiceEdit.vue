@@ -28,7 +28,7 @@ const initialForm = {
     documents: [''], documents_en: [''],
     process: [{ title: '', desc: '', time: '' }],
     process_en: [{ title: '', desc: '', time: '' }],
-    pricing: '', pricing_en: '',
+    pricing: [{ title: '', desc: '' }], pricing_en: [{ title: '', desc: '' }],
     publishedAt: null
 }
 const currentService = ref(JSON.parse(JSON.stringify(initialForm)))
@@ -111,6 +111,19 @@ onMounted(async () => {
                 if (!fetched.process || !fetched.process.length) fetched.process = [{ title: '', desc: '', time: '' }]
                 if (!fetched.process_en || !fetched.process_en.length) fetched.process_en = [{ title: '', desc: '', time: '' }]
                 
+                // Migrate legacy string to array if needed
+                if (typeof fetched.pricing === 'string') {
+                    fetched.pricing = fetched.pricing ? [{ title: 'Phí dịch vụ', desc: fetched.pricing }] : [{ title: '', desc: '' }]
+                } else if (!fetched.pricing || !fetched.pricing.length) {
+                    fetched.pricing = [{ title: '', desc: '' }]
+                }
+
+                if (typeof fetched.pricing_en === 'string') {
+                    fetched.pricing_en = fetched.pricing_en ? [{ title: 'Service Fee', desc: fetched.pricing_en }] : [{ title: '', desc: '' }]
+                } else if (!fetched.pricing_en || !fetched.pricing_en.length) {
+                    fetched.pricing_en = [{ title: '', desc: '' }]
+                }
+                
                 currentService.value = { ...initialForm, ...fetched }
                 activeLang.value = 'vi'
             }
@@ -154,6 +167,8 @@ const saveService = async (actionType) => {
     currentService.value.documents_en = currentService.value.documents_en.filter(i => i.trim() !== '')
     currentService.value.process = currentService.value.process.filter(p => p.title.trim() !== '')
     currentService.value.process_en = currentService.value.process_en.filter(p => p.title.trim() !== '')
+    currentService.value.pricing = (currentService.value.pricing || []).filter(p => p.title?.trim() !== '')
+    currentService.value.pricing_en = (currentService.value.pricing_en || []).filter(p => p.title?.trim() !== '')
 
     isLoading.value = true
     let successMessage = ''
@@ -328,9 +343,6 @@ const autoTranslate = async () => {
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tổng quan chi tiết (VI)</label>
                             <textarea v-model="currentService.overview" rows="4" class="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black transition-colors" placeholder="Nội dung giới thiệu dịch vụ..."></textarea>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Chính Sách Giá (VI)</label>
-                            <input v-model="currentService.pricing" class="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black" placeholder="Vd: Liên hệ để báo giá..." />
                         </div>
                     </div>
                 </div>
@@ -353,9 +365,6 @@ const autoTranslate = async () => {
                             <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Detailed Overview (EN)</label>
                             <textarea v-model="currentService.overview_en" rows="4" class="w-full border border-blue-200 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors" placeholder="English detailed content..."></textarea>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Pricing Policy (EN)</label>
-                            <input v-model="currentService.pricing_en" class="w-full border-b border-blue-200 py-2 text-sm focus:outline-none focus:border-blue-600" placeholder="Vd: Contact for pricing..." />
                         </div>
                     </div>
                 </div>
@@ -405,6 +414,25 @@ const autoTranslate = async () => {
                     </div>
                 </div>
                 <button @click="(activeLang === 'vi' ? currentService.process : currentService.process_en).push({title:'',desc:'',time:''})" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 flex items-center gap-1 hover:text-black mt-2"><PlusIcon class="w-4 h-4"/> Thêm Bước Mới</button>
+            </div>
+
+            <!-- Pricing List -->
+            <div class="bg-white p-6 shadow-sm border-[0.5px] border-gray-200">
+                <h2 class="text-xs font-black uppercase tracking-widest border-b border-gray-200 pb-3 mb-5">Chính Sách Giá {{ activeLang === 'vi' ? '(VI)' : '(EN)' }}</h2>
+                <div v-for="(priceItem, idx) in (activeLang === 'vi' ? currentService.pricing : currentService.pricing_en)" :key="'price'+idx" class="p-4 bg-yellow-50/50 border border-dash border-yellow-200 mb-4 relative">
+                    <button @click="(activeLang === 'vi' ? currentService.pricing : currentService.pricing_en).splice(idx, 1)" class="absolute top-4 right-4 text-red-400 hover:text-red-600"><TrashIcon class="w-4 h-4"/></button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Hạng mục (Vd: Phí dịch vụ, Lệ phí...)</label>
+                            <input v-model="priceItem.title" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm font-bold focus:outline-none focus:border-black" placeholder="Phí dịch vụ..." />
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Mô tả giá</label>
+                            <input v-model="priceItem.desc" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm text-yellow-700 font-mono focus:outline-none focus:border-black" placeholder="Vd: 2.000.000 VNĐ hoặc Liên hệ..." />
+                        </div>
+                    </div>
+                </div>
+                <button @click="(activeLang === 'vi' ? currentService.pricing : currentService.pricing_en).push({title:'',desc:''})" class="text-[10px] uppercase font-bold tracking-widest text-blue-500 flex items-center gap-1 hover:text-black mt-2"><PlusIcon class="w-4 h-4"/> Thêm Hạng Mục Giá</button>
             </div>
         </div>
 
