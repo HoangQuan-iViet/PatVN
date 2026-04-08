@@ -427,8 +427,8 @@ const autoTranslate = async () => {
                             <input v-model="priceItem.title" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm font-bold focus:outline-none focus:border-black" placeholder="Phí dịch vụ..." />
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-gray-400 uppercase">Mô tả giá</label>
-                            <input v-model="priceItem.desc" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm text-yellow-700 font-mono focus:outline-none focus:border-black" placeholder="Vd: 2.000.000 VNĐ hoặc Liên hệ..." />
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Mô tả giá (Có thể xuống dòng)</label>
+                            <textarea v-model="priceItem.desc" rows="2" class="w-full border-b border-gray-300 py-1 bg-transparent text-sm text-yellow-700 font-mono focus:outline-none focus:border-black resize-y" placeholder="Vd: 2.000.000 VNĐ hoặc Liên hệ..."></textarea>
                         </div>
                     </div>
                 </div>

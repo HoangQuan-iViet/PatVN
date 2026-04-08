@@ -195,7 +195,7 @@ const availableSections = computed(() => {
                         <div class="space-y-4 flex-1">
                             <div v-for="(item, idx) in service.pricing" :key="idx" class="border-b border-gray-200/60 last:border-0 pb-4 last:pb-0">
                                 <h3 class="font-bold text-dark text-lg mb-1">{{ item.title || t('service_detail.pricing_ref') }}</h3>
-                                <p class="text-gray-600 font-mono text-sm bg-white inline-block px-3 py-1 rounded-md border border-gray-100 shadow-sm">{{ item.desc }}</p>
+                                <p class="text-gray-600 font-mono text-sm bg-white inline-block px-3 py-1 rounded-md border border-gray-100 shadow-sm whitespace-pre-line">{{ item.desc }}</p>
                             </div>
                         </div>
                     </div>
