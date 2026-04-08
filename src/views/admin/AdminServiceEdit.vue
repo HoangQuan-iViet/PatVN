@@ -343,12 +343,9 @@ const autoTranslate = async () => {
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tổng quan chi tiết (VI)</label>
                             <textarea v-model="currentService.overview" rows="4" class="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black transition-colors" placeholder="Nội dung giới thiệu dịch vụ..."></textarea>
                         </div>
-                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- EN FIELDS -->
             <div v-show="activeLang === 'en'" class="space-y-6 animate-fade-in">
                 <div class="bg-white p-6 shadow-sm border-[0.5px] border-blue-100">
                     <h2 class="text-xs font-black uppercase tracking-widest border-b border-blue-50 pb-3 mb-5 text-blue-400">Basic Information (EN)</h2>
@@ -365,10 +362,10 @@ const autoTranslate = async () => {
                             <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Detailed Overview (EN)</label>
                             <textarea v-model="currentService.overview_en" rows="4" class="w-full border border-blue-200 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors" placeholder="English detailed content..."></textarea>
                         </div>
-                        </div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Shared Data Arrays (Target Audience, Documents) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
