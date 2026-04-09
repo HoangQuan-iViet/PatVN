@@ -24,12 +24,6 @@ const routes = [
         meta: { layout: 'default' }
     },
     {
-        path: '/services/danh-muc/:categorySlug',
-        name: 'services-category',
-        component: () => import('../views/ServicesView.vue'),
-        meta: { layout: 'default' }
-    },
-    {
         path: '/services/:slug',
         name: 'service-detail',
         component: () => import('../views/ServiceDetailView.vue'),
@@ -44,12 +38,6 @@ const routes = [
     {
         path: '/blog',
         name: 'blog',
-        component: () => import('../views/BlogView.vue'),
-        meta: { layout: 'default' }
-    },
-    {
-        path: '/blog/danh-muc/:categorySlug',
-        name: 'blog-category',
         component: () => import('../views/BlogView.vue'),
         meta: { layout: 'default' }
     },

@@ -1,14 +1,11 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import ctaImg from '../assets/CTA.webp'
 
 const { t, locale } = useI18n()
-const router = useRouter()
-const route = useRoute()
 const services = ref([])
 const isLoading = ref(true)
 
@@ -53,20 +50,10 @@ const categories = ref([
     { id: 'all', label: t('services_view.categories.all') }
 ])
 
-// Điều hướng URL khi chọn danh mục (SEO-friendly)
+// Lọc danh mục client-side (không reload trang)
 const selectCategory = (catId) => {
-    if (catId === 'all') {
-        router.push({ name: 'services' })
-    } else {
-        activeCategory.value = catId
-        router.push({ name: 'services-category', params: { categorySlug: catId } })
-    }
+    activeCategory.value = catId
 }
-
-// Đồng bộ activeCategory từ URL khi truy cập trực tiếp hoặc khi route thay đổi
-watch(() => route.params.categorySlug, (slug) => {
-    activeCategory.value = slug || 'all'
-}, { immediate: true })
 
 // Computed
 const filteredServices = computed(() => {

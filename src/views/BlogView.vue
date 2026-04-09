@@ -1,14 +1,11 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
-const router = useRouter()
-const route = useRoute()
 
 // --- Sticky Toolbar Auto-Hide ---
 const toolbarRef = ref(null)
@@ -35,22 +32,11 @@ const activeCatLabel = computed(() => {
     return found ? (found.labelKey ? t(found.labelKey) : found.name) : null
 })
 
-// Điều hướng URL khi chọn danh mục (SEO-friendly)
+// Lọc danh mục client-side (không reload trang)
 const selectCategory = (catId) => {
-    if (catId === 'all') {
-        showCategoryPanel.value = false
-        router.push({ name: 'blog' })
-    } else {
-        activeCategory.value = catId
-        router.push({ name: 'blog-category', params: { categorySlug: catId } })
-    }
+    activeCategory.value = catId
+    if (catId !== 'all') showCategoryPanel.value = false
 }
-
-// Đồng bộ activeCategory từ URL khi truy cập trực tiếp hoặc khi route thay đổi
-watch(() => route.params.categorySlug, (slug) => {
-    activeCategory.value = slug || 'all'
-    if (slug) showCategoryPanel.value = false
-}, { immediate: true })
 
 const downloads = [
     { titleKey: "blog_view.downloads.form_tm", size: "DOCX - 2.5MB" },
