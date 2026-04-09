@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
+import { marked } from 'marked'
 
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -121,9 +122,7 @@ const availableSections = computed(() => {
                     <h2 class="text-3xl font-bold text-dark mb-6 font-serif border-l-4 border-primary pl-4">
                         {{ t('service_detail.overview') }}
                     </h2>
-                    <p class="text-lg text-gray-600 leading-loose text-justify whitespace-pre-line">
-                        {{ service.overview || service.excerpt }}
-                    </p>
+                    <div class="prose prose-lg max-w-none text-gray-600 leading-loose text-justify" v-html="marked(service.overview || service.excerpt || '')"></div>
                 </section>
 
                 <!-- Section 2: Target Audience (Grid Style) -->
@@ -235,7 +234,7 @@ const availableSections = computed(() => {
                     </div>
                     <div>
                         <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-0.5">{{ t('service_detail.quick_consult') }}</p>
-                        <a href="tel:19001234" class="text-lg font-bold text-dark hover:text-primary transition">1900 1234</a>
+                        <a href="tel:02437621788" class="text-lg font-bold text-dark hover:text-primary transition">024 3762 1788</a>
                     </div>
                 </div>
 
@@ -252,3 +251,52 @@ const availableSections = computed(() => {
       <router-link to="/services" class="text-primary hover:underline mt-4">{{ t('service_detail.back_list', 'Quay lại danh sách dịch vụ') }}</router-link>
   </div>
 </template>
+
+<style scoped>
+/* Markdown Prose Styling for Overview */
+.prose :deep(p) {
+    margin-bottom: 1em;
+}
+.prose :deep(strong) {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+.prose :deep(em) {
+    font-style: italic;
+}
+.prose :deep(ul) {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+.prose :deep(ol) {
+    list-style-type: decimal;
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+.prose :deep(li) {
+    margin-bottom: 0.35em;
+    line-height: 1.8;
+}
+.prose :deep(h3) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+}
+.prose :deep(h4) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+}
+.prose :deep(blockquote) {
+    border-left: 3px solid #c4a484;
+    padding-left: 1em;
+    margin: 1em 0;
+    color: #555;
+    font-style: italic;
+}
+</style>

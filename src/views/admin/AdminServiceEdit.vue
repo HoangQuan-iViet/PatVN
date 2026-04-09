@@ -351,8 +351,14 @@ const autoTranslate = async () => {
                             <textarea v-model="currentService.excerpt" rows="2" class="w-full border border-gray-200 p-3 text-sm focus:outline-none focus:border-black transition-colors bg-gray-50" placeholder="Hiển thị ở trang danh sách..."></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 mt-4">Tổng quan chi tiết (VI)</label>
-                            <textarea v-model="currentService.overview" rows="4" class="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black transition-colors" placeholder="Nội dung giới thiệu dịch vụ..."></textarea>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 mt-4">Tổng quan chi tiết (VI)</label>
+                            <p class="text-[10px] text-gray-400 mb-2">Hỗ trợ Markdown: **in đậm**, *in nghiêng*, - danh sách, ### tiêu đề</p>
+                            <textarea v-model="currentService.overview" rows="8" class="w-full border border-gray-300 p-3 text-sm font-mono focus:outline-none focus:border-black transition-colors" placeholder="Nội dung giới thiệu dịch vụ...
+
+VD:
+### Lợi ích
+- Bảo vệ **thương hiệu** toàn diện
+- Tư vấn *chuyên sâu* từ luật sư"></textarea>
                         </div>
                     </div>
                 </div>
@@ -370,8 +376,9 @@ const autoTranslate = async () => {
                             <textarea v-model="currentService.excerpt_en" rows="2" class="w-full border border-blue-100 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors bg-blue-50/30" placeholder="English summary..."></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 mt-4">Detailed Overview (EN)</label>
-                            <textarea v-model="currentService.overview_en" rows="4" class="w-full border border-blue-200 p-3 text-sm focus:outline-none focus:border-blue-600 transition-colors" placeholder="English detailed content..."></textarea>
+                            <label class="block text-xs font-bold text-blue-600 uppercase tracking-widest mb-1 mt-4">Detailed Overview (EN)</label>
+                            <p class="text-[10px] text-blue-400 mb-2">Supports Markdown: **bold**, *italic*, - list, ### heading</p>
+                            <textarea v-model="currentService.overview_en" rows="8" class="w-full border border-blue-200 p-3 text-sm font-mono focus:outline-none focus:border-blue-600 transition-colors" placeholder="English detailed content..."></textarea>
                         </div>
                     </div>
                 </div>
