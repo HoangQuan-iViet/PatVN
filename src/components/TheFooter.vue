@@ -90,8 +90,8 @@ const currentYear = new Date().getFullYear()
               </a>
               <!-- Messenger -->
               <a href="https://www.messenger.com/t/sangchevanhanhieu.vn" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors group" aria-label="Messenger PATVN">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-200 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2C6.477 2 2 6.145 2 11.26c0 2.918 1.43 5.49 3.655 7.152.19.14.305.363.305.6v1.988c0 .246.216.442.458.398l2.235-.41c.196-.036.398.01.562.115C10.153 21.683 11.06 22 12 22c5.523 0 10-4.145 10-9.26S17.523 2 12 2zm.8 11.696L10.32 10.94 7.2 13.696l3.414-3.636 2.48 2.756 3.12-2.756-3.414 3.636z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-200 group-hover:text-white" fill="currentColor" viewBox="0 0 512 512" aria-hidden="true">
+                  <path d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94 8.35 7.51 6.63 11.86 8.05 58.23A19.92 19.92 0 0 0 122 502.31c52.59-23.3 24.52-9.47 29.29-11.14C174.63 497.1 215.4 504 256.55 504 396.58 504 505 401.66 505 248.57S396.58 8 256.55 8zm149.24 185.13l-73 115.57a37.37 37.37 0 0 1-53.91 9.93l-58.08-43.47a15 15 0 0 0-18 0l-78.37 59.44c-10.46 7.93-24.16-4.6-17.11-15.67l73-115.57a37.36 37.36 0 0 1 53.91-9.93l58.06 43.47a15 15 0 0 0 18 0l78.41-59.44c10.44-7.98 24.14 4.54 17.09 15.67z"/>
                 </svg>
               </a>
             </div>
