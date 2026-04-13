@@ -4,7 +4,7 @@ import HomeView from '../views/HomeView.vue'
 
 export const isRouteLoading = ref(false)
 
-const routes = [
+export const routes = [
     {
         path: '/',
         name: 'home',
@@ -114,40 +114,40 @@ const routes = [
     }
 ]
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) return savedPosition
-        if (to.hash) return { el: to.hash, behavior: 'smooth' }
-        return { top: 0, left: 0 }
-    }
-})
+export const scrollBehavior = (to, from, savedPosition) => {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0, left: 0 }
+}
 
-// Chống đánh cắp tài khoản & Vượt rào Frontend
-router.beforeEach(async (to, from, next) => {
-    // Bật hiệu ứng Loading Trình Diệt Virus/Security
-    isRouteLoading.value = true;
+export function setupRouterHooks(router) {
+    // Chống đánh cắp tài khoản & Vượt rào Frontend
+    router.beforeEach(async (to, from, next) => {
+        // Bật hiệu ứng Loading Trình Diệt Virus/Security
+        isRouteLoading.value = true;
 
-    if (to.meta.requiresAuth) {
-        try {
-            const res = await fetch('/api/auth/me');
-            if (res.ok) {
-                next();
-            } else {
+        if (to.meta.requiresAuth) {
+            // Không thực hiện fetch API trong lúc build SSG bằng NodeJS
+            if (typeof window === 'undefined') {
+                return next();
+            }
+            try {
+                const res = await fetch('/api/auth/me');
+                if (res.ok) {
+                    next();
+                } else {
+                    next('/login');
+                }
+            } catch(e) {
                 next('/login');
             }
-        } catch(e) {
-            next('/login');
+        } else {
+            next();
         }
-    } else {
-        next();
-    }
-});
+    });
 
-router.afterEach(() => {
-    // Tắt hiệu ứng Loading khi đã Load xong trang
-    isRouteLoading.value = false;
-});
-
-export default router
+    router.afterEach(() => {
+        // Tắt hiệu ứng Loading khi đã Load xong trang
+        isRouteLoading.value = false;
+    });
+}
