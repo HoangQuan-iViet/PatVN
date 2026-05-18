@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onServerPrefetch, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
+import { useDataCache } from '../composables/useDataCache'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import ctaImg from '../assets/CTA.webp'
 
@@ -12,20 +13,21 @@ const isLoading = ref(true)
 const fetchData = async () => {
     isLoading.value = true
     try {
+        const { fetchWithCache } = useDataCache()
         const [catRes, serviceRes] = await Promise.all([
-            axios.get(`/api/categories?type=service&locale=${locale.value}`),
-            axios.get(`/api/services?status=live&locale=${locale.value}`)
+            fetchWithCache(`cat_service_${locale.value}`, `/api/categories?type=service&locale=${locale.value}`),
+            fetchWithCache(`services_${locale.value}`, `/api/services?status=live&locale=${locale.value}`)
         ])
         
         categories.value = [{ id: 'all', label: t('services_view.categories.all') }]
-        if (catRes.data.success) {
-            catRes.data.data.forEach(c => {
+        if (catRes && catRes.success) {
+            catRes.data.forEach(c => {
                 categories.value.push({ id: c.slug, label: c.name })
             })
         }
 
-        if (serviceRes.data.success) {
-            services.value = serviceRes.data.data
+        if (serviceRes && serviceRes.success) {
+            services.value = serviceRes.data
         }
     } catch(e) { 
         console.error('Lỗi khi tải dịch vụ từ DB:', e) 
@@ -34,8 +36,14 @@ const fetchData = async () => {
     }
 }
 
+onServerPrefetch(async () => {
+    await fetchData()
+})
+
 onMounted(() => {
-    fetchData()
+    if (services.value.length === 0) {
+        fetchData()
+    }
 })
 
 watch(locale, () => {
@@ -137,10 +145,23 @@ const getDesc = (service) => {
     <!-- 3. Service Grid -->
     <div class="container mx-auto px-4 py-16 min-h-[500px]">
         
-        <!-- Loading State -->
-        <div v-if="isLoading" class="flex flex-col items-center justify-center py-32">
-            <div class="w-12 h-12 border-[3px] border-gray-200 border-t-primary rounded-full animate-spin mb-6"></div>
-            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">{{ t('common.loading', 'Đang tải dữ liệu...') }}</p>
+        <!-- Skeleton Loading State -->
+        <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div v-for="n in 6" :key="n" class="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[420px] animate-pulse">
+                <div class="w-full h-48 bg-gray-200 rounded-t-2xl shrink-0"></div>
+                <div class="p-8 flex-grow flex flex-col gap-3">
+                    <div class="h-3 bg-gray-200 rounded-md w-1/4 mb-2"></div>
+                    <div class="space-y-2 mb-4">
+                        <div class="h-5 bg-gray-200 rounded-md w-full"></div>
+                        <div class="h-5 bg-gray-200 rounded-md w-5/6"></div>
+                    </div>
+                    <div class="space-y-2 mt-auto">
+                        <div class="h-3 bg-gray-200 rounded-md w-full"></div>
+                        <div class="h-3 bg-gray-200 rounded-md w-full"></div>
+                        <div class="h-3 bg-gray-200 rounded-md w-3/4"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <template v-else>

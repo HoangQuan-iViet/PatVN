@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onServerPrefetch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
+import { useDataCache } from '../composables/useDataCache'
 import { useStickyToolbar } from '../composables/useStickyToolbar'
 import { MagnifyingGlassIcon, ArrowLongRightIcon, EnvelopeIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 
@@ -167,18 +168,19 @@ const sidebarPosts = computed(() => {
 const fetchData = async () => {
     isFetching.value = true
     try {
+        const { fetchWithCache } = useDataCache()
         const [catRes, postRes] = await Promise.all([
-            axios.get(`/api/categories?type=post&locale=${locale.value}`),
-            axios.get(`/api/posts?status=live&locale=${locale.value}`)
+            fetchWithCache(`cat_post_${locale.value}`, `/api/categories?type=post&locale=${locale.value}`),
+            fetchWithCache(`posts_${locale.value}`, `/api/posts?status=live&locale=${locale.value}`)
         ])
         
-        if (catRes.data.success) {
-            const apiCats = catRes.data.data.map(c => ({ id: c.slug, name: c.name }))
+        if (catRes && catRes.success) {
+            const apiCats = catRes.data.map(c => ({ id: c.slug, name: c.name }))
             categories.value = [{ id: 'all', labelKey: 'blog_view.filter_all' }, ...apiCats]
         }
 
-        if (postRes.data && postRes.data.success) {
-            dbPosts.value = postRes.data.data
+        if (postRes && postRes.success) {
+            dbPosts.value = postRes.data
         }
     } catch(e) {
         console.error("Failed to load news", e)
@@ -187,8 +189,14 @@ const fetchData = async () => {
     }
 }
 
+onServerPrefetch(async () => {
+    await fetchData()
+})
+
 onMounted(() => {
-    fetchData()
+    if (dbPosts.value.length === 0) {
+        fetchData()
+    }
 })
 
 watch(locale, () => {
@@ -307,10 +315,47 @@ const formatDate = (dateString) => {
             </div>
         </div>
 
-        <!-- LOADING STATE (Nằm gọn dưới Hero & Toolbar) -->
-        <div v-if="isFetching" class="w-full min-h-[50vh] flex flex-col items-center justify-center">
-            <div class="w-12 h-12 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-6"></div>
-            <span class="text-sm font-black uppercase tracking-[0.3em] text-[#8b6b55]">Đang tải báo...</span>
+        <!-- SKELETON LOADING STATE -->
+        <div v-if="isFetching" class="w-full">
+            <!-- Skeleton Featured Post -->
+            <div class="container mx-auto px-4 pt-12 pb-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col lg:flex-row min-h-[400px] animate-pulse">
+                    <div class="w-full lg:w-1/2 h-64 md:h-80 lg:h-auto bg-gray-200 shrink-0"></div>
+                    <div class="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center gap-4">
+                        <div class="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                        <div class="space-y-3 mb-6">
+                            <div class="h-8 bg-gray-200 rounded w-full"></div>
+                            <div class="h-8 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                        <div class="space-y-2 mb-8">
+                            <div class="h-4 bg-gray-200 rounded w-full"></div>
+                            <div class="h-4 bg-gray-200 rounded w-full"></div>
+                            <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                        </div>
+                        <div class="h-6 bg-gray-200 rounded w-1/3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skeleton Grid Posts -->
+            <div class="container mx-auto px-4 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div v-for="n in 8" :key="n" class="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col h-[400px] animate-pulse">
+                        <div class="h-56 bg-gray-200 shrink-0"></div>
+                        <div class="p-6 flex-grow flex flex-col gap-3">
+                            <div class="h-3 bg-gray-200 rounded-md w-1/3 mb-2"></div>
+                            <div class="space-y-2 mb-3">
+                                <div class="h-5 bg-gray-200 rounded-md w-full"></div>
+                                <div class="h-5 bg-gray-200 rounded-md w-4/5"></div>
+                            </div>
+                            <div class="space-y-2 mt-auto">
+                                <div class="h-3 bg-gray-200 rounded-md w-full"></div>
+                                <div class="h-3 bg-gray-200 rounded-md w-5/6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <template v-else>

@@ -1,7 +1,8 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onServerPrefetch, watch } from 'vue'
 import axios from 'axios'
+import { useDataCache } from '../composables/useDataCache'
 import bannerImg from '../assets/Banner.webp'
 
 const { t, locale } = useI18n()
@@ -12,15 +13,16 @@ const isLoading = ref(true)
 const fetchData = async () => {
     isLoading.value = true
     try {
+        const { fetchWithCache } = useDataCache()
         const [resServices, resPosts] = await Promise.all([
-            axios.get(`/api/services?status=live&locale=${locale.value}`),
-            axios.get(`/api/posts?status=live&locale=${locale.value}`)
+            fetchWithCache(`services_${locale.value}`, `/api/services?status=live&locale=${locale.value}`),
+            fetchWithCache(`posts_${locale.value}`, `/api/posts?status=live&locale=${locale.value}`)
         ])
-        if (resServices.data.success) {
-            services.value = resServices.data.data
+        if (resServices && resServices.success) {
+            services.value = resServices.data
         }
-        if (resPosts.data.success) {
-            postsDB.value = resPosts.data.data
+        if (resPosts && resPosts.success) {
+            postsDB.value = resPosts.data
         }
     } catch(e) { 
         console.error('Lỗi khi tải dữ liệu từ DB:', e) 
@@ -29,8 +31,16 @@ const fetchData = async () => {
     }
 }
 
+onServerPrefetch(async () => {
+    // Chạy lúc Build tĩnh (Nodejs) để nặn data vào thẳng HTML
+    await fetchData()
+})
+
 onMounted(() => {
-    fetchData()
+    // Chạy lúc user lướt web (Client) nếu lỡ data chưa có
+    if (services.value.length === 0) {
+        fetchData()
+    }
 })
 
 watch(locale, () => {
@@ -159,10 +169,21 @@ const uspItems = [
             </router-link>
         </div>
         
-        <!-- Loading State for Services -->
-        <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 min-h-[300px]">
-             <div class="w-10 h-10 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-4"></div>
-             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
+        <!-- Skeleton Loading State for Services -->
+        <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div v-for="n in 4" :key="n" class="bg-white border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[350px] animate-pulse">
+                <div class="h-48 bg-gray-200 shrink-0"></div>
+                <div class="p-6 flex flex-col flex-grow gap-3">
+                    <div class="h-6 bg-gray-200 rounded-md w-3/4 mb-2"></div>
+                    <div class="space-y-2">
+                        <div class="h-3 bg-gray-200 rounded-md w-full"></div>
+                        <div class="h-3 bg-gray-200 rounded-md w-5/6"></div>
+                    </div>
+                    <div class="mt-auto flex justify-end">
+                        <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Grid with images (4 Items) -->
@@ -218,10 +239,19 @@ const uspItems = [
                 </router-link>
             </div>
 
-            <!-- Loading State for Blog -->
-            <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white min-h-[250px] border border-gray-100 shadow-sm">
-                 <div class="w-10 h-10 border-[3px] border-gray-200 border-t-[#8b6b55] rounded-full animate-spin mb-4"></div>
-                 <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b6b55]">{{ t('common.loading', 'Đang tải...') }}</span>
+            <!-- Skeleton Loading State for Blog -->
+            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                <div v-for="n in 2" :key="n" class="flex flex-col sm:flex-row bg-white rounded-none p-0 shadow-sm border border-gray-100 min-h-[200px] animate-pulse">
+                    <div class="sm:w-2/5 h-48 sm:h-auto bg-gray-200 shrink-0"></div>
+                    <div class="p-6 sm:p-8 flex flex-col justify-center w-full gap-4">
+                        <div class="h-3 bg-gray-200 rounded-md w-1/4"></div>
+                        <div class="space-y-2">
+                            <div class="h-5 bg-gray-200 rounded-md w-full"></div>
+                            <div class="h-5 bg-gray-200 rounded-md w-4/5"></div>
+                        </div>
+                        <div class="h-4 bg-gray-200 rounded-md w-1/3 mt-auto"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Compact Blog Array (Max 2 items) -->
